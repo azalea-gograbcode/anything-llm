@@ -14,24 +14,10 @@ function isNullOrNaN(value) {
 }
 
 const SystemSettings = {
-  protectedFields: ["multi_user_mode", "hub_api_key"],
-  publicFields: [
-    "footer_data",
-    "support_email",
-    "text_splitter_chunk_size",
-    "text_splitter_chunk_overlap",
-    "max_embed_chunk_size",
-    "agent_search_provider",
-    "agent_sql_connections",
-    "default_agent_skills",
-    "disabled_agent_skills",
-    "imported_agent_skills",
-    "custom_app_name",
-    "feature_flags",
-    "meta_page_title",
-    "meta_page_favicon",
-  ],
+  protectedFields: ["multi_user_mode"],
   supportedFields: [
+    "limit_user_messages",
+    "message_limit",
     "logo_filename",
     "telemetry_id",
     "footer_data",
@@ -41,7 +27,8 @@ const SystemSettings = {
     "text_splitter_chunk_overlap",
     "agent_search_provider",
     "default_agent_skills",
-    "disabled_agent_skills",
+    "users_can_login_with_google",
+    "allowed_domain",
     "agent_sql_connections",
     "custom_app_name",
 
@@ -51,9 +38,6 @@ const SystemSettings = {
 
     // beta feature flags
     "experimental_live_file_sync",
-
-    // Hub settings
-    "hub_api_key",
   ],
   validations: {
     footer_data: (updates) => {
@@ -99,13 +83,10 @@ const SystemSettings = {
         if (
           ![
             "google-search-engine",
-            "searchapi",
             "serper-dot-dev",
             "bing-search",
             "serply-engine",
             "searxng-engine",
-            "tavily-search",
-            "duckduckgo-engine",
           ].includes(update)
         )
           throw new Error("Invalid SERP provider.");
@@ -124,15 +105,6 @@ const SystemSettings = {
         return JSON.stringify(skills);
       } catch (e) {
         console.error(`Could not validate agent skills.`);
-        return JSON.stringify([]);
-      }
-    },
-    disabled_agent_skills: (updates) => {
-      try {
-        const skills = updates.split(",").filter((skill) => !!skill);
-        return JSON.stringify(skills);
-      } catch (e) {
-        console.error(`Could not validate disabled agent skills.`);
         return JSON.stringify([]);
       }
     },
@@ -179,10 +151,6 @@ const SystemSettings = {
         new MetaGenerator().clearConfig();
       }
     },
-    hub_api_key: (apiKey) => {
-      if (!apiKey) return null;
-      return String(apiKey);
-    },
   },
   currentSettings: async function () {
     const { hasVectorCachedFiles } = require("../utils/files");
@@ -209,12 +177,17 @@ const SystemSettings = {
       EmbeddingModelPref: process.env.EMBEDDING_MODEL_PREF,
       EmbeddingModelMaxChunkLength:
         process.env.EMBEDDING_MODEL_MAX_CHUNK_LENGTH,
-      VoyageAiApiKey: !!process.env.VOYAGEAI_API_KEY,
       GenericOpenAiEmbeddingApiKey:
         !!process.env.GENERIC_OPEN_AI_EMBEDDING_API_KEY,
-      GenericOpenAiEmbeddingMaxConcurrentChunks:
-        process.env.GENERIC_OPEN_AI_EMBEDDING_MAX_CONCURRENT_CHUNKS || 500,
-      GeminiEmbeddingApiKey: !!process.env.GEMINI_EMBEDDING_API_KEY,
+
+      // --------------------------------------------------------
+      // Social Providers
+      // --------------------------------------------------------
+      GoogleAuthClientId:
+        (await this.get({ label: "users_can_login_with_google" }))?.value ===
+        "true"
+          ? process.env.GOOGLE_AUTH_CLIENT_ID
+          : null,
 
       // --------------------------------------------------------
       // VectorDB Provider Selection Settings & Configs
@@ -244,38 +217,19 @@ const SystemSettings = {
       TextToSpeechProvider: process.env.TTS_PROVIDER || "native",
       TTSOpenAIKey: !!process.env.TTS_OPEN_AI_KEY,
       TTSOpenAIVoiceModel: process.env.TTS_OPEN_AI_VOICE_MODEL,
-
       // Eleven Labs TTS
       TTSElevenLabsKey: !!process.env.TTS_ELEVEN_LABS_KEY,
       TTSElevenLabsVoiceModel: process.env.TTS_ELEVEN_LABS_VOICE_MODEL,
-      // Piper TTS
-      TTSPiperTTSVoiceModel:
-        process.env.TTS_PIPER_VOICE_MODEL ?? "en_US-hfc_female-medium",
-      // OpenAI Generic TTS
-      TTSOpenAICompatibleKey: !!process.env.TTS_OPEN_AI_COMPATIBLE_KEY,
-      TTSOpenAICompatibleVoiceModel:
-        process.env.TTS_OPEN_AI_COMPATIBLE_VOICE_MODEL,
-      TTSOpenAICompatibleEndpoint: process.env.TTS_OPEN_AI_COMPATIBLE_ENDPOINT,
 
       // --------------------------------------------------------
       // Agent Settings & Configs
       // --------------------------------------------------------
       AgentGoogleSearchEngineId: process.env.AGENT_GSE_CTX || null,
       AgentGoogleSearchEngineKey: !!process.env.AGENT_GSE_KEY || null,
-      AgentSearchApiKey: !!process.env.AGENT_SEARCHAPI_API_KEY || null,
-      AgentSearchApiEngine: process.env.AGENT_SEARCHAPI_ENGINE || "google",
       AgentSerperApiKey: !!process.env.AGENT_SERPER_DEV_KEY || null,
       AgentBingSearchApiKey: !!process.env.AGENT_BING_SEARCH_API_KEY || null,
       AgentSerplyApiKey: !!process.env.AGENT_SERPLY_API_KEY || null,
       AgentSearXNGApiUrl: process.env.AGENT_SEARXNG_API_URL || null,
-      AgentTavilyApiKey: !!process.env.AGENT_TAVILY_API_KEY || null,
-
-      // --------------------------------------------------------
-      // Compliance Settings
-      // --------------------------------------------------------
-      // Disable View Chat History for the whole instance.
-      DisableViewChatHistory:
-        "DISABLE_VIEW_CHAT_HISTORY" in process.env || false,
     };
   },
 
@@ -442,7 +396,6 @@ const SystemSettings = {
       AzureOpenAiModelPref: process.env.OPEN_MODEL_PREF,
       AzureOpenAiEmbeddingModelPref: process.env.EMBEDDING_MODEL_PREF,
       AzureOpenAiTokenLimit: process.env.AZURE_OPENAI_TOKEN_LIMIT || 4096,
-      AzureOpenAiModelType: process.env.AZURE_OPENAI_MODEL_TYPE || "default",
 
       // Anthropic Keys
       AnthropicApiKey: !!process.env.ANTHROPIC_API_KEY,
@@ -450,8 +403,7 @@ const SystemSettings = {
 
       // Gemini Keys
       GeminiLLMApiKey: !!process.env.GEMINI_API_KEY,
-      GeminiLLMModelPref:
-        process.env.GEMINI_LLM_MODEL_PREF || "gemini-2.0-flash-lite",
+      GeminiLLMModelPref: process.env.GEMINI_LLM_MODEL_PREF || "gemini-pro",
       GeminiSafetySetting:
         process.env.GEMINI_SAFETY_SETTING || "BLOCK_MEDIUM_AND_ABOVE",
 
@@ -471,21 +423,10 @@ const SystemSettings = {
       OllamaLLMModelPref: process.env.OLLAMA_MODEL_PREF,
       OllamaLLMTokenLimit: process.env.OLLAMA_MODEL_TOKEN_LIMIT,
       OllamaLLMKeepAliveSeconds: process.env.OLLAMA_KEEP_ALIVE_TIMEOUT ?? 300,
-      OllamaLLMPerformanceMode: process.env.OLLAMA_PERFORMANCE_MODE ?? "base",
-      OllamaLLMAuthToken: process.env.OLLAMA_AUTH_TOKEN ?? null,
-
-      // Novita LLM Keys
-      NovitaLLMApiKey: !!process.env.NOVITA_LLM_API_KEY,
-      NovitaLLMModelPref: process.env.NOVITA_LLM_MODEL_PREF,
-      NovitaLLMTimeout: process.env.NOVITA_LLM_TIMEOUT_MS,
 
       // TogetherAI Keys
       TogetherAiApiKey: !!process.env.TOGETHER_AI_API_KEY,
       TogetherAiModelPref: process.env.TOGETHER_AI_MODEL_PREF,
-
-      // Fireworks AI API Keys
-      FireworksAiLLMApiKey: !!process.env.FIREWORKS_AI_LLM_API_KEY,
-      FireworksAiLLMModelPref: process.env.FIREWORKS_AI_LLM_MODEL_PREF,
 
       // Perplexity AI Keys
       PerplexityApiKey: !!process.env.PERPLEXITY_API_KEY,
@@ -504,6 +445,10 @@ const SystemSettings = {
       GroqApiKey: !!process.env.GROQ_API_KEY,
       GroqModelPref: process.env.GROQ_MODEL_PREF,
 
+      // Native LLM Keys
+      NativeLLMModelPref: process.env.NATIVE_LLM_MODEL_PREF,
+      NativeLLMTokenLimit: process.env.NATIVE_LLM_MODEL_TOKEN_LIMIT,
+
       // HuggingFace Dedicated Inference
       HuggingFaceLLMEndpoint: process.env.HUGGING_FACE_LLM_ENDPOINT,
       HuggingFaceLLMAccessToken: !!process.env.HUGGING_FACE_LLM_API_KEY,
@@ -513,7 +458,6 @@ const SystemSettings = {
       KoboldCPPModelPref: process.env.KOBOLD_CPP_MODEL_PREF,
       KoboldCPPBasePath: process.env.KOBOLD_CPP_BASE_PATH,
       KoboldCPPTokenLimit: process.env.KOBOLD_CPP_MODEL_TOKEN_LIMIT,
-      KoboldCPPMaxTokens: process.env.KOBOLD_CPP_MAX_TOKENS,
 
       // Text Generation Web UI Keys
       TextGenWebUIBasePath: process.env.TEXT_GEN_WEB_UI_BASE_PATH,
@@ -533,42 +477,18 @@ const SystemSettings = {
       GenericOpenAiKey: !!process.env.GENERIC_OPEN_AI_API_KEY,
       GenericOpenAiMaxTokens: process.env.GENERIC_OPEN_AI_MAX_TOKENS,
 
-      AwsBedrockLLMConnectionMethod:
-        process.env.AWS_BEDROCK_LLM_CONNECTION_METHOD || "iam",
       AwsBedrockLLMAccessKeyId: !!process.env.AWS_BEDROCK_LLM_ACCESS_KEY_ID,
       AwsBedrockLLMAccessKey: !!process.env.AWS_BEDROCK_LLM_ACCESS_KEY,
-      AwsBedrockLLMSessionToken: !!process.env.AWS_BEDROCK_LLM_SESSION_TOKEN,
       AwsBedrockLLMRegion: process.env.AWS_BEDROCK_LLM_REGION,
       AwsBedrockLLMModel: process.env.AWS_BEDROCK_LLM_MODEL_PREFERENCE,
-      AwsBedrockLLMTokenLimit:
-        process.env.AWS_BEDROCK_LLM_MODEL_TOKEN_LIMIT || 8192,
-      AwsBedrockLLMMaxOutputTokens:
-        process.env.AWS_BEDROCK_LLM_MAX_OUTPUT_TOKENS || 4096,
+      AwsBedrockLLMTokenLimit: process.env.AWS_BEDROCK_LLM_MODEL_TOKEN_LIMIT,
 
       // Cohere API Keys
       CohereApiKey: !!process.env.COHERE_API_KEY,
       CohereModelPref: process.env.COHERE_MODEL_PREF,
 
-      // DeepSeek API Keys
-      DeepSeekApiKey: !!process.env.DEEPSEEK_API_KEY,
-      DeepSeekModelPref: process.env.DEEPSEEK_MODEL_PREF,
-
-      // APIPie LLM API Keys
-      ApipieLLMApiKey: !!process.env.APIPIE_LLM_API_KEY,
-      ApipieLLMModelPref: process.env.APIPIE_LLM_MODEL_PREF,
-
-      // xAI LLM API Keys
-      XAIApiKey: !!process.env.XAI_LLM_API_KEY,
-      XAIModelPref: process.env.XAI_LLM_MODEL_PREF,
-
-      // NVIDIA NIM Keys
-      NvidiaNimLLMBasePath: process.env.NVIDIA_NIM_LLM_BASE_PATH,
-      NvidiaNimLLMModelPref: process.env.NVIDIA_NIM_LLM_MODEL_PREF,
-      NvidiaNimLLMTokenLimit: process.env.NVIDIA_NIM_LLM_MODEL_TOKEN_LIMIT,
-
-      // PPIO API keys
-      PPIOApiKey: !!process.env.PPIO_API_KEY,
-      PPIOModelPref: process.env.PPIO_MODEL_PREF,
+      // VoyageAi API Keys
+      VoyageAiApiKey: !!process.env.VOYAGEAI_API_KEY,
     };
   },
 
@@ -591,22 +511,6 @@ const SystemSettings = {
         (await SystemSettings.get({ label: "experimental_live_file_sync" }))
           ?.value === "enabled",
     };
-  },
-
-  /**
-   * Get user configured Community Hub Settings
-   * Connection key is used to authenticate with the Community Hub API
-   * for your account.
-   * @returns {Promise<{connectionKey: string}>}
-   */
-  hubSettings: async function () {
-    try {
-      const hubKey = await this.get({ label: "hub_api_key" });
-      return { connectionKey: hubKey?.value || null };
-    } catch (error) {
-      console.error(error.message);
-      return { connectionKey: null };
-    }
   },
 };
 

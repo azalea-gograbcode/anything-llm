@@ -27,7 +27,6 @@ const {
   renameLogoFile,
   removeCustomLogo,
   LOGO_FILENAME,
-  isDefaultFilename,
 } = require("../utils/files/logo");
 const { Telemetry } = require("../models/telemetry");
 const { WelcomeMessages } = require("../models/welcomeMessages");
@@ -40,7 +39,10 @@ const {
   isMultiUserSetup,
 } = require("../utils/middleware/multiUserProtected");
 const { fetchPfp, determinePfpFilepath } = require("../utils/files/pfp");
-const { exportChatsAsType } = require("../utils/helpers/chat/convertTo");
+const {
+  prepareWorkspaceChatsForExport,
+  exportChatsAsType,
+} = require("../utils/helpers/chat/convertTo");
 const { EventLogs } = require("../models/eventLogs");
 const { CollectorApi } = require("../utils/collectorApi");
 const {
@@ -48,16 +50,8 @@ const {
   resetPassword,
   generateRecoveryCodes,
 } = require("../utils/PasswordRecovery");
+const { SocialProvider } = require("../utils/socialProviders");
 const { SlashCommandPresets } = require("../models/slashCommandsPresets");
-const { EncryptionManager } = require("../utils/EncryptionManager");
-const { BrowserExtensionApiKey } = require("../models/browserExtensionApiKey");
-const {
-  chatHistoryViewable,
-} = require("../utils/middleware/chatHistoryViewable");
-const { simpleSSOEnabled } = require("../utils/middleware/simpleSSOEnabled");
-const { TemporaryAuthToken } = require("../models/temporaryAuthToken");
-const { SystemPromptVariables } = require("../models/systemPromptVariables");
-const { VALID_COMMANDS } = require("../utils/chats");
 
 function systemEndpoints(app) {
   if (!app) return;
@@ -136,7 +130,24 @@ function systemEndpoints(app) {
           });
           return;
         }
-
+        // Users who created their account with a social provider do not have a password. So they can only log in with the social provider.
+        if (existingUser.use_social_provider) {
+          await EventLogs.logEvent(
+            "failed_login_user_use_social_provider",
+            {
+              ip: request.ip || "Unknown IP",
+              username: username || "Unknown user",
+            },
+            existingUser?.id
+          );
+          response.status(200).json({
+            user: null,
+            valid: false,
+            token: null,
+            message: "[005] Invalid login credentials.",
+          });
+          return;
+        }
         if (!bcrypt.compareSync(String(password), existingUser.password)) {
           await EventLogs.logEvent(
             "failed_login_invalid_password",
@@ -243,10 +254,7 @@ function systemEndpoints(app) {
         });
         response.status(200).json({
           valid: true,
-          token: makeJWT(
-            { p: new EncryptionManager().encrypt(password) },
-            "30d"
-          ),
+          token: makeJWT({ p: password }, "30d"),
           message: null,
         });
       }
@@ -255,50 +263,123 @@ function systemEndpoints(app) {
       response.sendStatus(500).end();
     }
   });
-
-  app.get(
-    "/request-token/sso/simple",
-    [simpleSSOEnabled],
-    async (request, response) => {
-      const { token: tempAuthToken } = request.query;
-      const { sessionToken, token, error } =
-        await TemporaryAuthToken.validate(tempAuthToken);
-
-      if (error) {
-        await EventLogs.logEvent("failed_login_invalid_temporary_auth_token", {
-          ip: request.ip || "Unknown IP",
-          multiUserMode: true,
-        });
-        return response.status(401).json({
+  
+  app.post("/social-login/:provider", async (request, response) => {
+    try {
+      if (!(await SystemSettings.isMultiUserMode())) {
+        response.status(200).json({
+          user: null,
           valid: false,
           token: null,
-          message: `[001] An error occurred while validating the token: ${error}`,
+          message: "Social login is available on multi-user mode",
         });
+        return;
+      }
+
+      const { provider } = request.params;
+      const data = reqBody(request);
+      const socialProvider = new SocialProvider(provider);
+      const { username } = await socialProvider.login(data);
+      let user = await User.get({ username: String(username) });
+
+      const allowedDomain = (
+        await SystemSettings.get({ label: "allowed_domain" })
+      )?.value;
+      if (allowedDomain && allowedDomain !== username.split("@")[1]) {
+        await EventLogs.logEvent(
+          "failed_login_domain_not_allowed",
+          {
+            ip: request.ip || "Unknown IP",
+            username: username || "Unknown user",
+          },
+          user?.id
+        );
+        response.status(200).json({
+          user: null,
+          valid: false,
+          token: null,
+          message: "[006] Domain not allowed by admin.",
+        });
+        return;
+      }
+
+      if (!user) {
+        const { user: newUser, error } = await User.createWithSocialProvider({
+          username: String(username),
+        });
+        if (!newUser) {
+          await EventLogs.logEvent(
+            "failed_login_error_creating_user",
+            {
+              ip: request.ip || "Unknown IP",
+              username: username || "Unknown user",
+            },
+            existingUser?.id
+          );
+          response.status(200).json({
+            user: null,
+            valid: false,
+            token: null,
+            message: error,
+          });
+          return;
+        }
+        await EventLogs.logEvent(
+          "user_created",
+          {
+            userName: newUser.username,
+            createdBy: newUser.username,
+          },
+          newUser.id
+        );
+        user = newUser;
+      }
+
+      if (user.suspended) {
+        await EventLogs.logEvent(
+          "failed_login_account_suspended",
+          {
+            ip: request.ip || "Unknown IP",
+            username: username || "Unknown user",
+          },
+          user?.id
+        );
+        response.status(200).json({
+          user: null,
+          valid: false,
+          token: null,
+          message: "[004] Account suspended by admin.",
+        });
+        return;
       }
 
       await Telemetry.sendTelemetry(
         "login_event",
-        { multiUserMode: true },
-        token.user.id
+        { multiUserMode: false },
+        user?.id
       );
+
       await EventLogs.logEvent(
         "login_event",
         {
           ip: request.ip || "Unknown IP",
-          username: token.user.username || "Unknown user",
+          username: user.username || "Unknown user",
         },
-        token.user.id
+        user?.id
       );
 
       response.status(200).json({
         valid: true,
-        user: User.filterFields(token.user),
-        token: sessionToken,
+        user: user,
+        token: makeJWT({ id: user.id, username: user.username }, "30d"),
         message: null,
       });
+      return;
+    } catch (e) {
+      console.log(e.message, e);
+      response.sendStatus(500).end();
     }
-  );
-
+  });
   app.post(
     "/system/recover-account",
     [isMultiUserSetup],
@@ -530,19 +611,11 @@ function systemEndpoints(app) {
           password,
           role: ROLES.admin,
         });
-
-        if (error || !user) {
-          response.status(400).json({
-            success: false,
-            error: error || "Failed to enable multi-user mode.",
-          });
-          return;
-        }
-
         await SystemSettings._updateSettings({
           multi_user_mode: true,
+          limit_user_messages: false,
+          message_limit: 25,
         });
-        await BrowserExtensionApiKey.migrateApiKeysToMultiUser(user.id);
 
         await updateENV(
           {
@@ -577,11 +650,9 @@ function systemEndpoints(app) {
     }
   });
 
-  app.get("/system/logo", async function (request, response) {
+  app.get("/system/logo", async function (_, response) {
     try {
-      const darkMode =
-        !request?.query?.theme || request?.query?.theme === "default";
-      const defaultFilename = getDefaultFilename(darkMode);
+      const defaultFilename = getDefaultFilename();
       const logoPath = await determineLogoFilepath(defaultFilename);
       const { found, buffer, size, mime } = fetchLogo(logoPath);
 
@@ -601,8 +672,7 @@ function systemEndpoints(app) {
         "Content-Length": size,
         "X-Is-Custom-Logo":
           currentLogoFilename !== null &&
-          currentLogoFilename !== defaultFilename &&
-          !isDefaultFilename(currentLogoFilename),
+          currentLogoFilename !== defaultFilename,
       });
       response.end(Buffer.from(buffer, "base64"));
       return;
@@ -661,18 +731,24 @@ function systemEndpoints(app) {
     async function (request, response) {
       try {
         const { id } = request.params;
-        if (response.locals?.user?.id !== Number(id))
-          return response.sendStatus(204).end();
-
         const pfpPath = await determinePfpFilepath(id);
-        if (!pfpPath) return response.sendStatus(204).end();
+
+        if (!pfpPath) {
+          response.sendStatus(204).end();
+          return;
+        }
 
         const { found, buffer, size, mime } = fetchPfp(pfpPath);
-        if (!found) return response.sendStatus(204).end();
+        if (!found) {
+          response.sendStatus(204).end();
+          return;
+        }
 
         response.writeHead(200, {
           "Content-Type": mime || "image/png",
-          "Content-Disposition": `attachment; filename=${path.basename(pfpPath)}`,
+          "Content-Disposition": `attachment; filename=${path.basename(
+            pfpPath
+          )}`,
           "Content-Length": size,
         });
         response.end(Buffer.from(buffer, "base64"));
@@ -802,8 +878,7 @@ function systemEndpoints(app) {
   app.get("/system/is-default-logo", async (_, response) => {
     try {
       const currentLogoFilename = await SystemSettings.currentLogoFilename();
-      const isDefaultLogo =
-        !currentLogoFilename || currentLogoFilename === LOGO_FILENAME;
+      const isDefaultLogo = currentLogoFilename === LOGO_FILENAME;
       response.status(200).json({ isDefaultLogo });
     } catch (error) {
       console.error("Error processing the logo request:", error);
@@ -908,6 +983,7 @@ function systemEndpoints(app) {
         }
 
         const { apiKey, error } = await ApiKey.create();
+        await Telemetry.sendTelemetry("api_key_created");
         await EventLogs.logEvent(
           "api_key_created",
           {},
@@ -927,35 +1003,28 @@ function systemEndpoints(app) {
     }
   );
 
-  // TODO: This endpoint is replicated in the admin endpoints file.
-  // and should be consolidated to be a single endpoint with flexible role protection.
-  app.delete(
-    "/system/api-key/:id",
-    [validatedRequest],
-    async (request, response) => {
-      try {
-        if (response.locals.multiUserMode)
-          return response.sendStatus(401).end();
-        const { id } = request.params;
-        if (!id || isNaN(Number(id))) return response.sendStatus(400).end();
-
-        await ApiKey.delete({ id: Number(id) });
-        await EventLogs.logEvent(
-          "api_key_deleted",
-          { deletedBy: response.locals?.user?.username },
-          response?.locals?.user?.id
-        );
-        return response.status(200).end();
-      } catch (error) {
-        console.error(error);
-        response.status(500).end();
+  app.delete("/system/api-key", [validatedRequest], async (_, response) => {
+    try {
+      if (response.locals.multiUserMode) {
+        return response.sendStatus(401).end();
       }
+
+      await ApiKey.delete();
+      await EventLogs.logEvent(
+        "api_key_deleted",
+        { deletedBy: response.locals?.user?.username },
+        response?.locals?.user?.id
+      );
+      return response.status(200).end();
+    } catch (error) {
+      console.error(error);
+      response.status(500).end();
     }
-  );
+  });
 
   app.post(
     "/system/custom-models",
-    [validatedRequest, flexUserRoleValid([ROLES.admin])],
+    [validatedRequest],
     async (request, response) => {
       try {
         const { provider, apiKey = null, basePath = null } = reqBody(request);
@@ -1016,11 +1085,7 @@ function systemEndpoints(app) {
 
   app.post(
     "/system/workspace-chats",
-    [
-      chatHistoryViewable,
-      validatedRequest,
-      flexUserRoleValid([ROLES.admin, ROLES.manager]),
-    ],
+    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
     async (request, response) => {
       try {
         const { offset = 0, limit = 20 } = reqBody(request);
@@ -1060,20 +1125,16 @@ function systemEndpoints(app) {
 
   app.get(
     "/system/export-chats",
-    [
-      chatHistoryViewable,
-      validatedRequest,
-      flexUserRoleValid([ROLES.manager, ROLES.admin]),
-    ],
+    [validatedRequest, flexUserRoleValid([ROLES.manager, ROLES.admin])],
     async (request, response) => {
       try {
-        const { type = "jsonl", chatType = "workspace" } = request.query;
-        const { contentType, data } = await exportChatsAsType(type, chatType);
+        const { type = "jsonl" } = request.query;
+        const chats = await prepareWorkspaceChatsForExport(type);
+        const { contentType, data } = await exportChatsAsType(chats, type);
         await EventLogs.logEvent(
           "exported_chats",
           {
             type,
-            chatType,
           },
           response.locals.user?.id
         );
@@ -1091,7 +1152,7 @@ function systemEndpoints(app) {
   app.post("/system/user", [validatedRequest], async (request, response) => {
     try {
       const sessionUser = await userFromSession(request, response);
-      const { username, password, bio } = reqBody(request);
+      const { username, password } = reqBody(request);
       const id = Number(sessionUser.id);
 
       if (!id) {
@@ -1100,10 +1161,12 @@ function systemEndpoints(app) {
       }
 
       const updates = {};
-      if (username)
+      if (username) {
         updates.username = User.validations.username(String(username));
-      if (password) updates.password = String(password);
-      if (bio) updates.bio = String(bio);
+      }
+      if (password) {
+        updates.password = String(password);
+      }
 
       if (Object.keys(updates).length === 0) {
         response
@@ -1142,19 +1205,8 @@ function systemEndpoints(app) {
       try {
         const user = await userFromSession(request, response);
         const { command, prompt, description } = reqBody(request);
-        const formattedCommand = SlashCommandPresets.formatCommand(
-          String(command)
-        );
-
-        if (Object.keys(VALID_COMMANDS).includes(formattedCommand)) {
-          return response.status(400).json({
-            message:
-              "Cannot create a preset with a command that matches a system command",
-          });
-        }
-
         const presetData = {
-          command: formattedCommand,
+          command: SlashCommandPresets.formatCommand(String(command)),
           prompt: String(prompt),
           description: String(description),
         };
@@ -1181,16 +1233,6 @@ function systemEndpoints(app) {
         const user = await userFromSession(request, response);
         const { slashCommandId } = request.params;
         const { command, prompt, description } = reqBody(request);
-        const formattedCommand = SlashCommandPresets.formatCommand(
-          String(command)
-        );
-
-        if (Object.keys(VALID_COMMANDS).includes(formattedCommand)) {
-          return response.status(400).json({
-            message:
-              "Cannot update a preset to use a command that matches a system command",
-          });
-        }
 
         // Valid user running owns the preset if user session is valid.
         const ownsPreset = await SlashCommandPresets.get({
@@ -1201,7 +1243,7 @@ function systemEndpoints(app) {
           return response.status(404).json({ message: "Preset not found" });
 
         const updates = {
-          command: formattedCommand,
+          command: SlashCommandPresets.formatCommand(String(command)),
           prompt: String(prompt),
           description: String(description),
         };
@@ -1242,130 +1284,6 @@ function systemEndpoints(app) {
       } catch (error) {
         console.error("Error deleting slash command preset:", error);
         response.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
-
-  app.get(
-    "/system/prompt-variables",
-    [validatedRequest, flexUserRoleValid([ROLES.all])],
-    async (request, response) => {
-      try {
-        const user = await userFromSession(request, response);
-        const variables = await SystemPromptVariables.getAll(user?.id);
-        response.status(200).json({ variables });
-      } catch (error) {
-        console.error("Error fetching system prompt variables:", error);
-        response.status(500).json({
-          success: false,
-          error: `Failed to fetch system prompt variables: ${error.message}`,
-        });
-      }
-    }
-  );
-
-  app.post(
-    "/system/prompt-variables",
-    [validatedRequest, flexUserRoleValid([ROLES.admin])],
-    async (request, response) => {
-      try {
-        const user = await userFromSession(request, response);
-        const { key, value, description = null } = reqBody(request);
-
-        if (!key || !value) {
-          return response.status(400).json({
-            success: false,
-            error: "Key and value are required",
-          });
-        }
-
-        const variable = await SystemPromptVariables.create({
-          key,
-          value,
-          description,
-          userId: user?.id || null,
-        });
-
-        response.status(200).json({
-          success: true,
-          variable,
-        });
-      } catch (error) {
-        console.error("Error creating system prompt variable:", error);
-        response.status(500).json({
-          success: false,
-          error: `Failed to create system prompt variable: ${error.message}`,
-        });
-      }
-    }
-  );
-
-  app.put(
-    "/system/prompt-variables/:id",
-    [validatedRequest, flexUserRoleValid([ROLES.admin])],
-    async (request, response) => {
-      try {
-        const { id } = request.params;
-        const { key, value, description = null } = reqBody(request);
-
-        if (!key || !value) {
-          return response.status(400).json({
-            success: false,
-            error: "Key and value are required",
-          });
-        }
-
-        const variable = await SystemPromptVariables.update(Number(id), {
-          key,
-          value,
-          description,
-        });
-
-        if (!variable) {
-          return response.status(404).json({
-            success: false,
-            error: "Variable not found",
-          });
-        }
-
-        response.status(200).json({
-          success: true,
-          variable,
-        });
-      } catch (error) {
-        console.error("Error updating system prompt variable:", error);
-        response.status(500).json({
-          success: false,
-          error: `Failed to update system prompt variable: ${error.message}`,
-        });
-      }
-    }
-  );
-
-  app.delete(
-    "/system/prompt-variables/:id",
-    [validatedRequest, flexUserRoleValid([ROLES.admin])],
-    async (request, response) => {
-      try {
-        const { id } = request.params;
-        const success = await SystemPromptVariables.delete(Number(id));
-
-        if (!success) {
-          return response.status(404).json({
-            success: false,
-            error: "System prompt variable not found or could not be deleted",
-          });
-        }
-
-        response.status(200).json({
-          success: true,
-        });
-      } catch (error) {
-        console.error("Error deleting system prompt variable:", error);
-        response.status(500).json({
-          success: false,
-          error: `Failed to delete system prompt variable: ${error.message}`,
-        });
       }
     }
   );
