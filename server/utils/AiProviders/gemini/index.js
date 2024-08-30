@@ -9,6 +9,7 @@ const {
   handleDefaultStreamResponseV2,
 } = require("../../helpers/chat/responses");
 const { MODEL_MAP } = require("../modelMap");
+<<<<<<< HEAD
 const { defaultGeminiModels, v1BetaModels } = require("./defaultModels");
 const { safeJsonParse } = require("../../http");
 const cacheFolder = path.resolve(
@@ -23,6 +24,8 @@ const NO_SYSTEM_PROMPT_MODELS = [
   "gemma-3-12b-it",
   "gemma-3-27b-it",
 ];
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 class GeminiLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -31,6 +34,7 @@ class GeminiLLM {
 
     const { OpenAI: OpenAIApi } = require("openai");
     this.model =
+<<<<<<< HEAD
       modelPreference ||
       process.env.GEMINI_LLM_MODEL_PREF ||
       "gemini-2.0-flash-lite";
@@ -42,6 +46,22 @@ class GeminiLLM {
       baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
     });
 
+=======
+      modelPreference || process.env.GEMINI_LLM_MODEL_PREF || "gemini-pro";
+    this.gemini = genAI.getGenerativeModel(
+      { model: this.model },
+      {
+        // Gemini-1.5-pro-* and Gemini-1.5-flash are only available on the v1beta API.
+        apiVersion: [
+          "gemini-1.5-pro-latest",
+          "gemini-1.5-flash-latest",
+          "gemini-1.5-pro-exp-0801",
+        ].includes(this.model)
+          ? "v1beta"
+          : "v1",
+      }
+    );
+>>>>>>> 48ef74aa (sync-fork-2)
     this.limits = {
       history: this.promptWindowLimit() * 0.15,
       system: this.promptWindowLimit() * 0.15,
@@ -104,6 +124,7 @@ class GeminiLLM {
   }
 
   static promptWindowLimit(modelName) {
+<<<<<<< HEAD
     try {
       const cacheModelPath = path.resolve(cacheFolder, "models.json");
       if (!fs.existsSync(cacheModelPath))
@@ -313,11 +334,33 @@ class GeminiLLM {
   }
 
   /**
+=======
+    return MODEL_MAP.gemini[modelName] ?? 30_720;
+  }
+
+  promptWindowLimit() {
+    return MODEL_MAP.gemini[this.model] ?? 30_720;
+  }
+
+  isValidChatCompletionModel(modelName = "") {
+    const validModels = [
+      "gemini-pro",
+      "gemini-1.0-pro",
+      "gemini-1.5-pro-latest",
+      "gemini-1.5-flash-latest",
+      "gemini-1.5-pro-exp-0801",
+    ];
+    return validModels.includes(modelName);
+  }
+
+  /**
+>>>>>>> 48ef74aa (sync-fork-2)
    * Generates appropriate content array for a message + attachments.
    * @param {{userPrompt:string, attachments: import("../../helpers").Attachment[]}}
    * @returns {string|object[]}
    */
   #generateContent({ userPrompt, attachments = [] }) {
+<<<<<<< HEAD
     if (!attachments.length) return userPrompt;
 
     const content = [{ type: "text", text: userPrompt }];
@@ -327,23 +370,42 @@ class GeminiLLM {
         image_url: {
           url: attachment.contentString,
           detail: "high",
+=======
+    if (!attachments.length) {
+      return userPrompt;
+    }
+
+    const content = [{ text: userPrompt }];
+    for (let attachment of attachments) {
+      content.push({
+        inlineData: {
+          data: attachment.contentString.split("base64,")[1],
+          mimeType: attachment.mime,
+>>>>>>> 48ef74aa (sync-fork-2)
         },
       });
     }
     return content.flat();
   }
 
+<<<<<<< HEAD
   /**
    * Construct the user prompt for this model.
    * @param {{attachments: import("../../helpers").Attachment[]}} param0
    * @returns
    */
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   constructPrompt({
     systemPrompt = "",
     contextTexts = [],
     chatHistory = [],
     userPrompt = "",
+<<<<<<< HEAD
     attachments = [], // This is the specific attachment for only this prompt
+=======
+    attachments = [],
+>>>>>>> 48ef74aa (sync-fork-2)
   }) {
     let prompt = [];
     if (this.supportsSystemPrompt) {
@@ -368,10 +430,18 @@ class GeminiLLM {
     }
 
     return [
+<<<<<<< HEAD
       ...prompt,
       ...formatChatHistory(chatHistory, this.#generateContent),
       {
         role: "user",
+=======
+      prompt,
+      { role: "assistant", content: "Okay." },
+      ...chatHistory,
+      {
+        role: "USER_PROMPT",
+>>>>>>> 48ef74aa (sync-fork-2)
         content: this.#generateContent({ userPrompt, attachments }),
       },
     ];

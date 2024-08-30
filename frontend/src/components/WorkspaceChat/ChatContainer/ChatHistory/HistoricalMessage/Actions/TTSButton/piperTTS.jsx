@@ -1,8 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { SpeakerHigh, PauseCircle, CircleNotch } from "@phosphor-icons/react";
+<<<<<<< HEAD
 import PiperTTSClient from "@/utils/piperTTS";
 
 export default function PiperTTS({ chatId, voiceId = null, message }) {
+=======
+import { Tooltip } from "react-tooltip";
+import PiperTTSClient from "@/utils/piperTTS";
+
+export default function PiperTTS({ voiceId = null, message }) {
+>>>>>>> 48ef74aa (sync-fork-2)
   const playerRef = useRef(null);
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -53,12 +60,19 @@ export default function PiperTTS({ chatId, voiceId = null, message }) {
         type="button"
         onClick={speakMessage}
         disabled={loading}
+<<<<<<< HEAD
         data-auto-play-chat-id={chatId}
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         data-tooltip-id="message-to-speech"
         data-tooltip-content={
           speaking ? "Pause TTS speech of message" : "TTS Speak message"
         }
+<<<<<<< HEAD
         className="border-none text-[var(--theme-sidebar-footer-icon-fill)]"
+=======
+        className="border-none text-zinc-300"
+>>>>>>> 48ef74aa (sync-fork-2)
         aria-label={speaking ? "Pause speech" : "Speak message"}
       >
         {speaking ? (
@@ -80,6 +94,15 @@ export default function PiperTTS({ chatId, voiceId = null, message }) {
           controls={false}
         />
       </button>
+<<<<<<< HEAD
+=======
+      <Tooltip
+        id="message-to-speech"
+        place="bottom"
+        delayShow={300}
+        className="tooltip !text-xs"
+      />
+>>>>>>> 48ef74aa (sync-fork-2)
     </div>
   );
 }

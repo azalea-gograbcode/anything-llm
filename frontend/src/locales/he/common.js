@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Anything with "null" requires a translation. Contribute to translation via a PR!
 const TRANSLATIONS = {
   onboarding: {
@@ -48,6 +49,9 @@ const TRANSLATIONS = {
       description: null,
     },
   },
+=======
+const TRANSLATIONS = {
+>>>>>>> 48ef74aa (sync-fork-2)
   common: {
     "workspaces-name": "שם סביבת העבודה",
     error: "שגיאה",
@@ -58,10 +62,16 @@ const TRANSLATIONS = {
     save: "שמור שינויים",
     previous: "עמוד קודם",
     next: "עמוד הבא",
+<<<<<<< HEAD
     optional: null,
     yes: null,
     no: null,
   },
+=======
+  },
+
+  // Setting Sidebar menu items.
+>>>>>>> 48ef74aa (sync-fork-2)
   settings: {
     title: "הגדרות מופע",
     system: "הגדרות כלליות",
@@ -89,11 +99,17 @@ const TRANSLATIONS = {
     "experimental-features": "תכונות ניסיוניות",
     contact: "צור קשר עם התמיכה",
     "browser-extension": "תוסף דפדפן",
+<<<<<<< HEAD
     "system-prompt-variables": null,
     interface: null,
     branding: null,
     chat: null,
   },
+=======
+  },
+
+  // Page Definitions
+>>>>>>> 48ef74aa (sync-fork-2)
   login: {
     "multi-user": {
       welcome: "ברוכים הבאים ל-",
@@ -116,6 +132,10 @@ const TRANSLATIONS = {
       "back-to-login": "חזרה להתחברות",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   welcomeMessage: {
     part1:
       "ברוכים הבאים ל-AnythingLLM, AnythingLLM היא כלי AI קוד פתוח מאת Mintplex Labs שהופך כל דבר לצ'אטבוט מאומן שאפשר לשאול אותו ולקיים איתו שיחה. AnythingLLM הוא תוכנה מסוג BYOK (הביא את המפתחות שלך) כך שאין מנוי, עמלה או חיובים עבור התוכנה הזו מלבד השירותים שאתה רוצה להשתמש בהם.",
@@ -123,7 +143,11 @@ const TRANSLATIONS = {
       "AnythingLLM היא הדרך הקלה ביותר לשלב מוצרים חזקים של AI כמו OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB ושירותים אחרים בחבילה אחת ללא מאמץ כדי להגדיל את הפרודוקטיביות שלך פי 100.",
     part3:
       "AnythingLLM יכול לפעול באופן מקומי לחלוטין על המחשב שלך עם מעט עלויות ביצוע שאתה אפילו לא תבחין בהן! לא נדרש GPU. התקנה בענן ובמקום היא זמינה גם כן.\nמערכת הכלים של AI הופכת חזקה יותר מדי יום. AnythingLLM הופכת את השימוש בה פשוט.",
+<<<<<<< HEAD
     githubIssue: "צור בעיה ב-GitHub",
+=======
+    githubIssue: "צור בעיה ב-Github",
+>>>>>>> 48ef74aa (sync-fork-2)
     user1: "איך אני מתחיל?!",
     part4:
       "זה פשוט. כל אוסף מאורגן לדליים שאנחנו קוראים להם 'סביבות עבודה'. סביבות עבודה הן דליים של קבצים, מסמכים, תמונות, PDF וקבצים אחרים שיהפכו למשהו ש-LLM יכולות להבין ולעשות איתו שימוש בשיחה.\n\nתוכל להוסיף ולהסיר קבצים בכל עת.",
@@ -133,13 +157,25 @@ const TRANSLATIONS = {
       "AnythingLLM היא יותר מ-Dropbox חכם יותר.\n\nAnythingLLM מציעה שתי דרכים לשוחח עם הנתונים שלך:\n\n<i>שאילתה:</i> השיחות שלך יחזירו נתונים או מסקנות שנמצאות במסמכים בסביבת העבודה שלך אליה יש לה גישה. הוספת עוד מסמכים לסביבת העבודה הופכת אותה לחכמה יותר! \n\n<i>שיחה:</i> המסמכים שלך + היסטוריית השיחה הנוכחית שלך תורמות יחד לידע של LLM בו זמנית. נהדר להוספת מידע טקסטואלי בזמן אמת או תיקונים וחוסר הבנות שאולי יהיו ל-LLM.\n\nאתה יכול לעבור בין שני המצבים \n<i>אפילו באמצע שיחה!</i>",
     user3: "וואו, זה נשמע מדהים, תן לי לנסות את זה כבר!",
     part6: "תהנה!",
+<<<<<<< HEAD
     starOnGitHub: "שים כוכב ב-GitHub",
     contact: "צור קשר עם Mintplex Labs",
   },
+=======
+    starOnGithub: "שים כוכב ב-GitHub",
+    contact: "צור קשר עם Mintplex Labs",
+  },
+
+>>>>>>> 48ef74aa (sync-fork-2)
   "new-workspace": {
     title: "סביבת עבודה חדשה",
     placeholder: "סביבת העבודה שלי",
   },
+<<<<<<< HEAD
+=======
+
+  // Workspace Settings menu items
+>>>>>>> 48ef74aa (sync-fork-2)
   "workspaces—settings": {
     general: "הגדרות כלליות",
     chat: "הגדרות צ'אט",
@@ -147,6 +183,11 @@ const TRANSLATIONS = {
     members: "חברים",
     agent: "קונפיגורציה של סוכן",
   },
+<<<<<<< HEAD
+=======
+
+  // General Appearance
+>>>>>>> 48ef74aa (sync-fork-2)
   general: {
     vector: {
       title: "ספירת וקטורים",
@@ -181,6 +222,11 @@ const TRANSLATIONS = {
         "סביבת העבודה שלך. זה ימחק את כל הטבעות הווקטוריות בבסיס הנתונים הווקטורי שלך.\n\nקבצי המקור המקוריים יישארו ללא שינוי. פעולה זו היא בלתי הפיכה.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Chat Settings
+>>>>>>> 48ef74aa (sync-fork-2)
   chat: {
     llm: {
       title: "ספק LLM של סביבת עבודה",
@@ -237,6 +283,11 @@ const TRANSLATIONS = {
       hint: "לרוב ה-LLM יש טווחים שונים של ערכים תקפים. התייעץ עם ספק ה-LLM שלך לקבלת מידע.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Vector Database
+>>>>>>> 48ef74aa (sync-fork-2)
   "vector-workspace": {
     identifier: "מזהה בסיס נתונים וקטור",
     snippets: {
@@ -263,6 +314,11 @@ const TRANSLATIONS = {
       success: "בסיס הנתונים הווקטורי של סביבת העבודה איפס!",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Agent Configuration
+>>>>>>> 48ef74aa (sync-fork-2)
   agent: {
     "performance-warning":
       "ביצועי LLM שאינם תומכים באופן מפורש בקריאות כלים תלויים מאוד ביכולות ובדיוק של הדגם. חלק מהיכולות עשויות להיות מוגבלות או לא פונקציונליות.",
@@ -282,6 +338,10 @@ const TRANSLATIONS = {
         "דגם LLM ספציפי שייעשה בו שימוש עבור סוכן @agent של סביבת העבודה הזו.",
       wait: "-- מחכה לדגמים --",
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
     skill: {
       title: "כישורי סוכן ברירת מחדל",
       description:
@@ -318,6 +378,11 @@ const TRANSLATIONS = {
       },
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Workspace Chats
+>>>>>>> 48ef74aa (sync-fork-2)
   recorded: {
     title: "שיחות סביבת עבודה",
     description:
@@ -332,6 +397,43 @@ const TRANSLATIONS = {
       at: "נשלח ב-",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Appearance
+  appearance: {
+    title: "מראה",
+    description: "התאם אישית את הגדרות המראה של הפלטפורמה שלך.",
+    logo: {
+      title: "התאם אישית את הלוגו",
+      description:
+        "העלה את הלוגו המותאם אישית שלך כדי להפוך את הצ'אטבוט שלך לשלך.",
+      add: "הוסף לוגו מותאם אישית",
+      recommended: "גודל מומלץ: 800 x 200",
+      remove: "הסר",
+      replace: "החלף",
+    },
+    message: {
+      title: "התאם אישית הודעות",
+      description: "התאם אישית את ההודעות האוטומטיות המוצגות למשתמשים שלך.",
+      new: "חדש",
+      system: "מערכת",
+      user: "משתמש",
+      message: "הודעה",
+      assistant: "AnythingLLM Chat Assistant",
+      "double-click": "לחץ פעמיים כדי לערוך...",
+      save: "שמור הודעות",
+    },
+    icons: {
+      title: "סמלי כותרת תחתונה מותאמים אישית",
+      description: "התאם אישית את סמלי כותרת התחתונה המוצגים בתחתית סרגל הצד.",
+      icon: "סמל",
+      link: "קישור",
+    },
+  },
+
+  // API Keys
+>>>>>>> 48ef74aa (sync-fork-2)
   api: {
     title: "מפתחות API",
     description:
@@ -344,12 +446,20 @@ const TRANSLATIONS = {
       created: "נוצר",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   llm: {
     title: "העדפת LLM",
     description:
       "אלה אישורי ההרשאה וההגדרות עבור ספק צ'אט והטבעה LLM המועדף עליך. חשוב שאישורי ההרשאה יהיו עדכניים ונכונים אחרת AnythingLLM לא תוכל לפעול כראוי.",
     provider: "ספק LLM",
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   transcription: {
     title: "העדפת דגם תמלול",
     description:
@@ -361,6 +471,10 @@ const TRANSLATIONS = {
       "אנו ממליצים על לפחות 2GB של זיכרון RAM והעלאת קבצים <10Mb.",
     "warn-end": "הדגם המובנה יתורגם אוטומטית בפעם הראשונה שבה תשתמש בו.",
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   embedding: {
     title: "העדפת הטבעה",
     "desc-start":
@@ -373,6 +487,10 @@ const TRANSLATIONS = {
         "אין צורך בהגדרה בעת שימוש במנוע ההטבעה המקורי של AnythingLLM.",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   text: {
     title: "הגדרות חלוקת טקסט וחלוקה",
     "desc-start":
@@ -387,12 +505,21 @@ const TRANSLATIONS = {
       description: "זהו אורך הדמויות המרבי שיכול להיות נוכח בקטור יחיד.",
       recommend: "אורך מרבי של דגם ההטבעה הוא",
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
     overlap: {
       title: "חפיפה של קטע טקסט",
       description:
         "זו החפיפה המרבית של הדמויות המתרחשת במהלך החלוקה בין שני קטעי טקסט סמוכים.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Vector Database
+>>>>>>> 48ef74aa (sync-fork-2)
   vector: {
     title: "בסיס נתונים וקטור",
     description:
@@ -402,6 +529,11 @@ const TRANSLATIONS = {
       description: "אין צורך בקונפיגורציה עבור LanceDB.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Embeddable Chat Widgets
+>>>>>>> 48ef74aa (sync-fork-2)
   embeddable: {
     title: "כלי צ'אט ניתנים להטמעה",
     description:
@@ -413,9 +545,15 @@ const TRANSLATIONS = {
       Active: "תחומים פעילים",
     },
   },
+<<<<<<< HEAD
   "embed-chats": {
     title: "הטמעת שיחות",
     export: "ייצוא",
+=======
+
+  "embed-chats": {
+    title: "הטמעת שיחות",
+>>>>>>> 48ef74aa (sync-fork-2)
     description: "אלה כל השיחות וההודעות שנרשמו מכל הטמעה שפרסמת.",
     table: {
       embed: "הטמעה",
@@ -425,6 +563,10 @@ const TRANSLATIONS = {
       at: "נשלח ב-",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   multi: {
     title: "מצב משתמשים מרובים",
     description:
@@ -449,6 +591,11 @@ const TRANSLATIONS = {
       password: "סיסמת מופע",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Event Logs
+>>>>>>> 48ef74aa (sync-fork-2)
   event: {
     title: "יומני אירועים",
     description: "הצג את כל הפעולות והאירועים שקורים במופע זה לצורך ניטור.",
@@ -459,6 +606,11 @@ const TRANSLATIONS = {
       occurred: "התרחש ב-",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Privacy & Data-Handling
+>>>>>>> 48ef74aa (sync-fork-2)
   privacy: {
     title: "פרטיות וטיפול בנתונים",
     description:
@@ -468,6 +620,7 @@ const TRANSLATIONS = {
     vector: "בסיס נתונים וקטור",
     anonymous: "טלמטריה אנונימית מופעלת",
   },
+<<<<<<< HEAD
   connectors: {
     "search-placeholder": null,
     "no-connectors": null,
@@ -810,6 +963,8 @@ const TRANSLATIONS = {
       },
     },
   },
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 };
 
 export default TRANSLATIONS;

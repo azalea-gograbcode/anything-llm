@@ -209,6 +209,7 @@ function SupportEmail() {
 }
 
 const SidebarOptions = ({ user = null, t }) => (
+<<<<<<< HEAD
   <CanViewChatHistoryProvider>
     {({ viewable: canViewChatHistory }) => (
       <>
@@ -407,6 +408,158 @@ const SidebarOptions = ({ user = null, t }) => (
       </>
     )}
   </CanViewChatHistoryProvider>
+=======
+  <>
+    <Option
+      btnText={t("settings.ai-providers")}
+      icon={<Gear className="h-5 w-5 flex-shrink-0" />}
+      user={user}
+      childOptions={[
+        {
+          btnText: t("settings.llm"),
+          href: paths.settings.llmPreference(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.vector-database"),
+          href: paths.settings.vectorDatabase(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.embedder"),
+          href: paths.settings.embedder.modelPreference(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.text-splitting"),
+          href: paths.settings.embedder.chunkingPreference(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.voice-speech"),
+          href: paths.settings.audioPreference(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.transcription"),
+          href: paths.settings.transcriptionPreference(),
+          flex: true,
+          roles: ["admin"],
+        },
+      ]}
+    />
+    <Option
+      btnText={t("settings.admin")}
+      icon={<UserCircleGear className="h-5 w-5 flex-shrink-0" />}
+      user={user}
+      childOptions={[
+        {
+          btnText: t("settings.users"),
+          href: paths.settings.users(),
+          roles: ["admin", "manager"],
+        },
+        {
+          btnText: t("settings.workspaces"),
+          href: paths.settings.workspaces(),
+          roles: ["admin", "manager"],
+        },
+        {
+          btnText: t("settings.workspace-chats"),
+          href: paths.settings.chats(),
+          flex: true,
+          roles: ["admin", "manager"],
+        },
+        {
+          btnText: t("settings.invites"),
+          href: paths.settings.invites(),
+          roles: ["admin", "manager"],
+        },
+        {
+          btnText: t("settings.system"),
+          href: paths.settings.system(),
+          roles: ["admin", "manager"],
+        },
+      ]}
+    />
+    <Option
+      btnText={t("settings.agent-skills")}
+      icon={<Robot className="h-5 w-5 flex-shrink-0" />}
+      href={paths.settings.agentSkills()}
+      user={user}
+      flex={true}
+      roles={["admin"]}
+    />
+    <Option
+      btnText={t("settings.customization")}
+      icon={<PencilSimpleLine className="h-5 w-5 flex-shrink-0" />}
+      href={paths.settings.appearance()}
+      user={user}
+      flex={true}
+      roles={["admin", "manager"]}
+    />
+    <Option
+      btnText={t("settings.tools")}
+      icon={<Toolbox className="h-5 w-5 flex-shrink-0" />}
+      user={user}
+      childOptions={[
+        {
+          btnText: t("settings.embed-chats"),
+          href: paths.settings.embedChats(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.embeds"),
+          href: paths.settings.embedSetup(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.event-logs"),
+          href: paths.settings.logs(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.api-keys"),
+          href: paths.settings.apiKeys(),
+          flex: true,
+          roles: ["admin"],
+        },
+        {
+          btnText: t("settings.browser-extension"),
+          href: paths.settings.browserExtension(),
+          flex: true,
+          roles: ["admin", "manager"],
+        },
+      ]}
+    />
+    <Option
+      btnText={t("settings.security")}
+      icon={<Nut className="h-5 w-5 flex-shrink-0" />}
+      href={paths.settings.security()}
+      user={user}
+      flex={true}
+      roles={["admin", "manager"]}
+      hidden={user?.role}
+    />
+    <HoldToReveal key="exp_features">
+      <Option
+        btnText={t("settings.experimental-features")}
+        icon={<Flask className="h-5 w-5 flex-shrink-0" />}
+        href={paths.settings.experimental()}
+        user={user}
+        flex={true}
+        roles={["admin"]}
+      />
+    </HoldToReveal>
+  </>
+>>>>>>> 48ef74aa (sync-fork-2)
 );
 
 function HoldToReveal({ children, holdForMs = 3_000 }) {

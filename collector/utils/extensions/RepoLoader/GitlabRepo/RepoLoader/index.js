@@ -236,7 +236,14 @@ class GitLabRepoLoader {
           };
         });
 
+<<<<<<< HEAD
       const pageFiles = await Promise.all(pagePromises);
+=======
+        /** @type {FileTreeObject[]} */
+        const objects = Array.isArray(data)
+          ? data.filter((item) => item.type === "blob")
+          : []; // only get files, not paths or submodules
+>>>>>>> 48ef74aa (sync-fork-2)
 
       files.push(...pageFiles.filter((item) => item !== null));
       console.log(`Fetched ${files.length} files.`);

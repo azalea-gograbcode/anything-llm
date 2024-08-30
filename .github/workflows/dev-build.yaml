@@ -6,7 +6,11 @@ concurrency:
 
 on:
   push:
+<<<<<<< HEAD
     branches: ['2237-auto-stt-submit-preference'] # put your current branch to create a build. Core team only.
+=======
+    branches: ['chrome-extension'] # put your current branch to create a build. Core team only.
+>>>>>>> 48ef74aa (sync-fork-2)
     paths-ignore:
       - '**.md'
       - 'cloud-deployments/*'

@@ -190,6 +190,7 @@ class OpenRouterLLM {
         },
       });
     }
+<<<<<<< HEAD
     return content.flat();
   }
 
@@ -205,6 +206,12 @@ class OpenRouterLLM {
     return textResponse;
   }
 
+=======
+    console.log(content.flat());
+    return content.flat();
+  }
+
+>>>>>>> 48ef74aa (sync-fork-2)
   constructPrompt({
     systemPrompt = "",
     contextTexts = [],
@@ -218,7 +225,11 @@ class OpenRouterLLM {
     };
     return [
       prompt,
+<<<<<<< HEAD
       ...formatChatHistory(chatHistory, this.#generateContent),
+=======
+      ...chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),
@@ -363,6 +374,7 @@ class OpenRouterLLM {
         for await (const chunk of stream) {
           const message = chunk?.choices?.[0];
           const token = message?.delta?.content;
+<<<<<<< HEAD
           const reasoningToken = message?.delta?.reasoning;
           lastChunkTime = Number(new Date());
 
@@ -441,6 +453,22 @@ class OpenRouterLLM {
             });
           }
 
+=======
+          lastChunkTime = Number(new Date());
+
+          if (token) {
+            fullText += token;
+            writeResponseChunk(response, {
+              uuid,
+              sources: [],
+              type: "textResponseChunk",
+              textResponse: token,
+              close: false,
+              error: false,
+            });
+          }
+
+>>>>>>> 48ef74aa (sync-fork-2)
           if (message.finish_reason !== null) {
             writeResponseChunk(response, {
               uuid,
@@ -451,10 +479,13 @@ class OpenRouterLLM {
               error: false,
             });
             response.removeListener("close", handleAbort);
+<<<<<<< HEAD
             clearInterval(timeoutCheck);
             stream?.endMeasurement({
               completion_tokens: LLMPerformanceMonitor.countTokens(fullText),
             });
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
             resolve(fullText);
           }
         }
@@ -468,10 +499,13 @@ class OpenRouterLLM {
           error: e.message,
         });
         response.removeListener("close", handleAbort);
+<<<<<<< HEAD
         clearInterval(timeoutCheck);
         stream?.endMeasurement({
           completion_tokens: LLMPerformanceMonitor.countTokens(fullText),
         });
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         resolve(fullText);
       }
     });

@@ -142,6 +142,7 @@ export default function ChatHistory({
     );
   };
 
+<<<<<<< HEAD
   const compiledHistory = useMemo(
     () =>
       buildMessages({
@@ -179,6 +180,8 @@ export default function ChatHistory({
     [compiledHistory.length, lastMessageInfo]
   );
 
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   if (history.length === 0 && !hasAttachments) {
     return (
       <div className="flex flex-col h-full md:mt-0 pb-44 md:pb-40 w-full justify-end items-center">
@@ -226,9 +229,59 @@ export default function ChatHistory({
       ref={chatHistoryRef}
       onScroll={handleScroll}
     >
+<<<<<<< HEAD
       {compiledHistory.map((item, index) =>
         Array.isArray(item) ? renderStatusResponse(item, index) : item
       )}
+=======
+      {history.map((props, index) => {
+        const isLastBotReply =
+          index === history.length - 1 && props.role === "assistant";
+
+        if (props?.type === "statusResponse" && !!props.content) {
+          return <StatusResponse key={props.uuid} props={props} />;
+        }
+
+        if (props.type === "rechartVisualize" && !!props.content) {
+          return (
+            <Chartable key={props.uuid} workspace={workspace} props={props} />
+          );
+        }
+
+        if (isLastBotReply && props.animate) {
+          return (
+            <PromptReply
+              key={props.uuid}
+              uuid={props.uuid}
+              reply={props.content}
+              pending={props.pending}
+              sources={props.sources}
+              error={props.error}
+              workspace={workspace}
+              closed={props.closed}
+            />
+          );
+        }
+
+        return (
+          <HistoricalMessage
+            key={index}
+            message={props.content}
+            role={props.role}
+            workspace={workspace}
+            sources={props.sources}
+            feedbackScore={props.feedbackScore}
+            chatId={props.chatId}
+            error={props.error}
+            attachments={props.attachments}
+            regenerateMessage={regenerateAssistantMessage}
+            isLastMessage={isLastBotReply}
+            saveEditedMessage={saveEditedMessage}
+            forkThread={forkThread}
+          />
+        );
+      })}
+>>>>>>> 48ef74aa (sync-fork-2)
       {showing && (
         <ManageWorkspace hideModal={hideModal} providedSlug={workspace.slug} />
       )}

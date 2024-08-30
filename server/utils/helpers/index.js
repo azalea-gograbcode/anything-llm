@@ -7,6 +7,7 @@
  */
 
 /**
+<<<<<<< HEAD
  * @typedef {Object} ResponseMetrics
  * @property {number} prompt_tokens - The number of prompt tokens used
  * @property {number} completion_tokens - The number of completion tokens used
@@ -31,6 +32,8 @@
  */
 
 /**
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
  * @typedef {Object} BaseLLMProvider - A basic llm provider object
  * @property {Function} streamingEnabled - Checks if streaming is enabled for chat completions.
  * @property {Function} promptWindowLimit - Returns the token limit for the current model.
@@ -290,9 +293,12 @@ function getLLMProviderClass({ provider = null } = {}) {
     case "togetherai":
       const { TogetherAiLLM } = require("../AiProviders/togetherAi");
       return TogetherAiLLM;
+<<<<<<< HEAD
     case "fireworksai":
       const { FireworksAiLLM } = require("../AiProviders/fireworksAi");
       return FireworksAiLLM;
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     case "perplexity":
       const { PerplexityLLM } = require("../AiProviders/perplexity");
       return PerplexityLLM;
@@ -302,6 +308,12 @@ function getLLMProviderClass({ provider = null } = {}) {
     case "mistral":
       const { MistralLLM } = require("../AiProviders/mistral");
       return MistralLLM;
+<<<<<<< HEAD
+=======
+    case "native":
+      const { NativeLLM } = require("../AiProviders/native");
+      return NativeLLM;
+>>>>>>> 48ef74aa (sync-fork-2)
     case "huggingface":
       const { HuggingFaceLLM } = require("../AiProviders/huggingface");
       return HuggingFaceLLM;
@@ -326,6 +338,7 @@ function getLLMProviderClass({ provider = null } = {}) {
     case "bedrock":
       const { AWSBedrockLLM } = require("../AiProviders/bedrock");
       return AWSBedrockLLM;
+<<<<<<< HEAD
     case "deepseek":
       const { DeepSeekLLM } = require("../AiProviders/deepseek");
       return DeepSeekLLM;
@@ -344,6 +357,8 @@ function getLLMProviderClass({ provider = null } = {}) {
     case "ppio":
       const { PPIOLLM } = require("../AiProviders/ppio");
       return PPIOLLM;
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     default:
       return null;
   }

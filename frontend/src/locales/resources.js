@@ -24,6 +24,7 @@ import Russian from "./ru/common.js";
 import Italian from "./it/common.js";
 import Portuguese from "./pt_BR/common.js";
 import Hebrew from "./he/common.js";
+<<<<<<< HEAD
 import Dutch from "./nl/common.js";
 import Vietnamese from "./vn/common.js";
 import TraditionalChinese from "./zh_TW/common.js";
@@ -32,6 +33,8 @@ import Turkish from "./tr/common.js";
 import Arabic from "./ar/common.js";
 import Danish from "./da/common.js";
 import Japanese from "./ja/common.js";
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 export const defaultNS = "common";
 export const resources = {
@@ -68,6 +71,7 @@ export const resources = {
   he: {
     common: Hebrew,
   },
+<<<<<<< HEAD
   nl: {
     common: Dutch,
   },
@@ -89,4 +93,6 @@ export const resources = {
   ja: {
     common: Japanese,
   },
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 };

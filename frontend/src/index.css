@@ -1053,6 +1053,7 @@ does not extend the close button beyond the viewport. */
   }
 }
 
+<<<<<<< HEAD
 .animate-thoughtTransition {
   animation: thoughtTransition 0.5s ease-out forwards;
 }
@@ -1060,4 +1061,13 @@ does not extend the close button beyond the viewport. */
 .checklist-completed {
   -webkit-animation: fadein 0.3s linear forwards;
   animation: fadein 0.3s linear forwards;
+=======
+/* Math/Katex formatting to prevent duplication of content on screen */
+.katex-html[aria-hidden="true"] {
+  display: none;
+}
+
+.katex-mathml {
+  font-size: 20px;
+>>>>>>> 48ef74aa (sync-fork-2)
 }

@@ -49,7 +49,11 @@ export default function ChatRow({ chat, onDelete }) {
         </td>
         <td
           onClick={openConnectionDetailsModal}
+<<<<<<< HEAD
           className="px-6 cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+=======
+          className="px-6 py-4 cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+>>>>>>> 48ef74aa (sync-fork-2)
         >
           <div className="flex flex-col">
             <p>{truncate(chat.session_id, 20)}</p>
@@ -141,6 +145,7 @@ const ConnectionDetails = ({
   if (verbose) {
     return (
       <>
+<<<<<<< HEAD
         <p className="text-xs text-theme-text-secondary">
           sessionID: {sessionId}
         </p>
@@ -151,11 +156,23 @@ const ConnectionDetails = ({
         )}
         {details.ip && (
           <p className="text-xs text-theme-text-secondary">
+=======
+        <p className="text-xs text-slate-400">sessionID: {sessionId}</p>
+        {details.username && (
+          <p className="text-xs text-slate-400">username: {details.username}</p>
+        )}
+        {details.ip && (
+          <p className="text-xs text-slate-400">
+>>>>>>> 48ef74aa (sync-fork-2)
             client ip address: {details.ip}
           </p>
         )}
         {details.host && (
+<<<<<<< HEAD
           <p className="text-xs text-theme-text-secondary">
+=======
+          <p className="text-xs text-slate-400">
+>>>>>>> 48ef74aa (sync-fork-2)
             client host URL: {details.host}
           </p>
         )}
@@ -166,6 +183,7 @@ const ConnectionDetails = ({
   return (
     <>
       {details.username && (
+<<<<<<< HEAD
         <p className="text-xs text-theme-text-secondary">{details.username}</p>
       )}
       {details.ip && (
@@ -174,6 +192,12 @@ const ConnectionDetails = ({
       {details.host && (
         <p className="text-xs text-theme-text-secondary">{details.host}</p>
       )}
+=======
+        <p className="text-xs text-slate-400">{details.username}</p>
+      )}
+      {details.ip && <p className="text-xs text-slate-400">{details.ip}</p>}
+      {details.host && <p className="text-xs text-slate-400">{details.host}</p>}
+>>>>>>> 48ef74aa (sync-fork-2)
     </>
   );
 };

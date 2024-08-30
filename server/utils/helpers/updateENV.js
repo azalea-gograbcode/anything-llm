@@ -529,11 +529,15 @@ const KEY_MAPPING = {
     envKey: "AGENT_SEARXNG_API_URL",
     checks: [],
   },
+<<<<<<< HEAD
   AgentTavilyApiKey: {
     envKey: "AGENT_TAVILY_API_KEY",
     checks: [],
   },
 
+=======
+  
+>>>>>>> 48ef74aa (sync-fork-2)
   // Azure Login Providers
   AzureADClientId: {
     envKey: "AZURE_AD_CLIENT_ID",
@@ -579,6 +583,7 @@ const KEY_MAPPING = {
     envKey: "TTS_PIPER_VOICE_MODEL",
     checks: [],
   },
+<<<<<<< HEAD
 
   // OpenAI Generic TTS
   TTSOpenAICompatibleKey: {
@@ -656,6 +661,8 @@ const KEY_MAPPING = {
     envKey: "PPIO_MODEL_PREF",
     checks: [isNotEmpty],
   },
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 };
 
 function isNotEmpty(input = "") {
@@ -720,7 +727,10 @@ function supportedTTSProvider(input = "") {
     "openai",
     "elevenlabs",
     "piper_local",
+<<<<<<< HEAD
     "generic-openai",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   ].includes(input);
   return validSelection ? null : `${input} is not a valid TTS provider.`;
 }
@@ -774,6 +784,22 @@ function supportedTranscriptionProvider(input = "") {
     : `${input} is not a valid transcription model provider.`;
 }
 
+<<<<<<< HEAD
+=======
+function validGeminiModel(input = "") {
+  const validModels = [
+    "gemini-pro",
+    "gemini-1.0-pro",
+    "gemini-1.5-pro-latest",
+    "gemini-1.5-flash-latest",
+    "gemini-1.5-pro-exp-0801",
+  ];
+  return validModels.includes(input)
+    ? null
+    : `Invalid Model type. Must be one of ${validModels.join(", ")}.`;
+}
+
+>>>>>>> 48ef74aa (sync-fork-2)
 function validGeminiSafetySetting(input = "") {
   const validModes = [
     "BLOCK_NONE",

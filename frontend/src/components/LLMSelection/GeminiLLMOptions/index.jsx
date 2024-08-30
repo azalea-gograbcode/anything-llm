@@ -28,12 +28,40 @@ export default function GeminiLLMOptions({ settings }) {
 
         {!settings?.credentialsOnly && (
           <>
+<<<<<<< HEAD
             <GeminiModelSelection apiKey={geminiApiKey} settings={settings} />
             {/* 
             
             Safety setting is not supported for Gemini yet due to the openai compatible Gemini API.
             We are not using the generativeAPI endpoint and therefore cannot set the safety threshold.
 
+=======
+            <div className="flex flex-col w-60">
+              <label className="text-white text-sm font-semibold block mb-3">
+                Chat Model Selection
+              </label>
+              <select
+                name="GeminiLLMModelPref"
+                defaultValue={settings?.GeminiLLMModelPref || "gemini-pro"}
+                required={true}
+                className="bg-zinc-900 border-gray-500 text-white text-sm rounded-lg block w-full p-2.5"
+              >
+                {[
+                  "gemini-pro",
+                  "gemini-1.0-pro",
+                  "gemini-1.5-pro-latest",
+                  "gemini-1.5-flash-latest",
+                  "gemini-1.5-pro-exp-0801",
+                ].map((model) => {
+                  return (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+>>>>>>> 48ef74aa (sync-fork-2)
             <div className="flex flex-col w-60">
               <label className="text-white text-sm font-semibold block mb-3">
                 Safety Setting

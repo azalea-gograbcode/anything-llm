@@ -5,11 +5,17 @@ import ChatContainer from "./ChatContainer";
 import paths from "@/utils/paths";
 import ModalWrapper from "../ModalWrapper";
 import { useParams } from "react-router-dom";
+<<<<<<< HEAD
 import { DnDFileUploaderProvider } from "./ChatContainer/DnDWrapper";
 import {
   TTSProvider,
   useWatchForAutoPlayAssistantTTSResponse,
 } from "../contexts/TTSProvider";
+=======
+import DnDFileUploaderWrapper, {
+  DnDFileUploaderProvider,
+} from "./ChatContainer/DnDWrapper";
+>>>>>>> 48ef74aa (sync-fork-2)
 
 export default function WorkspaceChat({ loading, workspace }) {
   useWatchForAutoPlayAssistantTTSResponse();
@@ -69,11 +75,17 @@ export default function WorkspaceChat({ loading, workspace }) {
 
   setEventDelegatorForCodeSnippets();
   return (
+<<<<<<< HEAD
     <TTSProvider>
       <DnDFileUploaderProvider workspace={workspace}>
         <ChatContainer workspace={workspace} knownHistory={history} />
       </DnDFileUploaderProvider>
     </TTSProvider>
+=======
+    <DnDFileUploaderProvider workspace={workspace}>
+      <ChatContainer workspace={workspace} knownHistory={history} />
+    </DnDFileUploaderProvider>
+>>>>>>> 48ef74aa (sync-fork-2)
   );
 }
 

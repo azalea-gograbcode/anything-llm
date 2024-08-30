@@ -114,7 +114,11 @@ class TextGenWebUILLM {
     };
     return [
       prompt,
+<<<<<<< HEAD
       ...formatChatHistory(chatHistory, this.#generateContent),
+=======
+      ...chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),

@@ -198,6 +198,7 @@ export default function AccountModal({ user, hideModal }) {
                 type="button"
                 className="transition-all duration-300 text-white hover:bg-zinc-700 px-4 py-2 rounded-lg text-sm"
               >
+<<<<<<< HEAD
                 {t("profile_settings.cancel")}
               </button>
               <button
@@ -206,6 +207,42 @@ export default function AccountModal({ user, hideModal }) {
               >
                 {t("profile_settings.update_account")}
               </button>
+=======
+                Username
+              </label>
+              <input
+                name="username"
+                type="text"
+                className="bg-zinc-900 placeholder:text-white/20 border-gray-500 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="User's username"
+                minLength={2}
+                defaultValue={user.username}
+                required
+                autoComplete="off"
+              />
+              <p className="mt-2 text-xs text-white/60">
+                Username must be only contain lowercase letters, numbers,
+                underscores, and hyphens with no spaces
+              </p>
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-white"
+              >
+                New Password
+              </label>
+              <input
+                name="password"
+                type="text"
+                className="bg-zinc-900 placeholder:text-white/20 border-gray-500 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder={`${user.username}'s new password`}
+                minLength={8}
+              />
+              <p className="mt-2 text-xs text-white/60">
+                Password must be at least 8 characters long
+              </p>
+>>>>>>> 48ef74aa (sync-fork-2)
             </div>
           </form>
         </div>

@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 const RuntimeSettings = require("../runtimeSettings");
 /**  ATTN: SECURITY RESEARCHERS
  * To Security researchers about to submit an SSRF report CVE - please don't.
  * We are aware that the code below is does not defend against any of the thousands of ways
  * you can map a hostname to another IP via tunneling, hosts editing, etc. The code below does not have intention of blocking this
+=======
+/**  ATTN: SECURITY RESEARCHERS
+ * To Security researchers about to submit an SSRF report CVE - please don't.
+ * We are aware that the code below is does not defend against any of the thousands of ways
+ * you can map a hostname to another IP. The code below does not have intention of blocking this
+>>>>>>> 48ef74aa (sync-fork-2)
  * and is simply to prevent the user from accidentally putting in non-valid websites, which is all this protects
  * since _all urls must be submitted by the user anyway_ and cannot be done with authentication and manager or admin roles.
  * If an attacker has those roles then the system is already vulnerable and this is not a primary concern.

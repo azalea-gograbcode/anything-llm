@@ -66,6 +66,7 @@ export default function WorkspaceFileRow({
       onClick={toggleRowSelection}
     >
       <div
+<<<<<<< HEAD
         className="col-span-10 w-fit flex gap-x-[2px] items-center relative"
         data-tooltip-id="ws-directory-item"
         data-tooltip-content={JSON.stringify({
@@ -73,6 +74,10 @@ export default function WorkspaceFileRow({
           date: formatDate(item?.published),
           extension: getFileExtension(item.url).toUpperCase(),
         })}
+=======
+        data-tooltip-id={`ws-directory-item-${item.url}`}
+        className="col-span-10 w-fit flex gap-x-[4px] items-center relative"
+>>>>>>> 48ef74aa (sync-fork-2)
       >
         <div className="shrink-0 w-3 h-3">
           {!disableSelection ? (
@@ -116,6 +121,27 @@ export default function WorkspaceFileRow({
           </div>
         )}
       </div>
+<<<<<<< HEAD
+=======
+      <Tooltip
+        id={`ws-directory-item-${item.url}`}
+        place="bottom"
+        delayShow={800}
+        className="tooltip invert z-99"
+      >
+        <div className="text-xs ">
+          <p className="text-white">{item.title}</p>
+          <div className="flex mt-1 gap-x-2">
+            <p className="">
+              Date: <b>{formatDate(item?.published)}</b>
+            </p>
+            <p className="">
+              Type: <b>{getFileExtension(item.url).toUpperCase()}</b>
+            </p>
+          </div>
+        </div>
+      </Tooltip>
+>>>>>>> 48ef74aa (sync-fork-2)
     </div>
   );
 }

@@ -1,6 +1,10 @@
 import { encode as HTMLEncode } from "he";
 import markdownIt from "markdown-it";
+<<<<<<< HEAD
 import markdownItKatexPlugin from "./plugins/markdown-katex";
+=======
+import markdownItKatex from "markdown-it-katex";
+>>>>>>> 48ef74aa (sync-fork-2)
 import hljs from "highlight.js";
 import "./themes/github-dark.css";
 import "./themes/github.css";
@@ -52,6 +56,7 @@ const markdown = markdownIt({
   },
 });
 
+<<<<<<< HEAD
 // Add custom renderer for strong tags to handle theme colors
 markdown.renderer.rules.strong_open = () => '<strong class="text-white">';
 markdown.renderer.rules.strong_close = () => "</strong>";
@@ -61,6 +66,8 @@ markdown.renderer.rules.link_open = (tokens, idx) => {
   return `<a href="${href[1]}" target="_blank" rel="noopener noreferrer">`;
 };
 
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 // Custom renderer for responsive images rendered in markdown
 markdown.renderer.rules.image = function (tokens, idx) {
   const token = tokens[idx];
@@ -71,7 +78,11 @@ markdown.renderer.rules.image = function (tokens, idx) {
   return `<div class="w-full max-w-[800px]"><img src="${src}" alt="${alt}" class="w-full h-auto" /></div>`;
 };
 
+<<<<<<< HEAD
 markdown.use(markdownItKatexPlugin);
+=======
+markdown.use(markdownItKatex);
+>>>>>>> 48ef74aa (sync-fork-2)
 
 export default function renderMarkdown(text = "") {
   return markdown.render(text);

@@ -3,7 +3,14 @@ const { WorkspaceThread } = require("../../../models/workspaceThread");
 const { Workspace } = require("../../../models/workspace");
 const { validApiKey } = require("../../../utils/middleware/validApiKey");
 const { reqBody, multiUserMode } = require("../../../utils/http");
+<<<<<<< HEAD
 const { VALID_CHAT_MODE } = require("../../../utils/chats/stream");
+=======
+const {
+  streamChatWithWorkspace,
+  VALID_CHAT_MODE,
+} = require("../../../utils/chats/stream");
+>>>>>>> 48ef74aa (sync-fork-2)
 const { Telemetry } = require("../../../models/telemetry");
 const { EventLogs } = require("../../../models/eventLogs");
 const {
@@ -13,7 +20,10 @@ const {
 const { WorkspaceChats } = require("../../../models/workspaceChats");
 const { User } = require("../../../models/user");
 const { ApiChatHandler } = require("../../../utils/chats/apiChatHandler");
+<<<<<<< HEAD
 const { getModelTag } = require("../../utils");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 function apiWorkspaceThreadEndpoints(app) {
   if (!app) return;
@@ -429,15 +439,21 @@ function apiWorkspaceThreadEndpoints(app) {
           mode,
           user,
           thread,
+<<<<<<< HEAD
           attachments,
           reset,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
         await Telemetry.sendTelemetry("sent_chat", {
           LLMSelection: process.env.LLM_PROVIDER || "openai",
           Embedder: process.env.EMBEDDING_ENGINE || "inherit",
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
           TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
           LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
         await EventLogs.logEvent("api_sent_chat", {
           workspaceName: workspace?.name,
@@ -600,15 +616,21 @@ function apiWorkspaceThreadEndpoints(app) {
           mode,
           user,
           thread,
+<<<<<<< HEAD
           attachments,
           reset,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
         await Telemetry.sendTelemetry("sent_chat", {
           LLMSelection: process.env.LLM_PROVIDER || "openai",
           Embedder: process.env.EMBEDDING_ENGINE || "inherit",
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
           TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
           LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
         await EventLogs.logEvent("api_sent_chat", {
           workspaceName: workspace?.name,

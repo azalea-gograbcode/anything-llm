@@ -15,9 +15,12 @@ import SpeechToText from "./SpeechToText";
 import { Tooltip } from "react-tooltip";
 import AttachmentManager from "./Attachments";
 import AttachItem from "./AttachItem";
+<<<<<<< HEAD
 import { PASTE_ATTACHMENT_EVENT } from "../DnDWrapper";
 import useTextSize from "@/hooks/useTextSize";
 import { useTranslation } from "react-i18next";
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 export const PROMPT_INPUT_EVENT = "set_prompt_input";
 const MAX_EDIT_STACK_SIZE = 100;
@@ -250,9 +253,15 @@ export default function PromptInput({
         className="flex flex-col gap-y-1 rounded-t-lg md:w-3/4 w-full mx-auto max-w-xl items-center"
       >
         <div className="flex items-center rounded-lg md:mb-4">
+<<<<<<< HEAD
           <div className="w-[95vw] md:w-[635px] bg-theme-bg-chat-input light:bg-white light:border-solid light:border-[1px] light:border-theme-chat-input-border shadow-sm rounded-2xl flex flex-col px-4 overflow-hidden">
             <AttachmentManager attachments={attachments} />
             <div className="flex items-center w-full border-b-2 border-theme-chat-input-border">
+=======
+          <div className="w-[95vw] md:w-[635px] bg-main-gradient shadow-2xl border border-white/50 rounded-2xl flex flex-col px-4 overflow-hidden">
+            <AttachmentManager attachments={attachments} />
+            <div className="flex items-center w-full border-b-2 border-gray-500/50">
+>>>>>>> 48ef74aa (sync-fork-2)
               <textarea
                 ref={textareaRef}
                 onChange={handleChange}

@@ -4,9 +4,12 @@ const {
   formatChatHistory,
 } = require("../../helpers/chat/responses");
 const { MODEL_MAP } = require("../modelMap");
+<<<<<<< HEAD
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 class OpenAiLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -123,7 +126,11 @@ class OpenAiLLM {
     };
     return [
       prompt,
+<<<<<<< HEAD
       ...formatChatHistory(chatHistory, this.#generateContent),
+=======
+      ...chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),

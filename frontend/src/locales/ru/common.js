@@ -95,12 +95,17 @@ const TRANSLATIONS = {
     admin: "Администратор",
     tools: "Инструменты",
     "experimental-features": "Экспериментальные функции",
+<<<<<<< HEAD
     contact: "Связаться с Поддержкой",
     "browser-extension": "Расширение браузера",
     "system-prompt-variables": "Переменные системного запроса",
     interface: null,
     branding: null,
     chat: null,
+=======
+    contact: "联系支持Связаться с Поддержкой",
+    "browser-extension": "Расширение браузера",
+>>>>>>> 48ef74aa (sync-fork-2)
   },
   login: {
     "multi-user": {

@@ -16,7 +16,10 @@ const { ChatBedrockConverse } = require("@langchain/aws");
 const { ChatOllama } = require("@langchain/community/chat_models/ollama");
 const { toValidNumber } = require("../../../http");
 const { getLLMProviderClass } = require("../../../helpers");
+<<<<<<< HEAD
 const { parseLMStudioBasePath } = require("../../../AiProviders/lmStudio");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 const DEFAULT_WORKSPACE_PROMPT =
   "You are a helpful ai assistant who can assist the user and use tools available to help answer the users prompts and questions.";

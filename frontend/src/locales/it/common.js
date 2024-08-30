@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Anything with "null" requires a translation. Contribute to translation via a PR!
 const TRANSLATIONS = {
   onboarding: {
@@ -48,6 +49,9 @@ const TRANSLATIONS = {
       description: null,
     },
   },
+=======
+const TRANSLATIONS = {
+>>>>>>> 48ef74aa (sync-fork-2)
   common: {
     "workspaces-name": "Nome delle aree di lavoro",
     error: "errore",
@@ -58,10 +62,16 @@ const TRANSLATIONS = {
     save: "Salva modifiche",
     previous: "Pagina precedente",
     next: "Pagina successiva",
+<<<<<<< HEAD
     optional: null,
     yes: null,
     no: null,
   },
+=======
+  },
+
+  // Setting Sidebar menu items.
+>>>>>>> 48ef74aa (sync-fork-2)
   settings: {
     title: "Impostazioni istanza",
     system: "Impostazioni generali",
@@ -89,11 +99,17 @@ const TRANSLATIONS = {
     "experimental-features": "Caratteristiche sperimentali",
     contact: "Contatta il Supporto",
     "browser-extension": "Estensione del browser",
+<<<<<<< HEAD
     "system-prompt-variables": null,
     interface: null,
     branding: null,
     chat: null,
   },
+=======
+  },
+
+  // Page Definitions
+>>>>>>> 48ef74aa (sync-fork-2)
   login: {
     "multi-user": {
       welcome: "Benvenuto in",
@@ -117,6 +133,10 @@ const TRANSLATIONS = {
       "back-to-login": "Torna al Login",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   welcomeMessage: {
     part1:
       "Benvenuti in AnythingLLM, AnythingLLM è uno strumento di intelligenza artificiale open source di Mintplex Labs che trasforma qualsiasi cosa in un chatbot addestrato con cui puoi effettuare query e chattare. AnythingLLM è un software BYOK (bring-your-own-keys), quindi non ci sono abbonamenti, commissioni o costi per questo software al di fuori dei servizi che vuoi utilizzare.",
@@ -124,7 +144,11 @@ const TRANSLATIONS = {
       "AnythingLLM è il modo più semplice per mettere insieme potenti prodotti di intelligenza artificiale come OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB e altri servizi in un pacchetto ordinato e senza problemi per aumentare la tua produttività di 100 volte.",
     part3:
       "AnythingLLM può essere eseguito completamente in locale sulla tua macchina con un overhead minimo, non ti accorgerai nemmeno che c'è! Non serve GPU. Sono disponibili anche installazioni cloud e on-premise.\nL'ecosistema degli strumenti di intelligenza artificiale diventa ogni giorno più potente. AnythingLLM lo rende facile da usare.",
+<<<<<<< HEAD
     githubIssue: "Apri una issue su GitHub",
+=======
+    githubIssue: "Apri una issue su Github",
+>>>>>>> 48ef74aa (sync-fork-2)
     user1: "Come posso iniziare?!",
     part4:
       'È semplice. Tutte le raccolte sono organizzate in contenitori che chiamiamo "Aree di lavoro". Le aree di lavoro sono contenitori di file, documenti, immagini, PDF e altri file che verranno trasformati in qualcosa che gli LLM possono comprendere e utilizzare nella conversazione.\n\nPuoi aggiungere e rimuovere file in qualsiasi momento.',
@@ -135,13 +159,25 @@ const TRANSLATIONS = {
       "AnythingLLM è migliore di un Dropbox più smart.\n\nAnythingLLM offre due modi di comunicare con i tuoi dati:\n\n<i>Query:</i> Le tue chat restituiranno dati o inferenze trovate con i documenti nella tua area di lavoro a cui ha accesso. Aggiungere più documenti all'area di lavoro lo rende più intelligente! \n\n<i>Conversazionale:</i> i tuoi documenti + la cronologia delle chat in corso contribuiscono entrambi alla conoscenza dell'LLM allo stesso tempo. Ottimo per aggiungere informazioni basate su testo in tempo reale o correzioni e incomprensioni che l'LLM potrebbe avere. \n\nPuoi passare da una modalità all'altra \n<i>nel mezzo della chat!</i>",
     user3: "Wow, sembra fantastico, fammi provare!",
     part6: "Divertiti!",
+<<<<<<< HEAD
     starOnGitHub: "Metti una stella su GitHub",
     contact: "Contatta Mintplex Labs",
   },
+=======
+    starOnGithub: "Metti una stella su GitHub",
+    contact: "Contatta Mintplex Labs",
+  },
+
+>>>>>>> 48ef74aa (sync-fork-2)
   "new-workspace": {
     title: "Nuova area di lavoro",
     placeholder: "La mia area di lavoro",
   },
+<<<<<<< HEAD
+=======
+
+  // Workspace Settings menu items
+>>>>>>> 48ef74aa (sync-fork-2)
   "workspaces—settings": {
     general: "Impostazioni generali",
     chat: "Impostazioni Chat",
@@ -149,6 +185,11 @@ const TRANSLATIONS = {
     members: "Membri",
     agent: "Configurazione dell'agente",
   },
+<<<<<<< HEAD
+=======
+
+  // General Appearance
+>>>>>>> 48ef74aa (sync-fork-2)
   general: {
     vector: {
       title: "Contatore dei vettori",
@@ -185,6 +226,11 @@ const TRANSLATIONS = {
         "area di lavoro. Verranno rimossi tutti gli embeddings vettoriali nel tuo database vettoriale.\n\nI file sorgente originali rimarranno intatti. Questa azione è irreversibile.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Chat Settings
+>>>>>>> 48ef74aa (sync-fork-2)
   chat: {
     llm: {
       title: "LLM Provider dell'area di lavoro",
@@ -242,6 +288,11 @@ const TRANSLATIONS = {
       hint: "La maggior parte degli LLM ha vari intervalli accettabili di valori validi. Consulta il tuo fornitore LLM per queste informazioni.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Vector Database
+>>>>>>> 48ef74aa (sync-fork-2)
   "vector-workspace": {
     identifier: "Identificatore del database vettoriale",
     snippets: {
@@ -270,6 +321,11 @@ const TRANSLATIONS = {
         "Il database vettoriale dell'area di lavoro è stato reimpostato!",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Agent Configuration
+>>>>>>> 48ef74aa (sync-fork-2)
   agent: {
     "performance-warning":
       "Le prestazioni degli LLM che non supportano esplicitamente la chiamata degli strumenti dipendono in larga misura dalle capacità e dalla precisione del modello. Alcune capacità potrebbero essere limitate o non funzionali.",
@@ -289,6 +345,10 @@ const TRANSLATIONS = {
         "Il modello LLM specifico che verrà utilizzato per l'agente @agent di quest'area di lavoro.",
       wait: "-- in attesa dei modelli --",
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
     skill: {
       title: "Abilità predefinite dell'agente",
       description:
@@ -327,6 +387,11 @@ const TRANSLATIONS = {
       },
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Workspace Chats
+>>>>>>> 48ef74aa (sync-fork-2)
   recorded: {
     title: "Chat dell'area di lavoro",
     description:
@@ -341,6 +406,46 @@ const TRANSLATIONS = {
       at: "Inviato a",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Appearance
+  appearance: {
+    title: "Aspetto",
+    description:
+      "Personalizza le impostazioni di aspetto della tua piattaforma.",
+    logo: {
+      title: "Personalizza logo",
+      description:
+        "Carica il tuo logo personalizzato per rendere tuo il chatbot.",
+      add: "Aggiungi un logo personalizzato",
+      recommended: "Dimensioni consigliate: 800 x 200",
+      remove: "Rimuovi",
+      replace: "Sostituisci",
+    },
+    message: {
+      title: "Personalizza messaggi",
+      description:
+        "Personalizza i messaggi automatici visualizzati dai tuoi utenti.",
+      new: "Nuovo",
+      system: "sistema",
+      user: "utente",
+      message: "messaggio",
+      assistant: "Assistente chat AnythingLLM",
+      "double-click": "Fai doppio clic per modificare...",
+      save: "Salva messaggi",
+    },
+    icons: {
+      title: "Icone a piè di pagina personalizzate",
+      description:
+        "Personalizza le icone a piè di pagina visualizzate nella parte inferiore della barra laterale.",
+      icon: "Icona",
+      link: "Collegamento",
+    },
+  },
+
+  // API Keys
+>>>>>>> 48ef74aa (sync-fork-2)
   api: {
     title: "Chiavi API",
     description:
@@ -353,12 +458,20 @@ const TRANSLATIONS = {
       created: "Creato",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   llm: {
     title: "Preferenza LLM",
     description:
       "Queste sono le credenziali e le impostazioni per il tuo provider di chat e embedding LLM preferito. È importante che queste chiavi siano aggiornate e corrette, altrimenti AnythingLLM non funzionerà correttamente.",
     provider: "Provider LLM",
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   transcription: {
     title: "Preferenza del modello di trascrizione",
     description:
@@ -371,6 +484,10 @@ const TRANSLATIONS = {
     "warn-end":
       "Il modello integrato verrà scaricato automaticamente al primo utilizzo.",
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   embedding: {
     title: "Preferenza di embedding",
     "desc-start":
@@ -383,6 +500,10 @@ const TRANSLATIONS = {
         "Non è richiesta alcuna configurazione quando si utilizza il motore di embedding nativo di AnythingLLM.",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   text: {
     title: "Preferenze di suddivisione e suddivisione in blocchi del testo",
     "desc-start":
@@ -404,6 +525,11 @@ const TRANSLATIONS = {
         "Questa è la sovrapposizione massima di caratteri che si verifica durante la suddivisione in blocchi tra due porzioni di testo adiacenti.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Vector Database
+>>>>>>> 48ef74aa (sync-fork-2)
   vector: {
     title: "Database vettoriale",
     description:
@@ -413,6 +539,11 @@ const TRANSLATIONS = {
       description: "Non è richiesta alcuna configurazione per LanceDB.",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Embeddable Chat Widgets
+>>>>>>> 48ef74aa (sync-fork-2)
   embeddable: {
     title: "Widget di chat incorporabili",
     description:
@@ -424,9 +555,15 @@ const TRANSLATIONS = {
       Active: "Domini attivi",
     },
   },
+<<<<<<< HEAD
   "embed-chats": {
     title: "Chat incorporate",
     export: "Esporta",
+=======
+
+  "embed-chats": {
+    title: "Chat incorporate",
+>>>>>>> 48ef74aa (sync-fork-2)
     description:
       "Queste sono tutte le chat e i messaggi registrati da qualsiasi embedding che hai pubblicato.",
     table: {
@@ -437,6 +574,10 @@ const TRANSLATIONS = {
       at: "Inviato a",
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48ef74aa (sync-fork-2)
   multi: {
     title: "Modalità multi-utente",
     description:
@@ -461,6 +602,11 @@ const TRANSLATIONS = {
       password: "Password istanza",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Event Logs
+>>>>>>> 48ef74aa (sync-fork-2)
   event: {
     title: "Registro eventi",
     description:
@@ -472,6 +618,11 @@ const TRANSLATIONS = {
       occurred: "Si è verificato alle",
     },
   },
+<<<<<<< HEAD
+=======
+
+  // Privacy & Data-Handling
+>>>>>>> 48ef74aa (sync-fork-2)
   privacy: {
     title: "Privacy e gestione dei dati",
     description:
@@ -481,6 +632,7 @@ const TRANSLATIONS = {
     vector: "Database vettoriale",
     anonymous: "Telemetria anonima abilitata",
   },
+<<<<<<< HEAD
   connectors: {
     "search-placeholder": null,
     "no-connectors": null,
@@ -823,6 +975,8 @@ const TRANSLATIONS = {
       },
     },
   },
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 };
 
 export default TRANSLATIONS;

@@ -42,7 +42,10 @@ function workspaceThreadEndpoints(app) {
             Embedder: process.env.EMBEDDING_ENGINE || "inherit",
             VectorDbSelection: process.env.VECTOR_DB || "lancedb",
             TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
             LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
           },
           user?.id
         );

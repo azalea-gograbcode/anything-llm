@@ -10,8 +10,27 @@ export const DISABLED_PROVIDERS = [
 ];
 const PROVIDER_DEFAULT_MODELS = {
   openai: [],
+<<<<<<< HEAD
   gemini: [],
   anthropic: [],
+=======
+  gemini: [
+    "gemini-pro",
+    "gemini-1.0-pro",
+    "gemini-1.5-pro-latest",
+    "gemini-1.5-flash-latest",
+    "gemini-1.5-pro-exp-0801",
+  ],
+  anthropic: [
+    "claude-instant-1.2",
+    "claude-2.0",
+    "claude-2.1",
+    "claude-3-opus-20240229",
+    "claude-3-sonnet-20240229",
+    "claude-3-haiku-20240307",
+    "claude-3-5-sonnet-20240620",
+  ],
+>>>>>>> 48ef74aa (sync-fork-2)
   azure: [],
   lmstudio: [],
   localai: [],

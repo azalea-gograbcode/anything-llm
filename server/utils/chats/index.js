@@ -26,6 +26,7 @@ async function grepCommand(message, user = null) {
   // Allows multiple commands in one message
   let updatedMessage = message;
   for (const preset of userPresets) {
+<<<<<<< HEAD
     const regex = new RegExp(
       `(?:\\b\\s|^)(${preset.command})(?:\\b\\s|$)`,
       "g"
@@ -52,6 +53,9 @@ async function grepAllSlashCommands(message) {
       `(?:\\b\\s|^)(${preset.command})(?:\\b\\s|$)`,
       "g"
     );
+=======
+    const regex = new RegExp(preset.command, "g");
+>>>>>>> 48ef74aa (sync-fork-2)
     updatedMessage = updatedMessage.replace(regex, preset.prompt);
   }
 

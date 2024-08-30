@@ -3,6 +3,10 @@ import BrowserExtensionApiKey from "@/models/browserExtensionApiKey";
 import showToast from "@/utils/toast";
 import { Trash, Copy, Check, Plug } from "@phosphor-icons/react";
 import { POPUP_BROWSER_EXTENSION_EVENT } from "@/utils/constants";
+<<<<<<< HEAD
+=======
+import { Tooltip } from "react-tooltip";
+>>>>>>> 48ef74aa (sync-fork-2)
 
 export default function BrowserExtensionApiKeyRow({
   apiKey,
@@ -58,6 +62,7 @@ export default function BrowserExtensionApiKeyRow({
   return (
     <tr
       ref={rowRef}
+<<<<<<< HEAD
       className="bg-transparent text-white text-opacity-80 text-xs font-medium border-b border-white/10 h-10"
     >
       <td scope="row" className="px-6 py-2 whitespace-nowrap">
@@ -102,6 +107,62 @@ export default function BrowserExtensionApiKeyRow({
           className="text-xs font-medium text-white/80 light:text-black/80 hover:light:text-red-500 hover:text-red-300 rounded-lg px-2 py-1 hover:bg-white hover:light:bg-red-50 hover:bg-opacity-10"
         >
           <Trash className="h-4 w-4" />
+=======
+      className="bg-transparent text-white text-opacity-80 text-sm font-medium"
+    >
+      <td scope="row" className="px-6 py-4 whitespace-nowrap flex items-center">
+        <span className="mr-2 font-mono">{connectionString}</span>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={handleCopy}
+            data-tooltip-id={`copy-connection-text-${apiKey.id}`}
+            data-tooltip-content="Copy connection string"
+            className="text-white hover:text-white/80 transition-colors duration-200 p-1 rounded"
+          >
+            {copied ? (
+              <Check className="h-5 w-5 text-green-500" />
+            ) : (
+              <Copy className="h-5 w-5" />
+            )}
+            <Tooltip
+              id={`copy-connection-text-${apiKey.id}`}
+              place="bottom"
+              delayShow={300}
+              className="allm-tooltip !allm-text-xs"
+            />
+          </button>
+
+          <button
+            onClick={handleConnect}
+            data-tooltip-id={`auto-connection-${apiKey.id}`}
+            data-tooltip-content="Automatically connect to extension"
+            className="text-white hover:text-white/80 transition-colors duration-200 p-1 rounded"
+          >
+            <Plug className="h-5 w-5" />
+            <Tooltip
+              id={`auto-connection-${apiKey.id}`}
+              place="bottom"
+              delayShow={300}
+              className="allm-tooltip !allm-text-xs"
+            />
+          </button>
+        </div>
+      </td>
+      {isMultiUser && (
+        <td className="px-6 py-4">
+          {apiKey.user ? apiKey.user.username : "N/A"}
+        </td>
+      )}
+      <td className="px-6 py-4">
+        {new Date(apiKey.createdAt).toLocaleString()}
+      </td>
+      <td className="px-6 py-4">
+        <button
+          onClick={handleRevoke}
+          className="font-medium px-2 py-1 rounded-lg hover:bg-sidebar-gradient text-white hover:text-white/80 hover:bg-opacity-20"
+        >
+          <Trash className="h-5 w-5" />
+>>>>>>> 48ef74aa (sync-fork-2)
         </button>
       </td>
     </tr>

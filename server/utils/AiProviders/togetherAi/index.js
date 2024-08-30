@@ -138,6 +138,7 @@ class TogetherAiLLM {
     return "streamGetChatCompletion" in this;
   }
 
+<<<<<<< HEAD
   static async promptWindowLimit(modelName) {
     const models = await togetherAiModels();
     const model = models.find((m) => m.id === modelName);
@@ -148,6 +149,18 @@ class TogetherAiLLM {
     const models = await togetherAiModels();
     const model = models.find((m) => m.id === this.model);
     return model?.maxLength || 4096;
+=======
+  static promptWindowLimit(modelName) {
+    const availableModels = togetherAiModels();
+    return availableModels[modelName]?.maxLength || 4096;
+  }
+
+  // Ensure the user set a value for the token limit
+  // and if undefined - assume 4096 window.
+  promptWindowLimit() {
+    const availableModels = this.allModelInformation();
+    return availableModels[this.model]?.maxLength || 4096;
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   async isValidChatCompletionModel(model = "") {

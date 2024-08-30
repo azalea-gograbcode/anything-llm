@@ -76,7 +76,10 @@ function chatEndpoints(app) {
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
           multiModal: Array.isArray(attachments) && attachments?.length !== 0,
           TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
           LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
 
         await EventLogs.logEvent(
@@ -181,7 +184,10 @@ function chatEndpoints(app) {
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
           multiModal: Array.isArray(attachments) && attachments?.length !== 0,
           TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
           LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
 
         await EventLogs.logEvent(

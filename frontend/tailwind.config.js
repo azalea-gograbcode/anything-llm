@@ -44,6 +44,7 @@ export default {
         error: "#B42318",
         warn: "#854708",
         success: "#05603A",
+<<<<<<< HEAD
         darker: "#F4F4F4",
         teal: "#0BA5EC",
 
@@ -133,6 +134,9 @@ export default {
             "button-hover-border": 'var(--theme-checklist-button-hover-border)',
           }
         },
+=======
+        darker: "#F4F4F4"
+>>>>>>> 48ef74aa (sync-fork-2)
       },
       backgroundImage: {
         "preference-gradient":
@@ -176,10 +180,14 @@ export default {
       },
       animation: {
         sweep: "sweep 0.5s ease-in-out",
+<<<<<<< HEAD
         "pulse-glow": "pulse-glow 1.5s infinite",
         'fade-in': 'fade-in 0.3s ease-out',
         'slide-up': 'slide-up 0.4s ease-out forwards',
         'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite'
+=======
+        "pulse-glow": "pulse-glow 1.5s infinite"
+>>>>>>> 48ef74aa (sync-fork-2)
       },
       keyframes: {
         sweep: {
@@ -213,6 +221,7 @@ export default {
             boxShadow: "0 0 0 rgba(255, 255, 255, 0.0)",
             backgroundColor: "rgba(255, 255, 255, 0.0)"
           }
+<<<<<<< HEAD
         },
         'fade-in': {
           '0%': { opacity: '0' },
@@ -225,6 +234,8 @@ export default {
         'bounce-subtle': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-2px)' }
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         }
       }
     }

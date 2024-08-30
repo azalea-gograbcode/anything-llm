@@ -131,7 +131,10 @@ const Document = {
       Embedder: process.env.EMBEDDING_ENGINE || "inherit",
       VectorDbSelection: process.env.VECTOR_DB || "lancedb",
       TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
       LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     });
     await EventLogs.logEvent(
       "workspace_documents_added",
@@ -171,6 +174,15 @@ const Document = {
       }
     }
 
+<<<<<<< HEAD
+=======
+    await Telemetry.sendTelemetry("documents_removed_in_workspace", {
+      LLMSelection: process.env.LLM_PROVIDER || "openai",
+      Embedder: process.env.EMBEDDING_ENGINE || "inherit",
+      VectorDbSelection: process.env.VECTOR_DB || "lancedb",
+      TTSSelection: process.env.TTS_PROVIDER || "native",
+    });
+>>>>>>> 48ef74aa (sync-fork-2)
     await EventLogs.logEvent(
       "workspace_documents_removed",
       {

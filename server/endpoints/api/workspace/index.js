@@ -4,7 +4,11 @@ const { Telemetry } = require("../../../models/telemetry");
 const { DocumentVectors } = require("../../../models/vectors");
 const { Workspace } = require("../../../models/workspace");
 const { WorkspaceChats } = require("../../../models/workspaceChats");
+<<<<<<< HEAD
 const { getVectorDbClass, getLLMProvider } = require("../../../utils/helpers");
+=======
+const { getVectorDbClass } = require("../../../utils/helpers");
+>>>>>>> 48ef74aa (sync-fork-2)
 const { multiUserMode, reqBody } = require("../../../utils/http");
 const { validApiKey } = require("../../../utils/middleware/validApiKey");
 const { VALID_CHAT_MODE } = require("../../../utils/chats/stream");
@@ -14,7 +18,10 @@ const {
   writeResponseChunk,
 } = require("../../../utils/helpers/chat/responses");
 const { ApiChatHandler } = require("../../../utils/chats/apiChatHandler");
+<<<<<<< HEAD
 const { getModelTag } = require("../../utils");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 function apiWorkspaceEndpoints(app) {
   if (!app) return;
@@ -88,7 +95,10 @@ function apiWorkspaceEndpoints(app) {
         Embedder: process.env.EMBEDDING_ENGINE || "inherit",
         VectorDbSelection: process.env.VECTOR_DB || "lancedb",
         TTSSelection: process.env.TTS_PROVIDER || "native",
+<<<<<<< HEAD
         LLMModel: getModelTag(),
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
       });
       await EventLogs.logEvent("api_workspace_created", {
         workspaceName: workspace?.name || "Unknown Workspace",
@@ -605,6 +615,7 @@ function apiWorkspaceEndpoints(app) {
            example: {
              message: "What is AnythingLLM?",
              mode: "query | chat",
+<<<<<<< HEAD
              sessionId: "identifier-to-partition-chats-by-external-id",
              attachments: [
                {
@@ -614,6 +625,9 @@ function apiWorkspaceEndpoints(app) {
                }
              ],
              reset: false
+=======
+             sessionId: "identifier-to-partition-chats-by-external-id"
+>>>>>>> 48ef74aa (sync-fork-2)
            }
          }
        }
@@ -643,6 +657,7 @@ function apiWorkspaceEndpoints(app) {
    */
       try {
         const { slug } = request.params;
+<<<<<<< HEAD
         const {
           message,
           mode = "query",
@@ -650,6 +665,9 @@ function apiWorkspaceEndpoints(app) {
           attachments = [],
           reset = false,
         } = reqBody(request);
+=======
+        const { message, mode = "query", sessionId = null } = reqBody(request);
+>>>>>>> 48ef74aa (sync-fork-2)
         const workspace = await Workspace.get({ slug: String(slug) });
 
         if (!workspace) {
@@ -685,8 +703,11 @@ function apiWorkspaceEndpoints(app) {
           user: null,
           thread: null,
           sessionId: !!sessionId ? String(sessionId) : null,
+<<<<<<< HEAD
           attachments,
           reset,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
 
         await Telemetry.sendTelemetry("sent_chat", {
@@ -730,6 +751,7 @@ function apiWorkspaceEndpoints(app) {
            example: {
              message: "What is AnythingLLM?",
              mode: "query | chat",
+<<<<<<< HEAD
              sessionId: "identifier-to-partition-chats-by-external-id",
              attachments: [
                {
@@ -739,6 +761,9 @@ function apiWorkspaceEndpoints(app) {
                }
              ],
              reset: false
+=======
+             sessionId: "identifier-to-partition-chats-by-external-id"
+>>>>>>> 48ef74aa (sync-fork-2)
            }
          }
        }
@@ -789,6 +814,7 @@ function apiWorkspaceEndpoints(app) {
    */
       try {
         const { slug } = request.params;
+<<<<<<< HEAD
         const {
           message,
           mode = "query",
@@ -796,6 +822,9 @@ function apiWorkspaceEndpoints(app) {
           attachments = [],
           reset = false,
         } = reqBody(request);
+=======
+        const { message, mode = "query", sessionId = null } = reqBody(request);
+>>>>>>> 48ef74aa (sync-fork-2)
         const workspace = await Workspace.get({ slug: String(slug) });
 
         if (!workspace) {
@@ -838,8 +867,11 @@ function apiWorkspaceEndpoints(app) {
           user: null,
           thread: null,
           sessionId: !!sessionId ? String(sessionId) : null,
+<<<<<<< HEAD
           attachments,
           reset,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
         await Telemetry.sendTelemetry("sent_chat", {
           LLMSelection:

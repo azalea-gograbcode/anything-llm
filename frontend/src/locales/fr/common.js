@@ -89,10 +89,13 @@ const TRANSLATIONS = {
     "experimental-features": "Fonctionnalités Expérimentales",
     contact: "Contacter le Support",
     "browser-extension": "Extension de navigateur",
+<<<<<<< HEAD
     "system-prompt-variables": null,
     interface: null,
     branding: null,
     chat: null,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   },
   login: {
     "multi-user": {

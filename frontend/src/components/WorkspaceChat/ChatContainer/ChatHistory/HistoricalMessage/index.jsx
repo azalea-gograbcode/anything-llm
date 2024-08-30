@@ -103,11 +103,20 @@ const HistoricalMessage = ({
               saveChanges={saveEditedMessage}
             />
           ) : (
+<<<<<<< HEAD
             <div className="break-words">
               <RenderChatContent
                 role={role}
                 message={message}
                 expanded={isLastMessage}
+=======
+            <div className={"overflow-x-scroll break-words"}>
+              <span
+                className={`flex flex-col gap-y-1`}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(renderMarkdown(message)),
+                }}
+>>>>>>> 48ef74aa (sync-fork-2)
               />
               <ChatAttachments attachments={attachments} />
             </div>
@@ -186,6 +195,7 @@ function ChatAttachments({ attachments = [] }) {
     </div>
   );
 }
+<<<<<<< HEAD
 
 const RenderChatContent = memo(
   ({ role, message, expanded = false }) => {
@@ -245,3 +255,5 @@ const RenderChatContent = memo(
     );
   }
 );
+=======
+>>>>>>> 48ef74aa (sync-fork-2)

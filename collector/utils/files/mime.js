@@ -37,10 +37,13 @@ class MimeDetector {
           "pas",
           "r",
           "go",
+<<<<<<< HEAD
           "ino",
           "hpp",
           "linq",
           "cs",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         ],
       },
       true

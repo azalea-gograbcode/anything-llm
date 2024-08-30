@@ -1,8 +1,11 @@
 const { EmbedConfig } = require("../../../models/embedConfig");
 const { EmbedChats } = require("../../../models/embedChats");
 const { validApiKey } = require("../../../utils/middleware/validApiKey");
+<<<<<<< HEAD
 const { reqBody } = require("../../../utils/http");
 const { Workspace } = require("../../../models/workspace");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 function apiEmbedEndpoints(app) {
   if (!app) return;
@@ -42,7 +45,11 @@ function apiEmbedEndpoints(app) {
                     },
                     "chat_count": 10
                   }
+<<<<<<< HEAD
                 ]
+=======
+                ] 
+>>>>>>> 48ef74aa (sync-fork-2)
               }
             }
           }
@@ -126,10 +133,28 @@ function apiEmbedEndpoints(app) {
     */
       try {
         const { embedUuid } = request.params;
+<<<<<<< HEAD
         const chats = await EmbedChats.where({
           embed_config: { uuid: String(embedUuid) },
         });
         response.status(200).json({ chats });
+=======
+        const embed = await EmbedConfig.get({ uuid: String(embedUuid) });
+        if (!embed) {
+          return response.status(404).json({ error: "Embed not found" });
+        }
+
+        const chats = await EmbedChats.where({ embed_id: embed.id });
+        const formattedChats = chats.map((chat) => ({
+          id: chat.id,
+          session_id: chat.session_id,
+          prompt: chat.prompt,
+          response: chat.response,
+          createdAt: chat.createdAt,
+        }));
+
+        response.status(200).json({ chats: formattedChats });
+>>>>>>> 48ef74aa (sync-fork-2)
       } catch (e) {
         console.error(e.message, e);
         response.sendStatus(500).end();
@@ -186,6 +211,7 @@ function apiEmbedEndpoints(app) {
     */
       try {
         const { embedUuid, sessionUuid } = request.params;
+<<<<<<< HEAD
         const chats = await EmbedChats.where({
           embed_config: { uuid: String(embedUuid) },
           session_id: String(sessionUuid),
@@ -398,6 +424,32 @@ function apiEmbedEndpoints(app) {
         response
           .status(200)
           .json({ success, error: success ? null : "Failed to delete embed" });
+=======
+        const embed = await EmbedConfig.get({ uuid: String(embedUuid) });
+        if (!embed) {
+          return response.status(404).json({ error: "Embed not found" });
+        }
+
+        const chats = await EmbedChats.where({
+          embed_id: embed.id,
+          session_id: String(sessionUuid),
+        });
+
+        if (!chats || chats.length === 0) {
+          return response
+            .status(404)
+            .json({ error: "No chats found for this session" });
+        }
+
+        const formattedChats = chats.map((chat) => ({
+          id: chat.id,
+          prompt: chat.prompt,
+          response: chat.response,
+          createdAt: chat.createdAt,
+        }));
+
+        response.status(200).json({ chats: formattedChats });
+>>>>>>> 48ef74aa (sync-fork-2)
       } catch (e) {
         console.error(e.message, e);
         response.sendStatus(500).end();

@@ -22,10 +22,13 @@ class VoyageAiEmbedder {
     switch (this.model) {
       case "voyage-finance-2":
       case "voyage-multilingual-2":
+<<<<<<< HEAD
       case "voyage-3":
       case "voyage-3-lite":
       case "voyage-3-large":
       case "voyage-code-3":
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         return 32_000;
       case "voyage-large-2-instruct":
       case "voyage-law-2":

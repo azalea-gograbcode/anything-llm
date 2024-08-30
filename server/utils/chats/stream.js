@@ -259,6 +259,7 @@ async function streamChatWithWorkspace(
     const { chat } = await WorkspaceChats.new({
       workspaceId: workspace.id,
       prompt: message,
+<<<<<<< HEAD
       response: {
         text: completeText,
         sources,
@@ -266,6 +267,9 @@ async function streamChatWithWorkspace(
         attachments,
         metrics,
       },
+=======
+      response: { text: completeText, sources, type: chatMode, attachments },
+>>>>>>> 48ef74aa (sync-fork-2)
       threadId: thread?.id || null,
       user,
     });

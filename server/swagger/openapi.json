@@ -2356,6 +2356,7 @@
               "example": {
                 "message": "What is AnythingLLM?",
                 "mode": "query | chat",
+<<<<<<< HEAD
                 "sessionId": "identifier-to-partition-chats-by-external-id",
                 "attachments": [
                   {
@@ -2365,6 +2366,9 @@
                   }
                 ],
                 "reset": false
+=======
+                "sessionId": "identifier-to-partition-chats-by-external-id"
+>>>>>>> 48ef74aa (sync-fork-2)
               }
             }
           }
@@ -2459,6 +2463,7 @@
               "example": {
                 "message": "What is AnythingLLM?",
                 "mode": "query | chat",
+<<<<<<< HEAD
                 "sessionId": "identifier-to-partition-chats-by-external-id",
                 "attachments": [
                   {
@@ -2542,6 +2547,9 @@
                 "query": "What is the meaning of life?",
                 "topN": 4,
                 "scoreThreshold": 0.75
+=======
+                "sessionId": "identifier-to-partition-chats-by-external-id"
+>>>>>>> 48ef74aa (sync-fork-2)
               }
             }
           }
@@ -3898,6 +3906,7 @@
           }
         }
       }
+<<<<<<< HEAD
     },
     "/v1/embed/new": {
       "post": {
@@ -4118,6 +4127,8 @@
           }
         }
       }
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     }
   },
   "components": {

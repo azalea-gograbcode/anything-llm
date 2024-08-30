@@ -1,8 +1,11 @@
 const AIbitat = require("./aibitat");
 const AgentPlugins = require("./aibitat/plugins");
+<<<<<<< HEAD
 const ImportedPlugin = require("./imported");
 const MCPCompatibilityLayer = require("../MCP");
 const { AgentFlows } = require("../agentFlows");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 const { httpSocket } = require("./aibitat/plugins/http-socket.js");
 const { WorkspaceChats } = require("../../models/workspaceChats");
 const { safeJsonParse } = require("../http");
@@ -22,6 +25,7 @@ const {
  * not persist between invocations
  */
 class EphemeralAgentHandler extends AgentHandler {
+<<<<<<< HEAD
   /** @type {string|null} the unique identifier for the agent invocation */
   #invocationUUID = null;
   /** @type {import("@prisma/client").workspaces|null} the workspace to use for the agent */
@@ -56,6 +60,21 @@ class EphemeralAgentHandler extends AgentHandler {
    * sessionId: string|null
    * }} parameters
    */
+=======
+  #invocationUUID = null;
+  #workspace = null;
+  #userId = null;
+  #threadId = null;
+  #sessionId = null;
+  #prompt = null;
+  #funcsToLoad = [];
+
+  aibitat = null;
+  channel = null;
+  provider = null;
+  model = null;
+
+>>>>>>> 48ef74aa (sync-fork-2)
   constructor({
     uuid,
     workspace,
@@ -123,6 +142,7 @@ class EphemeralAgentHandler extends AgentHandler {
   }
 
   /**
+<<<<<<< HEAD
    * Attempts to find a fallback provider and model to use if the workspace
    * does not have an explicit `agentProvider` and `agentModel` set.
    * 1. Fallback to the workspace `chatProvider` and `chatModel` if they exist.
@@ -154,10 +174,13 @@ class EphemeralAgentHandler extends AgentHandler {
   }
 
   /**
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
    * Finds or assumes the model preference value to use for API calls.
    * If multi-model loading is supported, we use their agent model selection of the workspace
    * If not supported, we attempt to fallback to the system provider value for the LLM preference
    * and if that fails - we assume a reasonable base model to exist.
+<<<<<<< HEAD
    * @returns {string|null} the model preference value to use in API calls
    */
   #fetchModel() {
@@ -175,20 +198,44 @@ class EphemeralAgentHandler extends AgentHandler {
 
     // Otherwise, we have no model to use - so guess a default model to use via the provider
     // and it's system ENV params and if that fails - we return either a base model or null.
+=======
+   * @returns {string} the model preference value to use in API calls
+   */
+  #fetchModel() {
+    if (!Object.keys(this.noProviderModelDefault).includes(this.provider))
+      return this.#workspace.agentModel || this.providerDefault();
+
+    // Provider has no reliable default (cant load many models) - so we need to look at system
+    // for the model param.
+    const sysModelKey = this.noProviderModelDefault[this.provider];
+    if (!!sysModelKey)
+      return process.env[sysModelKey] ?? this.providerDefault();
+
+    // If all else fails - look at the provider default list
+>>>>>>> 48ef74aa (sync-fork-2)
     return this.providerDefault();
   }
 
   #providerSetupAndCheck() {
+<<<<<<< HEAD
     this.provider = this.#workspace.agentProvider ?? null;
     this.model = this.#fetchModel();
 
     if (!this.provider)
       throw new Error("No valid provider found for the agent.");
+=======
+    this.provider = this.#workspace.agentProvider;
+    this.model = this.#fetchModel();
+>>>>>>> 48ef74aa (sync-fork-2)
     this.log(`Start ${this.#invocationUUID}::${this.provider}:${this.model}`);
     this.checkSetup();
   }
 
+<<<<<<< HEAD
   async #attachPlugins(args) {
+=======
+  #attachPlugins(args) {
+>>>>>>> 48ef74aa (sync-fork-2)
     for (const name of this.#funcsToLoad) {
       // Load child plugin
       if (name.includes("#")) {
@@ -222,6 +269,7 @@ class EphemeralAgentHandler extends AgentHandler {
         continue;
       }
 
+<<<<<<< HEAD
       // Load flow plugin. This is marked by `@@flow_` in the array of functions to load.
       if (name.startsWith("@@flow_")) {
         const uuid = name.replace("@@flow_", "");
@@ -298,6 +346,8 @@ class EphemeralAgentHandler extends AgentHandler {
         continue;
       }
 
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
       // Load single-stage plugin.
       if (!AgentPlugins.hasOwnProperty(name)) {
         this.log(
@@ -326,10 +376,17 @@ class EphemeralAgentHandler extends AgentHandler {
     );
 
     this.#funcsToLoad = [
+<<<<<<< HEAD
       ...(await agentSkillsFromSystemSettings()),
       ...ImportedPlugin.activeImportedPlugins(),
       ...AgentFlows.activeFlowPlugins(),
       ...(await new MCPCompatibilityLayer().activeMCPServers()),
+=======
+      AgentPlugins.memory.name,
+      AgentPlugins.docSummarizer.name,
+      AgentPlugins.webScraping.name,
+      ...(await agentSkillsFromSystemSettings()),
+>>>>>>> 48ef74aa (sync-fork-2)
     ];
   }
 
@@ -370,7 +427,11 @@ class EphemeralAgentHandler extends AgentHandler {
     await this.#loadAgents();
 
     // Attach all required plugins for functions to operate.
+<<<<<<< HEAD
     await this.#attachPlugins(args);
+=======
+    this.#attachPlugins(args);
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   startAgentCluster() {
@@ -468,7 +529,10 @@ class EphemeralEventListener extends EventEmitter {
           attachments: [],
           close: false,
           error: null,
+<<<<<<< HEAD
           animate: true,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         });
       }
 
@@ -480,7 +544,10 @@ class EphemeralEventListener extends EventEmitter {
         attachments: [],
         close: true,
         error: null,
+<<<<<<< HEAD
         animate: false,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
       });
     };
     this.on("chunk", onChunkHandler);

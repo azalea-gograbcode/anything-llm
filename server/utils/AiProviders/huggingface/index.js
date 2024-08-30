@@ -90,6 +90,7 @@ class HuggingFaceLLM {
   }
 
   async getChatCompletion(messages = null, { temperature = 0.7 }) {
+<<<<<<< HEAD
     const result = await LLMPerformanceMonitor.measureAsyncFunction(
       this.openai.chat.completions
         .create({
@@ -101,6 +102,13 @@ class HuggingFaceLLM {
           throw new Error(e.message);
         })
     );
+=======
+    const result = await this.openai.chat.completions.create({
+      model: this.model,
+      messages,
+      temperature,
+    });
+>>>>>>> 48ef74aa (sync-fork-2)
 
     if (
       !result.output.hasOwnProperty("choices") ||

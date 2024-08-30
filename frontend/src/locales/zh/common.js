@@ -93,10 +93,13 @@ const TRANSLATIONS = {
     "experimental-features": "实验功能",
     contact: "联系支持",
     "browser-extension": "浏览器扩展",
+<<<<<<< HEAD
     "system-prompt-variables": "系统提示变量",
     interface: "界面偏好",
     branding: "品牌与白标签化",
     chat: "聊天",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   },
   login: {
     "multi-user": {
@@ -231,10 +234,17 @@ const TRANSLATIONS = {
     },
     temperature: {
       title: "LLM 温度",
+<<<<<<< HEAD
       "desc-start": "此设置控制你的 LLM 回答的“创意”程度",
       "desc-end":
         "数字越高越有创意。对于某些模型，如果设置得太高，可能会导致响应不一致。",
       hint: "大多数 LLM 都有各种可接受的有效值范围。请咨询你的LLM提供商以获取该信息。",
+=======
+      "desc-start": "此设置控制您的 LLM 回答的“创意”程度",
+      "desc-end":
+        "数字越高越有创意。对于某些模型，如果设置得太高，可能会导致响应不一致。",
+      hint: "大多数 LLM 都有各种可接受的有效值范围。请咨询您的吗 LLM 提供商以获取该信息。",
+>>>>>>> 48ef74aa (sync-fork-2)
     },
   },
   "vector-workspace": {
@@ -404,8 +414,12 @@ const TRANSLATIONS = {
   },
   "embed-chats": {
     title: "嵌入的聊天历史纪录",
+<<<<<<< HEAD
     export: "导出",
     description: "这些是你发布的任何嵌入的所有记录的聊天和消息。",
+=======
+    description: "这些是您发布的任何嵌入的所有记录的聊天和消息。",
+>>>>>>> 48ef74aa (sync-fork-2)
     table: {
       embed: "嵌入",
       sender: "发送者",
@@ -450,7 +464,11 @@ const TRANSLATIONS = {
   privacy: {
     title: "隐私和数据处理",
     description:
+<<<<<<< HEAD
       "这是你对如何处理连接的第三方提供商和AnythingLLM的数据的配置。",
+=======
+      "这是您对如何处理连接的第三方提供商和AnythingLLM的数据的配置。",
+>>>>>>> 48ef74aa (sync-fork-2)
     llm: "LLM 选择",
     embedding: "嵌入首选项",
     vector: "向量数据库",

@@ -17,8 +17,11 @@ import DnDFileUploaderWrapper from "./DnDWrapper";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+<<<<<<< HEAD
 import { ChatTooltips } from "./ChatTooltips";
 import { MetricsProvider } from "./ChatHistory/HistoricalMessage/Actions/RenderMetrics";
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
@@ -68,14 +71,22 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
 
     if (listening) {
       // Stop the mic if the send button is clicked
+<<<<<<< HEAD
       endSTTSession();
+=======
+      endTTSSession();
+>>>>>>> 48ef74aa (sync-fork-2)
     }
     setChatHistory(prevChatHistory);
     setMessageEmit("");
     setLoadingResponse(true);
   };
 
+<<<<<<< HEAD
   function endSTTSession() {
+=======
+  function endTTSSession() {
+>>>>>>> 48ef74aa (sync-fork-2)
     SpeechRecognition.stopListening();
     resetTranscript();
   }
@@ -95,6 +106,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       .catch((e) => console.error(e));
   };
 
+<<<<<<< HEAD
   /**
    * Send a command to the LLM prompt input.
    * @param {string} command - The command to send to the LLM
@@ -103,6 +115,8 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
    * @param {Object[]} attachments - The attachments to send to the LLM
    * @returns {boolean} - Whether the command was sent successfully
    */
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   const sendCommand = async (
     command,
     submit = false,
@@ -273,6 +287,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   return (
     <div
       style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
+<<<<<<< HEAD
       className="transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-theme-bg-secondary w-full h-full overflow-y-scroll no-scroll z-[2]"
     >
       {isMobile && <SidebarMobileHeader />}
@@ -287,6 +302,20 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
             hasAttachments={files.length > 0}
           />
         </MetricsProvider>
+=======
+      className="transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-main-gradient w-full h-full overflow-y-scroll border-2 border-outline no-scroll"
+    >
+      {isMobile && <SidebarMobileHeader />}
+      <DnDFileUploaderWrapper>
+        <ChatHistory
+          history={chatHistory}
+          workspace={workspace}
+          sendCommand={sendCommand}
+          updateHistory={setChatHistory}
+          regenerateAssistantMessage={regenerateAssistantMessage}
+          hasAttachments={files.length > 0}
+        />
+>>>>>>> 48ef74aa (sync-fork-2)
         <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}
@@ -295,7 +324,10 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           attachments={files}
         />
       </DnDFileUploaderWrapper>
+<<<<<<< HEAD
       <ChatTooltips />
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     </div>
   );
 }

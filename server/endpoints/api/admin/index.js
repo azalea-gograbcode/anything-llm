@@ -483,7 +483,10 @@ function apiAdminEndpoints(app) {
     async (request, response) => {
       /*
     #swagger.tags = ['Admin']
+<<<<<<< HEAD
     #swagger.deprecated = true
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     #swagger.parameters['workspaceId'] = {
       in: 'path',
       description: 'id of the workspace in the database.',

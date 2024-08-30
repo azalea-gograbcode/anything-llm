@@ -471,6 +471,7 @@ const Workspace = {
     );
     return response.ok;
   },
+<<<<<<< HEAD
 
   /**
    * Reorders workspaces in the UI via localstorage on client side.
@@ -508,6 +509,8 @@ const Workspace = {
     return orderedWorkspaces;
   },
 
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   threads: WorkspaceThread,
 };
 

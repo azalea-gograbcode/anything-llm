@@ -44,7 +44,10 @@
     "ppio",
     "Qdrant",
     "royalblue",
+<<<<<<< HEAD
     "SearchApi",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     "searxng",
     "Serper",
     "Serply",
@@ -52,7 +55,10 @@
     "textgenwebui",
     "togetherai",
     "Unembed",
+<<<<<<< HEAD
     "uuidv",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     "vectordbs",
     "Weaviate",
     "XAILLM",

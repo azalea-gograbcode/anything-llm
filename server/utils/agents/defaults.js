@@ -26,6 +26,7 @@ const USER_AGENT = {
 const WORKSPACE_AGENT = {
   name: "@agent",
   getDefinition: async (provider = null) => {
+<<<<<<< HEAD
     return {
       role: Provider.systemPrompt(provider),
       functions: [
@@ -33,6 +34,19 @@ const WORKSPACE_AGENT = {
         ...ImportedPlugin.activeImportedPlugins(),
         ...AgentFlows.activeFlowPlugins(),
         ...(await new MCPCompatibilityLayer().activeMCPServers()),
+=======
+    const defaultFunctions = [
+      AgentPlugins.memory.name, // RAG
+      AgentPlugins.docSummarizer.name, // Doc Summary
+      AgentPlugins.webScraping.name, // Collector web-scraping
+    ];
+
+    return {
+      role: Provider.systemPrompt(provider),
+      functions: [
+        ...defaultFunctions,
+        ...(await agentSkillsFromSystemSettings()),
+>>>>>>> 48ef74aa (sync-fork-2)
       ],
     };
   },
@@ -45,6 +59,7 @@ const WORKSPACE_AGENT = {
  */
 async function agentSkillsFromSystemSettings() {
   const systemFunctions = [];
+<<<<<<< HEAD
 
   // Load non-imported built-in skills that are configurable, but are default enabled.
   const _disabledDefaultSkills = safeJsonParse(
@@ -68,6 +83,12 @@ async function agentSkillsFromSystemSettings() {
     []
   );
   _setting.forEach((skillName) => {
+=======
+  const _setting = (await SystemSettings.get({ label: "default_agent_skills" }))
+    ?.value;
+
+  safeJsonParse(_setting, []).forEach((skillName) => {
+>>>>>>> 48ef74aa (sync-fork-2)
     if (!AgentPlugins.hasOwnProperty(skillName)) return;
 
     // This is a plugin module with many sub-children plugins who

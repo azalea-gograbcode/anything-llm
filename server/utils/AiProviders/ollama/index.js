@@ -39,8 +39,48 @@ class OllamaAILLM {
     );
   }
 
+<<<<<<< HEAD
   #log(text, ...args) {
     console.log(`\x1b[32m[Ollama]\x1b[0m ${text}`, ...args);
+=======
+  #ollamaClient({ temperature = 0.07 }) {
+    const { ChatOllama } = require("@langchain/community/chat_models/ollama");
+    return new ChatOllama({
+      baseUrl: this.basePath,
+      model: this.model,
+      keepAlive: this.keepAlive,
+      useMLock: true,
+      // There are currently only two performance settings so if its not "base" - its max context.
+      ...(this.performanceMode === "base"
+        ? {}
+        : { numCtx: this.promptWindowLimit() }),
+      temperature,
+    });
+  }
+
+  // For streaming we use Langchain's wrapper to handle weird chunks
+  // or otherwise absorb headaches that can arise from Ollama models
+  #convertToLangchainPrototypes(chats = []) {
+    const {
+      HumanMessage,
+      SystemMessage,
+      AIMessage,
+    } = require("@langchain/core/messages");
+    const langchainChats = [];
+    const roleToMessageMap = {
+      system: SystemMessage,
+      user: HumanMessage,
+      assistant: AIMessage,
+    };
+
+    for (const chat of chats) {
+      if (!roleToMessageMap.hasOwnProperty(chat.role)) continue;
+      const MessageClass = roleToMessageMap[chat.role];
+      langchainChats.push(new MessageClass({ content: chat.content }));
+    }
+
+    return langchainChats;
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   #appendContext(contextTexts = []) {
@@ -82,6 +122,7 @@ class OllamaAILLM {
   /**
    * Generates appropriate content array for a message + attachments.
    * @param {{userPrompt:string, attachments: import("../../helpers").Attachment[]}}
+<<<<<<< HEAD
    * @returns {{content: string, images: string[]}}
    */
   #generateContent({ userPrompt, attachments = [] }) {
@@ -105,6 +146,23 @@ class OllamaAILLM {
       default:
         return e;
     }
+=======
+   * @returns {string|object[]}
+   */
+  #generateContent({ userPrompt, attachments = [] }) {
+    if (!attachments.length) {
+      return { content: userPrompt };
+    }
+
+    const content = [{ type: "text", text: userPrompt }];
+    for (let attachment of attachments) {
+      content.push({
+        type: "image_url",
+        image_url: attachment.contentString,
+      });
+    }
+    return { content: content.flat() };
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   /**
@@ -125,7 +183,11 @@ class OllamaAILLM {
     };
     return [
       prompt,
+<<<<<<< HEAD
       ...formatChatHistory(chatHistory, this.#generateContent, "spread"),
+=======
+      ...chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         ...this.#generateContent({ userPrompt, attachments }),

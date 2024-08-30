@@ -13,6 +13,15 @@ const MCPCompatibilityLayer = require("../MCP");
 class AgentHandler {
   #invocationUUID;
   #funcsToLoad = [];
+<<<<<<< HEAD
+=======
+  noProviderModelDefault = {
+    azure: "OPEN_MODEL_PREF",
+    lmstudio: "LMSTUDIO_MODEL_PREF",
+    textgenwebui: null, // does not even use `model` in API req
+    "generic-openai": "GENERIC_OPEN_AI_MODEL_PREF",
+  };
+>>>>>>> 48ef74aa (sync-fork-2)
   invocation = null;
   aibitat = null;
   channel = null;
@@ -197,6 +206,7 @@ class AgentHandler {
     }
   }
 
+<<<<<<< HEAD
   /**
    * Finds the default model for a given provider. If no default model is set for it's associated ENV then
    * it will return a reasonable base model for the provider if one exists.
@@ -205,6 +215,10 @@ class AgentHandler {
    */
   providerDefault(provider = this.provider) {
     switch (provider) {
+=======
+  providerDefault() {
+    switch (this.provider) {
+>>>>>>> 48ef74aa (sync-fork-2)
       case "openai":
         return process.env.OPEN_MODEL_PREF ?? "gpt-4o";
       case "anthropic":
@@ -303,6 +317,7 @@ class AgentHandler {
    * @returns {string|null} the model preference value to use in API calls
    */
   #fetchModel() {
+<<<<<<< HEAD
     // Provider was not explicitly set for workspace, so we are going to run our fallback logic
     // that will set a provider and model for us to use.
     if (!this.provider) {
@@ -318,6 +333,18 @@ class AgentHandler {
 
     // Otherwise, we have no model to use - so guess a default model to use via the provider
     // and it's system ENV params and if that fails - we return either a base model or null.
+=======
+    if (!Object.keys(this.noProviderModelDefault).includes(this.provider))
+      return this.invocation.workspace.agentModel || this.providerDefault();
+
+    // Provider has no reliable default (cant load many models) - so we need to look at system
+    // for the model param.
+    const sysModelKey = this.noProviderModelDefault[this.provider];
+    if (!!sysModelKey)
+      return process.env[sysModelKey] ?? this.providerDefault();
+
+    // If all else fails - look at the provider default list
+>>>>>>> 48ef74aa (sync-fork-2)
     return this.providerDefault();
   }
 

@@ -165,6 +165,7 @@ class AWSBedrockLLM {
     return "streamGetChatCompletion" in this;
   }
 
+<<<<<<< HEAD
   /**
    * @static
    * Gets the total prompt window limit (total context window: input + output) from the environment variable.
@@ -183,6 +184,22 @@ class AWSBedrockLLM {
       return DEFAULT_CONTEXT_WINDOW_TOKENS;
     }
     return numericLimit;
+=======
+  static promptWindowLimit(_modelName) {
+    const limit = process.env.AWS_BEDROCK_LLM_MODEL_TOKEN_LIMIT || 8191;
+    if (!limit || isNaN(Number(limit)))
+      throw new Error("No valid token context limit was set.");
+    return Number(limit);
+  }
+
+  // Ensure the user set a value for the token limit
+  // and if undefined - assume 4096 window.
+  promptWindowLimit() {
+    const limit = process.env.AWS_BEDROCK_LLM_MODEL_TOKEN_LIMIT || 8191;
+    if (!limit || isNaN(Number(limit)))
+      throw new Error("No valid token context limit was set.");
+    return Number(limit);
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   /**
@@ -225,6 +242,7 @@ class AWSBedrockLLM {
   }
 
   /**
+<<<<<<< HEAD
    * Validates attachments array and returns a new array with valid attachments.
    * @param {Array<{contentString: string, mime: string}>} attachments - Array of attachments.
    * @returns {Array<{image: {format: string, source: {bytes: Uint8Array}}>} Array of valid attachments.
@@ -306,6 +324,31 @@ class AWSBedrockLLM {
    * @param {string} params.userPrompt - The latest user prompt text.
    * @param {Array<{contentString: string, mime: string}>} params.attachments - Attachments for the latest user prompt.
    * @returns {Array<object>} The formatted message array for the API call.
+=======
+   * Generates appropriate content array for a message + attachments.
+   * @param {{userPrompt:string, attachments: import("../../helpers").Attachment[]}}
+   * @returns {string|object[]}
+   */
+  #generateContent({ userPrompt, attachments = [] }) {
+    if (!attachments.length) {
+      return { content: userPrompt };
+    }
+
+    const content = [{ type: "text", text: userPrompt }];
+    for (let attachment of attachments) {
+      content.push({
+        type: "image_url",
+        image_url: attachment.contentString,
+      });
+    }
+    return { content: content.flat() };
+  }
+
+  /**
+   * Construct the user prompt for this model.
+   * @param {{attachments: import("../../helpers").Attachment[]}} param0
+   * @returns
+>>>>>>> 48ef74aa (sync-fork-2)
    */
   constructPrompt({
     systemPrompt = "",
@@ -314,6 +357,7 @@ class AWSBedrockLLM {
     userPrompt = "",
     attachments = [],
   }) {
+<<<<<<< HEAD
     const systemMessageContent = `${systemPrompt}${this.#appendContext(contextTexts)}`;
     let messages = [];
 
@@ -361,6 +405,30 @@ class AWSBedrockLLM {
     });
 
     return messages;
+=======
+    // AWS Mistral models do not support system prompts
+    if (this.model.startsWith("mistral"))
+      return [
+        ...chatHistory,
+        {
+          role: "user",
+          ...this.#generateContent({ userPrompt, attachments }),
+        },
+      ];
+
+    const prompt = {
+      role: "system",
+      content: `${systemPrompt}${this.#appendContext(contextTexts)}`,
+    };
+    return [
+      prompt,
+      ...chatHistory,
+      {
+        role: "user",
+        ...this.#generateContent({ userPrompt, attachments }),
+      },
+    ];
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   /**

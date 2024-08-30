@@ -6,8 +6,11 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { PROMPT_INPUT_EVENT } from "../../PromptInput";
+<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
 import Appearance from "@/models/appearance";
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 let timeout;
 const SILENCE_INTERVAL = 3_200; // wait in seconds of silence before closing.
@@ -57,21 +60,35 @@ export default function SpeechToText({ sendCommand }) {
 
   const handleKeyPress = useCallback(
     (event) => {
+<<<<<<< HEAD
       // CTRL + m on Mac and Windows to toggle STT listening
       if (event.ctrlKey && event.keyCode === 77) {
         if (listening) {
           endSTTSession();
+=======
+      if (event.ctrlKey && event.keyCode === 77) {
+        if (listening) {
+          endTTSSession();
+>>>>>>> 48ef74aa (sync-fork-2)
         } else {
           startSTTSession();
         }
       }
     },
+<<<<<<< HEAD
     [listening, endSTTSession, startSTTSession]
+=======
+    [listening, endTTSSession, startSTTSession]
+>>>>>>> 48ef74aa (sync-fork-2)
   );
 
   function handlePromptUpdate(e) {
     if (!e?.detail && timeout) {
+<<<<<<< HEAD
       endSTTSession();
+=======
+      endTTSSession();
+>>>>>>> 48ef74aa (sync-fork-2)
       clearTimeout(timeout);
     }
   }
@@ -114,8 +131,12 @@ export default function SpeechToText({ sendCommand }) {
     >
       <Microphone
         weight="fill"
+<<<<<<< HEAD
         color="var(--theme-sidebar-footer-icon-fill)"
         className={`w-[22px] h-[22px] pointer-events-none text-theme-text-primary ${
+=======
+        className={`w-6 h-6 pointer-events-none text-white overflow-hidden rounded-full ${
+>>>>>>> 48ef74aa (sync-fork-2)
           listening ? "animate-pulse-glow" : ""
         }`}
       />

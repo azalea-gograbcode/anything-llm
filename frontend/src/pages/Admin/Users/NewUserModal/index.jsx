@@ -7,10 +7,13 @@ import { MessageLimitInput, RoleHintDisplay } from "..";
 export default function NewUserModal({ closeModal }) {
   const [error, setError] = useState(null);
   const [role, setRole] = useState("default");
+<<<<<<< HEAD
   const [messageLimit, setMessageLimit] = useState({
     enabled: false,
     limit: 10,
   });
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
   const handleCreate = async (e) => {
     setError(null);
@@ -62,10 +65,22 @@ export default function NewUserModal({ closeModal }) {
                   minLength={2}
                   required={true}
                   autoComplete="off"
+                  pattern="^[a-z0-9_-]+$"
+                  onInvalid={(e) =>
+                    e.target.setCustomValidity(
+                      "Username must be only contain lowercase letters, numbers, underscores, and hyphens with no spaces"
+                    )
+                  }
+                  onChange={(e) => e.target.setCustomValidity("")}
                 />
                 <p className="mt-2 text-xs text-white/60">
+<<<<<<< HEAD
                   Username must only contain lowercase letters, periods,
                   numbers, underscores, and hyphens with no spaces
+=======
+                  Username must be only contain lowercase letters, numbers,
+                  underscores, and hyphens with no spaces
+>>>>>>> 48ef74aa (sync-fork-2)
                 </p>
               </div>
               <div>
@@ -83,6 +98,7 @@ export default function NewUserModal({ closeModal }) {
                   required={true}
                   autoComplete="off"
                   minLength={8}
+<<<<<<< HEAD
                 />
                 <p className="mt-2 text-xs text-white/60">
                   Password must be at least 8 characters long
@@ -101,7 +117,12 @@ export default function NewUserModal({ closeModal }) {
                   placeholder="User's bio"
                   autoComplete="off"
                   rows={3}
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
                 />
+                <p className="mt-2 text-xs text-white/60">
+                  Password must be at least 8 characters long
+                </p>
               </div>
               <div>
                 <label
@@ -115,7 +136,11 @@ export default function NewUserModal({ closeModal }) {
                   required={true}
                   defaultValue={"default"}
                   onChange={(e) => setRole(e.target.value)}
+<<<<<<< HEAD
                   className="border-none bg-theme-settings-input-bg w-full text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
+=======
+                  className="rounded-lg bg-zinc-900 px-4 py-2 text-sm text-white border-gray-500 focus:ring-blue-500 focus:border-blue-500 w-full"
+>>>>>>> 48ef74aa (sync-fork-2)
                 >
                   <option value="default">Default</option>
                   <option value="manager">Manager</option>

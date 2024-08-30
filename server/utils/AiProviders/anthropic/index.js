@@ -6,9 +6,12 @@ const {
 } = require("../../helpers/chat/responses");
 const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const { MODEL_MAP } = require("../modelMap");
+<<<<<<< HEAD
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 
 class AnthropicLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -46,6 +49,13 @@ class AnthropicLLM {
 
   static promptWindowLimit(modelName) {
     return MODEL_MAP.anthropic[modelName] ?? 100_000;
+<<<<<<< HEAD
+=======
+  }
+
+  promptWindowLimit() {
+    return MODEL_MAP.anthropic[this.model] ?? 100_000;
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   promptWindowLimit() {
@@ -54,6 +64,30 @@ class AnthropicLLM {
 
   isValidChatCompletionModel(_modelName = "") {
     return true;
+  }
+
+  /**
+   * Generates appropriate content array for a message + attachments.
+   * @param {{userPrompt:string, attachments: import("../../helpers").Attachment[]}}
+   * @returns {string|object[]}
+   */
+  #generateContent({ userPrompt, attachments = [] }) {
+    if (!attachments.length) {
+      return userPrompt;
+    }
+
+    const content = [{ type: "text", text: userPrompt }];
+    for (let attachment of attachments) {
+      content.push({
+        type: "image",
+        source: {
+          type: "base64",
+          media_type: attachment.mime,
+          data: attachment.contentString.split("base64,")[1],
+        },
+      });
+    }
+    return content.flat();
   }
 
   /**
@@ -94,7 +128,11 @@ class AnthropicLLM {
 
     return [
       prompt,
+<<<<<<< HEAD
       ...formatChatHistory(chatHistory, this.#generateContent),
+=======
+      ...chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),

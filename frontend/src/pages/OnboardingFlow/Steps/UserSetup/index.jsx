@@ -298,7 +298,13 @@ const MyTeam = ({ setMultiUserLoginValid, myTeamSubmitRef, navigate }) => {
                 />
               </div>
               <p className=" text-white text-opacity-80 text-xs font-base">
+<<<<<<< HEAD
                 {t("onboarding.userSetup.adminUsernameReq")}
+=======
+                Username must be at least 6 characters long and only contain
+                lowercase letters, numbers, underscores, and hyphens with no
+                spaces.
+>>>>>>> 48ef74aa (sync-fork-2)
               </p>
               <div className="mt-4">
                 <label
@@ -319,7 +325,11 @@ const MyTeam = ({ setMultiUserLoginValid, myTeamSubmitRef, navigate }) => {
                 />
               </div>
               <p className=" text-white text-opacity-80 text-xs font-base">
+<<<<<<< HEAD
                 {t("onboarding.userSetup.adminPasswordReq")}
+=======
+                Password must be at least 8 characters long.
+>>>>>>> 48ef74aa (sync-fork-2)
               </p>
             </div>
           </div>

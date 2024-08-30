@@ -80,8 +80,13 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
                   autoComplete="off"
                 />
                 <p className="mt-2 text-xs text-white/60">
+<<<<<<< HEAD
                   Username must only contain lowercase letters, periods,
                   numbers, underscores, and hyphens with no spaces
+=======
+                  Username must be only contain lowercase letters, numbers,
+                  underscores, and hyphens with no spaces
+>>>>>>> 48ef74aa (sync-fork-2)
                 </p>
               </div>
               <div>
@@ -98,6 +103,7 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
                   placeholder={`${user.username}'s new password`}
                   autoComplete="off"
                   minLength={8}
+<<<<<<< HEAD
                 />
                 <p className="mt-2 text-xs text-white/60">
                   Password must be at least 8 characters long
@@ -117,7 +123,12 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
                   defaultValue={user.bio}
                   autoComplete="off"
                   rows={3}
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
                 />
+                <p className="mt-2 text-xs text-white/60">
+                  Password must be at least 8 characters long
+                </p>
               </div>
               <div>
                 <label
@@ -131,7 +142,11 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
                   required={true}
                   defaultValue={user.role}
                   onChange={(e) => setRole(e.target.value)}
+<<<<<<< HEAD
                   className="border-none bg-theme-settings-input-bg w-full text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
+=======
+                  className="rounded-lg bg-zinc-900 px-4 py-2 text-sm text-white border-gray-500 focus:ring-blue-500 focus:border-blue-500 w-full"
+>>>>>>> 48ef74aa (sync-fork-2)
                 >
                   <option value="default">Default</option>
                   <option value="manager">Manager</option>

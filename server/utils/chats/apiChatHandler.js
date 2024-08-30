@@ -3,12 +3,16 @@ const { DocumentManager } = require("../DocumentManager");
 const { WorkspaceChats } = require("../../models/workspaceChats");
 const { getVectorDbClass, getLLMProvider } = require("../helpers");
 const { writeResponseChunk } = require("../helpers/chat/responses");
+<<<<<<< HEAD
 const {
   chatPrompt,
   sourceIdentifier,
   recentChatHistory,
   grepAllSlashCommands,
 } = require("./index");
+=======
+const { chatPrompt, sourceIdentifier, recentChatHistory } = require("./index");
+>>>>>>> 48ef74aa (sync-fork-2)
 const {
   EphemeralAgentHandler,
   EphemeralEventListener,
@@ -23,7 +27,10 @@ const { Telemetry } = require("../../models/telemetry");
  * @property {object[]} sources
  * @property {boolean} close
  * @property {string|null} error
+<<<<<<< HEAD
  * @property {object} metrics
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
  */
 
 /**
@@ -35,8 +42,11 @@ const { Telemetry } = require("../../models/telemetry");
  *  user: import("@prisma/client").users|null,
  *  thread: import("@prisma/client").workspace_threads|null,
  *  sessionId: string|null,
+<<<<<<< HEAD
  *  attachments: { name: string; mime: string; contentString: string }[],
  *  reset: boolean,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
  * }} parameters
  * @returns {Promise<ResponseObject>}
  */
@@ -47,12 +57,16 @@ async function chatSync({
   user = null,
   thread = null,
   sessionId = null,
+<<<<<<< HEAD
   attachments = [],
   reset = false,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 }) {
   const uuid = uuidv4();
   const chatMode = mode ?? "chat";
 
+<<<<<<< HEAD
   // If the user wants to reset the chat history we do so pre-flight
   // and continue execution. If no message is provided then the user intended
   // to reset the chat history only and we can exit early with a confirmation.
@@ -81,6 +95,8 @@ async function chatSync({
   const processedMessage = await grepAllSlashCommands(message);
   message = processedMessage;
 
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   if (EphemeralAgentHandler.isAgentInvocation({ message })) {
     await Telemetry.sendTelemetry("agent_chat_started");
 
@@ -115,7 +131,10 @@ async function chatSync({
           response: {
             text: textResponse,
             sources: [],
+<<<<<<< HEAD
             attachments,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
             type: chatMode,
             thoughts,
           },
@@ -156,9 +175,13 @@ async function chatSync({
       response: {
         text: textResponse,
         sources: [],
+<<<<<<< HEAD
         attachments: attachments,
         type: chatMode,
         metrics: {},
+=======
+        type: chatMode,
+>>>>>>> 48ef74aa (sync-fork-2)
       },
       include: false,
       apiSessionId: sessionId,
@@ -171,7 +194,10 @@ async function chatSync({
       close: true,
       error: null,
       textResponse,
+<<<<<<< HEAD
       metrics: {},
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     };
   }
 
@@ -217,7 +243,10 @@ async function chatSync({
           similarityThreshold: workspace?.similarityThreshold,
           topN: workspace?.topN,
           filterIdentifiers: pinnedDocIdentifiers,
+<<<<<<< HEAD
           rerank: workspace?.vectorSearchMode === "rerank",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         })
       : {
           contextTexts: [],
@@ -234,7 +263,10 @@ async function chatSync({
       sources: [],
       close: true,
       error: vectorSearchResults.message,
+<<<<<<< HEAD
       metrics: {},
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     };
   }
 
@@ -269,9 +301,13 @@ async function chatSync({
       response: {
         text: textResponse,
         sources: [],
+<<<<<<< HEAD
         attachments: attachments,
         type: chatMode,
         metrics: {},
+=======
+        type: chatMode,
+>>>>>>> 48ef74aa (sync-fork-2)
       },
       threadId: thread?.id || null,
       include: false,
@@ -286,7 +322,10 @@ async function chatSync({
       close: true,
       error: null,
       textResponse,
+<<<<<<< HEAD
       metrics: {},
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     };
   }
 
@@ -294,20 +333,33 @@ async function chatSync({
   // and build system messages based on inputs and history.
   const messages = await LLMConnector.compressMessages(
     {
+<<<<<<< HEAD
       systemPrompt: await chatPrompt(workspace, user),
       userPrompt: message,
       contextTexts,
       chatHistory,
       attachments,
+=======
+      systemPrompt: chatPrompt(workspace),
+      userPrompt: message,
+      contextTexts,
+      chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
     },
     rawHistory
   );
 
   // Send the text completion.
+<<<<<<< HEAD
   const { textResponse, metrics: performanceMetrics } =
     await LLMConnector.getChatCompletion(messages, {
       temperature: workspace?.openAiTemp ?? LLMConnector.defaultTemp,
     });
+=======
+  const textResponse = await LLMConnector.getChatCompletion(messages, {
+    temperature: workspace?.openAiTemp ?? LLMConnector.defaultTemp,
+  });
+>>>>>>> 48ef74aa (sync-fork-2)
 
   if (!textResponse) {
     return {
@@ -317,13 +369,17 @@ async function chatSync({
       sources: [],
       close: true,
       error: "No text completion could be completed with this input.",
+<<<<<<< HEAD
       metrics: performanceMetrics,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     };
   }
 
   const { chat } = await WorkspaceChats.new({
     workspaceId: workspace.id,
     prompt: message,
+<<<<<<< HEAD
     response: {
       text: textResponse,
       sources,
@@ -331,6 +387,9 @@ async function chatSync({
       type: chatMode,
       metrics: performanceMetrics,
     },
+=======
+    response: { text: textResponse, sources, type: chatMode },
+>>>>>>> 48ef74aa (sync-fork-2)
     threadId: thread?.id || null,
     apiSessionId: sessionId,
     user,
@@ -344,7 +403,10 @@ async function chatSync({
     chatId: chat.id,
     textResponse,
     sources,
+<<<<<<< HEAD
     metrics: performanceMetrics,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   };
 }
 
@@ -358,8 +420,11 @@ async function chatSync({
  *  user: import("@prisma/client").users|null,
  *  thread: import("@prisma/client").workspace_threads|null,
  *  sessionId: string|null,
+<<<<<<< HEAD
  *  attachments: { name: string; mime: string; contentString: string }[],
  *  reset: boolean,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
  * }} parameters
  * @returns {Promise<VoidFunction>}
  */
@@ -371,12 +436,16 @@ async function streamChat({
   user = null,
   thread = null,
   sessionId = null,
+<<<<<<< HEAD
   attachments = [],
   reset = false,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
 }) {
   const uuid = uuidv4();
   const chatMode = mode ?? "chat";
 
+<<<<<<< HEAD
   // If the user wants to reset the chat history we do so pre-flight
   // and continue execution. If no message is provided then the user intended
   // to reset the chat history only and we can exit early with a confirmation.
@@ -407,6 +476,8 @@ async function streamChat({
   const processedMessage = await grepAllSlashCommands(message);
   message = processedMessage;
 
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   if (EphemeralAgentHandler.isAgentInvocation({ message })) {
     await Telemetry.sendTelemetry("agent_chat_started");
 
@@ -441,7 +512,10 @@ async function streamChat({
           response: {
             text: textResponse,
             sources: [],
+<<<<<<< HEAD
             attachments: attachments,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
             type: chatMode,
             thoughts,
           },
@@ -483,7 +557,10 @@ async function streamChat({
       attachments: [],
       close: true,
       error: null,
+<<<<<<< HEAD
       metrics: {},
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     });
     await WorkspaceChats.new({
       workspaceId: workspace.id,
@@ -491,9 +568,14 @@ async function streamChat({
       response: {
         text: textResponse,
         sources: [],
+<<<<<<< HEAD
         attachments: attachments,
         type: chatMode,
         metrics: {},
+=======
+        type: chatMode,
+        attachments: [],
+>>>>>>> 48ef74aa (sync-fork-2)
       },
       threadId: thread?.id || null,
       apiSessionId: sessionId,
@@ -507,7 +589,10 @@ async function streamChat({
   // 1. Chatting in "chat" mode and may or may _not_ have embeddings
   // 2. Chatting in "query" mode and has at least 1 embedding
   let completeText;
+<<<<<<< HEAD
   let metrics = {};
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   let contextTexts = [];
   let sources = [];
   let pinnedDocIdentifiers = [];
@@ -553,7 +638,10 @@ async function streamChat({
           similarityThreshold: workspace?.similarityThreshold,
           topN: workspace?.topN,
           filterIdentifiers: pinnedDocIdentifiers,
+<<<<<<< HEAD
           rerank: workspace?.vectorSearchMode === "rerank",
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
         })
       : {
           contextTexts: [],
@@ -570,7 +658,10 @@ async function streamChat({
       sources: [],
       close: true,
       error: vectorSearchResults.message,
+<<<<<<< HEAD
       metrics: {},
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     });
     return;
   }
@@ -606,7 +697,10 @@ async function streamChat({
       sources: [],
       close: true,
       error: null,
+<<<<<<< HEAD
       metrics: {},
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     });
 
     await WorkspaceChats.new({
@@ -615,9 +709,14 @@ async function streamChat({
       response: {
         text: textResponse,
         sources: [],
+<<<<<<< HEAD
         attachments: attachments,
         type: chatMode,
         metrics: {},
+=======
+        type: chatMode,
+        attachments: [],
+>>>>>>> 48ef74aa (sync-fork-2)
       },
       threadId: thread?.id || null,
       apiSessionId: sessionId,
@@ -631,11 +730,18 @@ async function streamChat({
   // and build system messages based on inputs and history.
   const messages = await LLMConnector.compressMessages(
     {
+<<<<<<< HEAD
       systemPrompt: await chatPrompt(workspace, user),
       userPrompt: message,
       contextTexts,
       chatHistory,
       attachments,
+=======
+      systemPrompt: chatPrompt(workspace),
+      userPrompt: message,
+      contextTexts,
+      chatHistory,
+>>>>>>> 48ef74aa (sync-fork-2)
     },
     rawHistory
   );
@@ -646,12 +752,18 @@ async function streamChat({
     console.log(
       `\x1b[31m[STREAMING DISABLED]\x1b[0m Streaming is not available for ${LLMConnector.constructor.name}. Will use regular chat method.`
     );
+<<<<<<< HEAD
     const { textResponse, metrics: performanceMetrics } =
       await LLMConnector.getChatCompletion(messages, {
         temperature: workspace?.openAiTemp ?? LLMConnector.defaultTemp,
       });
     completeText = textResponse;
     metrics = performanceMetrics;
+=======
+    completeText = await LLMConnector.getChatCompletion(messages, {
+      temperature: workspace?.openAiTemp ?? LLMConnector.defaultTemp,
+    });
+>>>>>>> 48ef74aa (sync-fork-2)
     writeResponseChunk(response, {
       uuid,
       sources,
@@ -659,7 +771,10 @@ async function streamChat({
       textResponse: completeText,
       close: true,
       error: false,
+<<<<<<< HEAD
       metrics,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     });
   } else {
     const stream = await LLMConnector.streamGetChatCompletion(messages, {
@@ -669,13 +784,17 @@ async function streamChat({
       uuid,
       sources,
     });
+<<<<<<< HEAD
     metrics = stream.metrics;
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
   }
 
   if (completeText?.length > 0) {
     const { chat } = await WorkspaceChats.new({
       workspaceId: workspace.id,
       prompt: message,
+<<<<<<< HEAD
       response: {
         text: completeText,
         sources,
@@ -683,6 +802,9 @@ async function streamChat({
         metrics,
         attachments,
       },
+=======
+      response: { text: completeText, sources, type: chatMode },
+>>>>>>> 48ef74aa (sync-fork-2)
       threadId: thread?.id || null,
       apiSessionId: sessionId,
       user,
@@ -694,7 +816,10 @@ async function streamChat({
       close: true,
       error: false,
       chatId: chat.id,
+<<<<<<< HEAD
       metrics,
+=======
+>>>>>>> 48ef74aa (sync-fork-2)
     });
     return;
   }
