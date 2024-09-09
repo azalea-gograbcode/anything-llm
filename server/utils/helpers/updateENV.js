@@ -551,6 +551,10 @@ const KEY_MAPPING = {
     envKey: "AZURE_AD_TENANT_ID",
     checks: [isNotEmpty],
   },
+  AzureADGroups: {
+    envKey: "AZURE_AD_GROUPS",
+    checks: [isNotEmpty],
+  },
 
   // TTS/STT Integration ENVS
   TextToSpeechProvider: {
