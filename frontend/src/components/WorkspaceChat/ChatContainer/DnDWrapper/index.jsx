@@ -9,10 +9,7 @@ import useUser from "@/hooks/useUser";
 export const DndUploaderContext = createContext();
 export const REMOVE_ATTACHMENT_EVENT = "ATTACHMENT_REMOVE";
 export const CLEAR_ATTACHMENTS_EVENT = "ATTACHMENT_CLEAR";
-<<<<<<< HEAD
 export const PASTE_ATTACHMENT_EVENT = "ATTACHMENT_PASTED";
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 /**
  * File Attachment for automatic upload on the chat container page.
@@ -33,31 +30,22 @@ export function DnDFileUploaderProvider({ workspace, children }) {
   const { user } = useUser();
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
     if (!!user && user.role === "default") return false;
->>>>>>> 48ef74aa (sync-fork-2)
     System.checkDocumentProcessorOnline().then((status) => setReady(status));
   }, [user]);
 
   useEffect(() => {
     window.addEventListener(REMOVE_ATTACHMENT_EVENT, handleRemove);
     window.addEventListener(CLEAR_ATTACHMENTS_EVENT, resetAttachments);
-<<<<<<< HEAD
     window.addEventListener(PASTE_ATTACHMENT_EVENT, handlePastedAttachment);
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
     return () => {
       window.removeEventListener(REMOVE_ATTACHMENT_EVENT, handleRemove);
       window.removeEventListener(CLEAR_ATTACHMENTS_EVENT, resetAttachments);
-<<<<<<< HEAD
       window.removeEventListener(
         PASTE_ATTACHMENT_EVENT,
         handlePastedAttachment
       );
-=======
->>>>>>> 48ef74aa (sync-fork-2)
     };
   }, []);
 
@@ -105,7 +93,6 @@ export function DnDFileUploaderProvider({ workspace, children }) {
   }
 
   /**
-<<<<<<< HEAD
    * Handle pasted attachments.
    * @param {CustomEvent<{files: File[]}>} event
    */
@@ -124,8 +111,6 @@ export function DnDFileUploaderProvider({ workspace, children }) {
           type: "attachment",
         });
       } else {
-        // If the user is a default user, we do not want to allow them to upload files.
-        if (!!user && user.role === "default") continue;
         newAccepted.push({
           uid: v4(),
           file,
@@ -141,8 +126,6 @@ export function DnDFileUploaderProvider({ workspace, children }) {
   }
 
   /**
-=======
->>>>>>> 48ef74aa (sync-fork-2)
    * Handle dropped files.
    * @param {Attachment[]} acceptedFiles
    * @param {any[]} _rejections
@@ -163,11 +146,6 @@ export function DnDFileUploaderProvider({ workspace, children }) {
           type: "attachment",
         });
       } else {
-<<<<<<< HEAD
-        // If the user is a default user, we do not want to allow them to upload files.
-        if (!!user && user.role === "default") continue;
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         newAccepted.push({
           uid: v4(),
           file,
@@ -180,7 +158,6 @@ export function DnDFileUploaderProvider({ workspace, children }) {
     }
 
     setFiles((prev) => [...prev, ...newAccepted]);
-<<<<<<< HEAD
     embedEligibleAttachments(newAccepted);
   }
 
@@ -190,10 +167,6 @@ export function DnDFileUploaderProvider({ workspace, children }) {
    */
   function embedEligibleAttachments(newAttachments = []) {
     for (const attachment of newAttachments) {
-=======
-
-    for (const attachment of newAccepted) {
->>>>>>> 48ef74aa (sync-fork-2)
       // Images/attachments are chat specific.
       if (attachment.type === "attachment") continue;
 
@@ -243,11 +216,6 @@ export default function DnDFileUploaderWrapper({ children }) {
     onDragEnter: () => setDragging(true),
     onDragLeave: () => setDragging(false),
   });
-<<<<<<< HEAD
-  const { user } = useUser();
-  const canUploadAll = !user || user?.role !== "default";
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
   return (
     <div
@@ -256,37 +224,15 @@ export default function DnDFileUploaderWrapper({ children }) {
     >
       <div
         hidden={!dragging}
-<<<<<<< HEAD
-        className="absolute top-0 w-full h-full bg-dark-text/90 light:bg-[#C2E7FE]/90 rounded-2xl border-[4px] border-white z-[9999]"
-=======
         className="absolute top-0 w-full h-full bg-dark-text/90 rounded-2xl border-[4px] border-white z-[9999]"
->>>>>>> 48ef74aa (sync-fork-2)
       >
         <div className="w-full h-full flex justify-center items-center rounded-xl">
           <div className="flex flex-col gap-y-[14px] justify-center items-center">
             <img src={DndIcon} width={69} height={69} />
-<<<<<<< HEAD
-            <p className="text-white text-[24px] font-semibold">
-              Add {canUploadAll ? "anything" : "an image"}
-            </p>
-            <p className="text-white text-[16px] text-center">
-              {canUploadAll ? (
-                <>
-                  Drop your file here to embed it into your <br />
-                  workspace auto-magically.
-                </>
-              ) : (
-                <>
-                  Drop your image here to chat with it <br />
-                  auto-magically.
-                </>
-              )}
-=======
             <p className="text-white text-[24px] font-semibold">Add anything</p>
             <p className="text-white text-[16px] text-center">
               Drop your file here to embed it into your <br />
               workspace auto-magically.
->>>>>>> 48ef74aa (sync-fork-2)
             </p>
           </div>
         </div>
@@ -300,11 +246,7 @@ export default function DnDFileUploaderWrapper({ children }) {
 /**
  * Convert image types into Base64 strings for requests.
  * @param {File} file
-<<<<<<< HEAD
  * @returns {Promise<string>}
-=======
- * @returns {string}
->>>>>>> 48ef74aa (sync-fork-2)
  */
 async function toBase64(file) {
   return new Promise((resolve, reject) => {

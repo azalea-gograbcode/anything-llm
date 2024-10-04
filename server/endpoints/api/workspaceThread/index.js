@@ -3,14 +3,7 @@ const { WorkspaceThread } = require("../../../models/workspaceThread");
 const { Workspace } = require("../../../models/workspace");
 const { validApiKey } = require("../../../utils/middleware/validApiKey");
 const { reqBody, multiUserMode } = require("../../../utils/http");
-<<<<<<< HEAD
 const { VALID_CHAT_MODE } = require("../../../utils/chats/stream");
-=======
-const {
-  streamChatWithWorkspace,
-  VALID_CHAT_MODE,
-} = require("../../../utils/chats/stream");
->>>>>>> 48ef74aa (sync-fork-2)
 const { Telemetry } = require("../../../models/telemetry");
 const { EventLogs } = require("../../../models/eventLogs");
 const {
@@ -20,10 +13,6 @@ const {
 const { WorkspaceChats } = require("../../../models/workspaceChats");
 const { User } = require("../../../models/user");
 const { ApiChatHandler } = require("../../../utils/chats/apiChatHandler");
-<<<<<<< HEAD
-const { getModelTag } = require("../../utils");
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 function apiWorkspaceThreadEndpoints(app) {
   if (!app) return;
@@ -42,14 +31,12 @@ function apiWorkspaceThreadEndpoints(app) {
           type: 'string'
       }
       #swagger.requestBody = {
-        description: 'Optional userId associated with the thread, thread slug and thread name',
+        description: 'Optional userId associated with the thread',
         required: false,
         content: {
           "application/json": {
             example: {
-              userId: 1,
-              name: 'Name',
-              slug: 'thread-slug'
+              userId: 1
             }
           }
         }
@@ -80,9 +67,9 @@ function apiWorkspaceThreadEndpoints(app) {
       }
       */
       try {
-        const wslug = request.params.slug;
-        let { userId = null, name = null, slug = null } = reqBody(request);
-        const workspace = await Workspace.get({ slug: wslug });
+        const { slug } = request.params;
+        let { userId = null } = reqBody(request);
+        const workspace = await Workspace.get({ slug });
 
         if (!workspace) {
           response.sendStatus(400).end();
@@ -96,8 +83,7 @@ function apiWorkspaceThreadEndpoints(app) {
 
         const { thread, message } = await WorkspaceThread.new(
           workspace,
-          userId ? Number(userId) : null,
-          { name, slug }
+          userId ? Number(userId) : null
         );
 
         await Telemetry.sendTelemetry("workspace_thread_created", {
@@ -355,15 +341,7 @@ function apiWorkspaceThreadEndpoints(app) {
             example: {
               message: "What is AnythingLLM?",
               mode: "query | chat",
-              userId: 1,
-              attachments: [
-               {
-                 name: "image.png",
-                 mime: "image/png",
-                 contentString: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
-               }
-              ],
-              reset: false
+              userId: 1
             }
           }
         }
@@ -393,13 +371,7 @@ function apiWorkspaceThreadEndpoints(app) {
       */
       try {
         const { slug, threadSlug } = request.params;
-        const {
-          message,
-          mode = "query",
-          userId,
-          attachments = [],
-          reset = false,
-        } = reqBody(request);
+        const { message, mode = "query", userId } = reqBody(request);
         const workspace = await Workspace.get({ slug });
         const thread = await WorkspaceThread.get({
           slug: threadSlug,
@@ -418,7 +390,7 @@ function apiWorkspaceThreadEndpoints(app) {
           return;
         }
 
-        if ((!message?.length || !VALID_CHAT_MODE.includes(mode)) && !reset) {
+        if (!message?.length || !VALID_CHAT_MODE.includes(mode)) {
           response.status(400).json({
             id: uuidv4(),
             type: "abort",
@@ -426,7 +398,7 @@ function apiWorkspaceThreadEndpoints(app) {
             sources: [],
             close: true,
             error: !message?.length
-              ? "Message is empty"
+              ? "message parameter cannot be empty."
               : `${mode} is not a valid mode.`,
           });
           return;
@@ -439,21 +411,12 @@ function apiWorkspaceThreadEndpoints(app) {
           mode,
           user,
           thread,
-<<<<<<< HEAD
-          attachments,
-          reset,
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
         await Telemetry.sendTelemetry("sent_chat", {
           LLMSelection: process.env.LLM_PROVIDER || "openai",
           Embedder: process.env.EMBEDDING_ENGINE || "inherit",
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
           TTSSelection: process.env.TTS_PROVIDER || "native",
-<<<<<<< HEAD
-          LLMModel: getModelTag(),
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
         await EventLogs.logEvent("api_sent_chat", {
           workspaceName: workspace?.name,
@@ -503,15 +466,7 @@ function apiWorkspaceThreadEndpoints(app) {
             example: {
               message: "What is AnythingLLM?",
               mode: "query | chat",
-              userId: 1,
-              attachments: [
-               {
-                 name: "image.png",
-                 mime: "image/png",
-                 contentString: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
-               }
-              ],
-              reset: false
+              userId: 1
             }
           }
         }
@@ -562,13 +517,7 @@ function apiWorkspaceThreadEndpoints(app) {
       */
       try {
         const { slug, threadSlug } = request.params;
-        const {
-          message,
-          mode = "query",
-          userId,
-          attachments = [],
-          reset = false,
-        } = reqBody(request);
+        const { message, mode = "query", userId } = reqBody(request);
         const workspace = await Workspace.get({ slug });
         const thread = await WorkspaceThread.get({
           slug: threadSlug,
@@ -587,7 +536,7 @@ function apiWorkspaceThreadEndpoints(app) {
           return;
         }
 
-        if ((!message?.length || !VALID_CHAT_MODE.includes(mode)) && !reset) {
+        if (!message?.length || !VALID_CHAT_MODE.includes(mode)) {
           response.status(400).json({
             id: uuidv4(),
             type: "abort",
@@ -616,21 +565,12 @@ function apiWorkspaceThreadEndpoints(app) {
           mode,
           user,
           thread,
-<<<<<<< HEAD
-          attachments,
-          reset,
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
         await Telemetry.sendTelemetry("sent_chat", {
           LLMSelection: process.env.LLM_PROVIDER || "openai",
           Embedder: process.env.EMBEDDING_ENGINE || "inherit",
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
           TTSSelection: process.env.TTS_PROVIDER || "native",
-<<<<<<< HEAD
-          LLMModel: getModelTag(),
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
         await EventLogs.logEvent("api_sent_chat", {
           workspaceName: workspace?.name,

@@ -1,10 +1,6 @@
 const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const {
-  LLMPerformanceMonitor,
-} = require("../../helpers/chat/LLMPerformanceMonitor");
-const {
   handleDefaultStreamResponseV2,
-  formatChatHistory,
 } = require("../../helpers/chat/responses");
 
 class MistralLLM {
@@ -27,11 +23,6 @@ class MistralLLM {
 
     this.embedder = embedder ?? new NativeEmbedder();
     this.defaultTemp = 0.0;
-    this.log("Initialized with model:", this.model);
-  }
-
-  log(text, ...args) {
-    console.log(`\x1b[36m[${this.constructor.name}]\x1b[0m ${text}`, ...args);
   }
 
   #appendContext(contextTexts = []) {
@@ -98,7 +89,7 @@ class MistralLLM {
     };
     return [
       prompt,
-      ...formatChatHistory(chatHistory, this.#generateContent),
+      ...chatHistory,
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),
@@ -112,34 +103,15 @@ class MistralLLM {
         `Mistral chat: ${this.model} is not valid for chat completion!`
       );
 
-    const result = await LLMPerformanceMonitor.measureAsyncFunction(
-      this.openai.chat.completions
-        .create({
-          model: this.model,
-          messages,
-          temperature,
-        })
-        .catch((e) => {
-          throw new Error(e.message);
-        })
-    );
+    const result = await this.openai.chat.completions.create({
+      model: this.model,
+      messages,
+      temperature,
+    });
 
-    if (
-      !result.output.hasOwnProperty("choices") ||
-      result.output.choices.length === 0
-    )
+    if (!result.hasOwnProperty("choices") || result.choices.length === 0)
       return null;
-
-    return {
-      textResponse: result.output.choices[0].message.content,
-      metrics: {
-        prompt_tokens: result.output.usage.prompt_tokens || 0,
-        completion_tokens: result.output.usage.completion_tokens || 0,
-        total_tokens: result.output.usage.total_tokens || 0,
-        outputTps: result.output.usage.completion_tokens / result.duration,
-        duration: result.duration,
-      },
-    };
+    return result.choices[0].message.content;
   }
 
   async streamGetChatCompletion(messages = null, { temperature = 0.7 }) {
@@ -148,17 +120,13 @@ class MistralLLM {
         `Mistral chat: ${this.model} is not valid for chat completion!`
       );
 
-    const measuredStreamRequest = await LLMPerformanceMonitor.measureStream(
-      this.openai.chat.completions.create({
-        model: this.model,
-        stream: true,
-        messages,
-        temperature,
-      }),
+    const streamRequest = await this.openai.chat.completions.create({
+      model: this.model,
+      stream: true,
       messages,
-      false
-    );
-    return measuredStreamRequest;
+      temperature,
+    });
+    return streamRequest;
   }
 
   handleStream(response, stream, responseProps) {

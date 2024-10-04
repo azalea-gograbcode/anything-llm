@@ -8,6 +8,7 @@ import { ArrowUUpLeft, Eye, File, PushPin } from "@phosphor-icons/react";
 import Workspace from "@/models/workspace";
 import showToast from "@/utils/toast";
 import System from "@/models/system";
+import { Tooltip } from "react-tooltip";
 
 export default function WorkspaceFileRow({
   item,
@@ -56,35 +57,19 @@ export default function WorkspaceFileRow({
   const isMovedItem = movedItems?.some((movedItem) => movedItem.id === item.id);
   return (
     <div
-      className={`text-theme-text-primary text-xs grid grid-cols-12 py-2 pl-3.5 pr-8 h-[34px] items-center ${
-        !disableSelection
-          ? "hover:bg-theme-file-picker-hover cursor-pointer"
-          : ""
-      } ${isMovedItem ? "bg-green-800/40" : "file-row"} ${
-        selected ? "selected light:text-white" : ""
-      }`}
+      className={`items-center h-[34px] text-white/80 text-xs grid grid-cols-12 py-2 pl-3.5 pr-8 ${
+        !disableSelection ? "hover:bg-sky-500/20 cursor-pointer" : ""
+      } ${isMovedItem ? "bg-green-800/40" : "file-row"} ${selected ? "selected" : ""}`}
       onClick={toggleRowSelection}
     >
       <div
-<<<<<<< HEAD
         className="col-span-10 w-fit flex gap-x-[2px] items-center relative"
-        data-tooltip-id="ws-directory-item"
-        data-tooltip-content={JSON.stringify({
-          title: item.title,
-          date: formatDate(item?.published),
-          extension: getFileExtension(item.url).toUpperCase(),
-        })}
-=======
         data-tooltip-id={`ws-directory-item-${item.url}`}
-        className="col-span-10 w-fit flex gap-x-[4px] items-center relative"
->>>>>>> 48ef74aa (sync-fork-2)
       >
         <div className="shrink-0 w-3 h-3">
           {!disableSelection ? (
             <div
-              className={`shrink-0 w-3 h-3 rounded border-[1px] border-solid border-white ${
-                selected ? "text-white" : "text-theme-text-primary light:invert"
-              } flex justify-center items-center cursor-pointer`}
+              className="w-full h-full rounded border-[1px] border-white flex justify-center items-center cursor-pointer"
               role="checkbox"
               aria-checked={selected}
               tabIndex={0}
@@ -98,7 +83,7 @@ export default function WorkspaceFileRow({
           className="shrink-0 text-base font-bold w-4 h-4 mr-[3px] ml-1"
           weight="fill"
         />
-        <p className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[400px]">
+        <p className="whitespace-nowrap overflow-hidden text-ellipsis">
           {middleTruncate(item.title, 50)}
         </p>
       </div>
@@ -121,8 +106,6 @@ export default function WorkspaceFileRow({
           </div>
         )}
       </div>
-<<<<<<< HEAD
-=======
       <Tooltip
         id={`ws-directory-item-${item.url}`}
         place="bottom"
@@ -141,7 +124,6 @@ export default function WorkspaceFileRow({
           </div>
         </div>
       </Tooltip>
->>>>>>> 48ef74aa (sync-fork-2)
     </div>
   );
 }
@@ -190,28 +172,24 @@ const PinItemToWorkspace = memo(({ workspace, docPath, item }) => {
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={updatePinStatus}
-      className="flex items-center ml-2 cursor-pointer"
-      data-tooltip-id="pin-document"
-      data-tooltip-content={
-        pinned ? "Un-pin from workspace" : "Pin to workspace"
-      }
+      className="flex gap-x-2 items-center hover:bg-main-gradient p-[2px] rounded ml-2"
     >
-      {pinned ? (
-        <div
-          className={`bg-theme-settings-input-active rounded-3xl whitespace-nowrap ${hover ? "bg-red-500/20" : ""}`}
-        >
-          <p className={`text-xs px-2 py-0.5 ${hover ? "text-red-500" : ""}`}>
-            {hover ? "Un-pin" : "Pinned"}
-          </p>
-        </div>
-      ) : (
-        <PushPin
-          size={16}
-          weight="regular"
-          className="outline-none text-base font-bold flex-shrink-0"
-        />
-      )}
+      <PushPin
+        data-tooltip-id={`pin-${item.id}`}
+        data-tooltip-content={
+          pinned ? "Un-Pin from workspace" : "Pin to workspace"
+        }
+        size={16}
+        onClick={updatePinStatus}
+        weight={hover || pinned ? "fill" : "regular"}
+        className="outline-none text-base font-bold flex-shrink-0 cursor-pointer"
+      />
+      <Tooltip
+        id={`pin-${item.id}`}
+        place="bottom"
+        delayShow={300}
+        className="tooltip invert !text-xs"
+      />
     </div>
   );
 });
@@ -266,10 +244,10 @@ const WatchForChanges = memo(({ workspace, docPath, item }) => {
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="flex gap-x-2 items-center hover:bg-theme-file-picker-hover p-[2px] rounded ml-2"
+      className="flex gap-x-2 items-center hover:bg-main-gradient p-[2px] rounded ml-2"
     >
       <Eye
-        data-tooltip-id="watch-changes"
+        data-tooltip-id={`watch-changes-${item.id}`}
         data-tooltip-content={
           watched ? "Stop watching for changes" : "Watch document for changes"
         }
@@ -277,6 +255,12 @@ const WatchForChanges = memo(({ workspace, docPath, item }) => {
         onClick={updateWatchStatus}
         weight={hover || watched ? "fill" : "regular"}
         className="outline-none text-base font-bold flex-shrink-0 cursor-pointer"
+      />
+      <Tooltip
+        id={`watch-changes-${item.id}`}
+        place="bottom"
+        delayShow={300}
+        className="tooltip invert !text-xs"
       />
     </div>
   );
@@ -286,10 +270,16 @@ const RemoveItemFromWorkspace = ({ item, onClick }) => {
   return (
     <div>
       <ArrowUUpLeft
-        data-tooltip-id="remove-document"
+        data-tooltip-id={`remove-${item.id}`}
         data-tooltip-content="Remove document from workspace"
         onClick={onClick}
         className="text-base font-bold w-4 h-4 ml-2 flex-shrink-0 cursor-pointer"
+      />
+      <Tooltip
+        id={`remove-${item.id}`}
+        place="bottom"
+        delayShow={300}
+        className="tooltip invert !text-xs"
       />
     </div>
   );

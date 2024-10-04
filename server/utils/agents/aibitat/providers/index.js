@@ -15,13 +15,6 @@ const TextWebGenUiProvider = require("./textgenwebui.js");
 const AWSBedrockProvider = require("./bedrock.js");
 const FireworksAIProvider = require("./fireworksai.js");
 const DeepSeekProvider = require("./deepseek.js");
-const LiteLLMProvider = require("./litellm.js");
-const ApiPieProvider = require("./apipie.js");
-const XAIProvider = require("./xai.js");
-const NovitaProvider = require("./novita.js");
-const NvidiaNimProvider = require("./nvidiaNim.js");
-const PPIOProvider = require("./ppio.js");
-const GeminiProvider = require("./gemini.js");
 
 module.exports = {
   OpenAIProvider,
@@ -41,11 +34,4 @@ module.exports = {
   TextWebGenUiProvider,
   AWSBedrockProvider,
   FireworksAIProvider,
-  LiteLLMProvider,
-  ApiPieProvider,
-  XAIProvider,
-  NovitaProvider,
-  NvidiaNimProvider,
-  PPIOProvider,
-  GeminiProvider,
 };

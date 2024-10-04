@@ -1,6 +1,4 @@
 const { SystemSettings } = require("../../../../models/systemSettings");
-const { TokenManager } = require("../../../helpers/tiktoken");
-const tiktoken = new TokenManager();
 
 const webBrowsing = {
   name: "web-browsing",
@@ -14,11 +12,6 @@ const webBrowsing = {
         aibitat.function({
           super: aibitat,
           name: this.name,
-          countTokens: (string) =>
-            tiktoken
-              .countFromString(string)
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
           description:
             "Searches for a given query using a search engine to get better results for the user query.",
           examples: [
@@ -87,25 +80,10 @@ const webBrowsing = {
               case "tavily-search":
                 engine = "_tavilySearch";
                 break;
-              case "duckduckgo-engine":
-                engine = "_duckDuckGoEngine";
-                break;
               default:
                 engine = "_googleSearchEngine";
             }
             return await this[engine](query);
-          },
-
-          /**
-           * Utility function to truncate a string to a given length for debugging
-           * calls to the API while keeping the actual values mostly intact
-           * @param {string} str - The string to truncate
-           * @param {number} length - The length to truncate the string to
-           * @returns {string} The truncated string
-           */
-          middleTruncate(str, length = 5) {
-            if (str.length <= length) return str;
-            return `${str.slice(0, length)}...${str.slice(-length)}`;
           },
 
           /**
@@ -134,12 +112,7 @@ const webBrowsing = {
               }"`
             );
             const data = await fetch(searchURL)
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ key: this.middleTruncate(process.env.AGENT_GSE_KEY, 5), cx: this.middleTruncate(process.env.AGENT_GSE_CTX, 5), q: query })}`
-                );
-              })
+              .then((res) => res.json())
               .then((searchResult) => searchResult?.items || [])
               .then((items) => {
                 return items.map((item) => {
@@ -151,20 +124,16 @@ const webBrowsing = {
                 });
               })
               .catch((e) => {
-                this.super.handlerProps.log(
-                  `${this.name}: Google Search Error: ${e.message}`
-                );
+                console.log(e);
                 return [];
               });
 
             if (data.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(data);
             this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
+            return JSON.stringify(data);
           },
 
           /**
@@ -201,17 +170,11 @@ const webBrowsing = {
                 "X-SearchApi-Source": "AnythingLLM",
               },
             })
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ auth: this.middleTruncate(process.env.AGENT_SEARCHAPI_API_KEY, 5), q: query })}`
-                );
-              })
+              .then((res) => res.json())
               .then((data) => {
                 return { response: data, error: null };
               })
               .catch((e) => {
-                this.super.handlerProps.log(`SearchApi Error: ${e.message}`);
                 return { response: null, error: e.message };
               });
             if (error)
@@ -233,12 +196,10 @@ const webBrowsing = {
 
             if (data.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(data);
             this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
+            return JSON.stringify(data);
           },
 
           /**
@@ -271,17 +232,11 @@ const webBrowsing = {
                 redirect: "follow",
               }
             )
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ auth: this.middleTruncate(process.env.AGENT_SERPER_DEV_KEY, 5), q: query })}`
-                );
-              })
+              .then((res) => res.json())
               .then((data) => {
                 return { response: data, error: null };
               })
               .catch((e) => {
-                this.super.handlerProps.log(`Serper.dev Error: ${e.message}`);
                 return { response: null, error: e.message };
               });
             if (error)
@@ -301,12 +256,10 @@ const webBrowsing = {
 
             if (data.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(data);
             this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
+            return JSON.stringify(data);
           },
           _bingWebSearch: async function (query) {
             if (!process.env.AGENT_BING_SEARCH_API_KEY) {
@@ -333,12 +286,7 @@ const webBrowsing = {
                   process.env.AGENT_BING_SEARCH_API_KEY,
               },
             })
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ auth: this.middleTruncate(process.env.AGENT_BING_SEARCH_API_KEY, 5), q: query })}`
-                );
-              })
+              .then((res) => res.json())
               .then((data) => {
                 const searchResults = data.webPages?.value || [];
                 return searchResults.map((result) => ({
@@ -348,20 +296,16 @@ const webBrowsing = {
                 }));
               })
               .catch((e) => {
-                this.super.handlerProps.log(
-                  `Bing Web Search Error: ${e.message}`
-                );
+                console.log(e);
                 return [];
               });
 
             if (searchResponse.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(searchResponse);
             this.super.introspect(
-              `${this.caller}: I found ${searchResponse.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
+            return JSON.stringify(searchResponse);
           },
           _serplyEngine: async function (
             query,
@@ -406,24 +350,20 @@ const webBrowsing = {
                 "X-User-Agent": device_type,
               },
             })
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ auth: this.middleTruncate(process.env.AGENT_SERPLY_API_KEY, 5), q: query })}`
-                );
-              })
+              .then((res) => res.json())
               .then((data) => {
-                if (data?.message === "Unauthorized")
-                  throw new Error(
-                    "Unauthorized. Please double check your AGENT_SERPLY_API_KEY"
-                  );
+                if (data?.message === "Unauthorized") {
+                  return {
+                    response: null,
+                    error:
+                      "Unauthorized. Please double check your AGENT_SERPLY_API_KEY",
+                  };
+                }
                 return { response: data, error: null };
               })
               .catch((e) => {
-                this.super.handlerProps.log(`Serply Error: ${e.message}`);
                 return { response: null, error: e.message };
               });
-
             if (error)
               return `There was an error searching for content. ${error}`;
 
@@ -439,12 +379,10 @@ const webBrowsing = {
 
             if (data.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(data);
             this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
+            return JSON.stringify(data);
           },
           _searXNGEngine: async function (query) {
             let searchURL;
@@ -480,19 +418,11 @@ const webBrowsing = {
                 "User-Agent": "anything-llm",
               },
             })
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ url: searchURL.toString() })}`
-                );
-              })
+              .then((res) => res.json())
               .then((data) => {
                 return { response: data, error: null };
               })
               .catch((e) => {
-                this.super.handlerProps.log(
-                  `SearXNG Search Error: ${e.message}`
-                );
                 return { response: null, error: e.message };
               });
             if (error)
@@ -511,12 +441,10 @@ const webBrowsing = {
 
             if (data.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(data);
             this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
+            return JSON.stringify(data);
           },
           _tavilySearch: async function (query) {
             if (!process.env.AGENT_TAVILY_API_KEY) {
@@ -543,19 +471,11 @@ const webBrowsing = {
                 query: query,
               }),
             })
-              .then((res) => {
-                if (res.ok) return res.json();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ auth: this.middleTruncate(process.env.AGENT_TAVILY_API_KEY, 5), q: query })}`
-                );
-              })
+              .then((res) => res.json())
               .then((data) => {
                 return { response: data, error: null };
               })
               .catch((e) => {
-                this.super.handlerProps.log(
-                  `Tavily Search Error: ${e.message}`
-                );
                 return { response: null, error: e.message };
               });
 
@@ -574,80 +494,10 @@ const webBrowsing = {
 
             if (data.length === 0)
               return `No information was found online for the search query.`;
-
-            const result = JSON.stringify(data);
             this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
+              `${this.caller}: I found ${data.length} results - looking over them now.`
             );
-            return result;
-          },
-          _duckDuckGoEngine: async function (query) {
-            this.super.introspect(
-              `${this.caller}: Using DuckDuckGo to search for "${
-                query.length > 100 ? `${query.slice(0, 100)}...` : query
-              }"`
-            );
-
-            const searchURL = new URL("https://html.duckduckgo.com/html");
-            searchURL.searchParams.append("q", query);
-
-            const response = await fetch(searchURL.toString())
-              .then((res) => {
-                if (res.ok) return res.text();
-                throw new Error(
-                  `${res.status} - ${res.statusText}. params: ${JSON.stringify({ url: searchURL.toString() })}`
-                );
-              })
-              .catch((e) => {
-                this.super.handlerProps.log(
-                  `DuckDuckGo Search Error: ${e.message}`
-                );
-                return null;
-              });
-
-            if (!response) return `There was an error searching DuckDuckGo.`;
-            const html = response;
-            const data = [];
-            const results = html.split('<div class="result results_links');
-
-            // Skip first element since it's before the first result
-            for (let i = 1; i < results.length; i++) {
-              const result = results[i];
-
-              // Extract title
-              const titleMatch = result.match(
-                /<a[^>]*class="result__a"[^>]*>(.*?)<\/a>/
-              );
-              const title = titleMatch ? titleMatch[1].trim() : "";
-
-              // Extract URL
-              const urlMatch = result.match(
-                /<a[^>]*class="result__a"[^>]*href="([^"]*)">/
-              );
-              const link = urlMatch ? urlMatch[1] : "";
-
-              // Extract snippet
-              const snippetMatch = result.match(
-                /<a[^>]*class="result__snippet"[^>]*>(.*?)<\/a>/
-              );
-              const snippet = snippetMatch
-                ? snippetMatch[1].replace(/<\/?b>/g, "").trim()
-                : "";
-
-              if (title && link && snippet) {
-                data.push({ title, link, snippet });
-              }
-            }
-
-            if (data.length === 0) {
-              return `No information was found online for the search query.`;
-            }
-
-            const result = JSON.stringify(data);
-            this.super.introspect(
-              `${this.caller}: I found ${data.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
-            );
-            return result;
+            return JSON.stringify(data);
           },
         });
       },

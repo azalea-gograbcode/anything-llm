@@ -7,7 +7,6 @@
 // To run, cd into this directory and run `node parse.mjs`
 // copy outputs into the export in ../models.js
 
-<<<<<<< HEAD:server/utils/AiProviders/fireworksAi/scripts/parse.mjs
 // Update the date below if you run this again because Fireworks AI added new models.
 
 // Last Collected: Sep 27, 2024
@@ -15,12 +14,6 @@
 // https://fireworks.ai/models lists almost 100 chat language models.
 // If you want to add models, please manually add them to chat_models.txt...
 // ... I tried to write a script to grab them all but gave up after a few hours...
-=======
-// Update the date below if you run this again because TogetherAI added new models.
-// Last Collected: Jul 31, 2024
-// Since last collection Together's docs are broken. I just copied the HTML table
-// and had claude3 convert to markdown and it works well enough.
->>>>>>> 48ef74aa (sync-fork-2):server/utils/AiProviders/togetherAi/scripts/parse.mjs
 
 import fs from "fs";
 

@@ -4,11 +4,7 @@ const { Telemetry } = require("../../../models/telemetry");
 const { DocumentVectors } = require("../../../models/vectors");
 const { Workspace } = require("../../../models/workspace");
 const { WorkspaceChats } = require("../../../models/workspaceChats");
-<<<<<<< HEAD
-const { getVectorDbClass, getLLMProvider } = require("../../../utils/helpers");
-=======
 const { getVectorDbClass } = require("../../../utils/helpers");
->>>>>>> 48ef74aa (sync-fork-2)
 const { multiUserMode, reqBody } = require("../../../utils/http");
 const { validApiKey } = require("../../../utils/middleware/validApiKey");
 const { VALID_CHAT_MODE } = require("../../../utils/chats/stream");
@@ -18,10 +14,6 @@ const {
   writeResponseChunk,
 } = require("../../../utils/helpers/chat/responses");
 const { ApiChatHandler } = require("../../../utils/chats/apiChatHandler");
-<<<<<<< HEAD
-const { getModelTag } = require("../../utils");
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 function apiWorkspaceEndpoints(app) {
   if (!app) return;
@@ -31,19 +23,12 @@ function apiWorkspaceEndpoints(app) {
     #swagger.tags = ['Workspaces']
     #swagger.description = 'Create a new workspace'
     #swagger.requestBody = {
-      description: 'JSON object containing workspace configuration.',
+      description: 'JSON object containing new display name of workspace.',
       required: true,
       content: {
         "application/json": {
           example: {
             name: "My New Workspace",
-            similarityThreshold: 0.7,
-            openAiTemp: 0.7,
-            openAiHistory: 20,
-            openAiPrompt: "Custom prompt for responses",
-            queryRefusalResponse: "Custom refusal message",
-            chatMode: "chat",
-            topN: 4
           }
         }
       }
@@ -77,28 +62,14 @@ function apiWorkspaceEndpoints(app) {
     }
     */
     try {
-      const { name = null, ...additionalFields } = reqBody(request);
-      const { workspace, message } = await Workspace.new(
-        name,
-        null,
-        additionalFields
-      );
-
-      if (!workspace) {
-        response.status(400).json({ workspace: null, message });
-        return;
-      }
-
+      const { name = null } = reqBody(request);
+      const { workspace, message } = await Workspace.new(name);
       await Telemetry.sendTelemetry("workspace_created", {
         multiUserMode: multiUserMode(response),
         LLMSelection: process.env.LLM_PROVIDER || "openai",
         Embedder: process.env.EMBEDDING_ENGINE || "inherit",
         VectorDbSelection: process.env.VECTOR_DB || "lancedb",
         TTSSelection: process.env.TTS_PROVIDER || "native",
-<<<<<<< HEAD
-        LLMModel: getModelTag(),
-=======
->>>>>>> 48ef74aa (sync-fork-2)
       });
       await EventLogs.logEvent("api_workspace_created", {
         workspaceName: workspace?.name || "Unknown Workspace",
@@ -152,7 +123,6 @@ function apiWorkspaceEndpoints(app) {
             select: {
               user_id: true,
               slug: true,
-              name: true,
             },
           },
         },
@@ -180,20 +150,18 @@ function apiWorkspaceEndpoints(app) {
           schema: {
             type: 'object',
             example: {
-              workspace: [
-                {
-                  "id": 79,
-                  "name": "My workspace",
-                  "slug": "my-workspace-123",
-                  "createdAt": "2023-08-17 00:45:03",
-                  "openAiTemp": null,
-                  "lastUpdatedAt": "2023-08-17 00:45:03",
-                  "openAiHistory": 20,
-                  "openAiPrompt": null,
-                  "documents": [],
-                  "threads": []
-                }
-              ]
+              workspace: {
+                "id": 79,
+                "name": "My workspace",
+                "slug": "my-workspace-123",
+                "createdAt": "2023-08-17 00:45:03",
+                "openAiTemp": null,
+                "lastUpdatedAt": "2023-08-17 00:45:03",
+                "openAiHistory": 20,
+                "openAiPrompt": null,
+                "documents": [],
+                "threads": []
+              }
             }
           }
         }
@@ -371,24 +339,6 @@ function apiWorkspaceEndpoints(app) {
         required: true,
         type: 'string'
     }
-    #swagger.parameters['apiSessionId'] = {
-        in: 'query',
-        description: 'Optional apiSessionId to filter by',
-        required: false,
-        type: 'string'
-    }
-    #swagger.parameters['limit'] = {
-        in: 'query',
-        description: 'Optional number of chat messages to return (default: 100)',
-        required: false,
-        type: 'integer'
-    }
-    #swagger.parameters['orderBy'] = {
-        in: 'query',
-        description: 'Optional order of chat messages (asc or desc)',
-        required: false,
-        type: 'string'
-    }
     #swagger.responses[200] = {
       content: {
         "application/json": {
@@ -420,11 +370,6 @@ function apiWorkspaceEndpoints(app) {
     */
       try {
         const { slug } = request.params;
-        const {
-          apiSessionId = null,
-          limit = 100,
-          orderBy = "asc",
-        } = request.query;
         const workspace = await Workspace.get({ slug });
 
         if (!workspace) {
@@ -432,21 +377,7 @@ function apiWorkspaceEndpoints(app) {
           return;
         }
 
-        const validLimit = Math.max(1, parseInt(limit));
-        const validOrderBy = ["asc", "desc"].includes(orderBy)
-          ? orderBy
-          : "asc";
-
-        const history = apiSessionId
-          ? await WorkspaceChats.forWorkspaceByApiSessionId(
-              workspace.id,
-              apiSessionId,
-              validLimit,
-              { createdAt: validOrderBy }
-            )
-          : await WorkspaceChats.forWorkspace(workspace.id, validLimit, {
-              createdAt: validOrderBy,
-            });
+        const history = await WorkspaceChats.forWorkspace(workspace.id);
         response.status(200).json({ history: convertToChatHistory(history) });
       } catch (e) {
         console.error(e.message, e);
@@ -615,7 +546,6 @@ function apiWorkspaceEndpoints(app) {
            example: {
              message: "What is AnythingLLM?",
              mode: "query | chat",
-<<<<<<< HEAD
              sessionId: "identifier-to-partition-chats-by-external-id",
              attachments: [
                {
@@ -623,11 +553,7 @@ function apiWorkspaceEndpoints(app) {
                  mime: "image/png",
                  contentString: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
                }
-             ],
-             reset: false
-=======
-             sessionId: "identifier-to-partition-chats-by-external-id"
->>>>>>> 48ef74aa (sync-fork-2)
+             ]
            }
          }
        }
@@ -657,17 +583,12 @@ function apiWorkspaceEndpoints(app) {
    */
       try {
         const { slug } = request.params;
-<<<<<<< HEAD
         const {
           message,
           mode = "query",
           sessionId = null,
           attachments = [],
-          reset = false,
         } = reqBody(request);
-=======
-        const { message, mode = "query", sessionId = null } = reqBody(request);
->>>>>>> 48ef74aa (sync-fork-2)
         const workspace = await Workspace.get({ slug: String(slug) });
 
         if (!workspace) {
@@ -682,7 +603,7 @@ function apiWorkspaceEndpoints(app) {
           return;
         }
 
-        if ((!message?.length || !VALID_CHAT_MODE.includes(mode)) && !reset) {
+        if (!message?.length || !VALID_CHAT_MODE.includes(mode)) {
           response.status(400).json({
             id: uuidv4(),
             type: "abort",
@@ -690,7 +611,7 @@ function apiWorkspaceEndpoints(app) {
             sources: [],
             close: true,
             error: !message?.length
-              ? "Message is empty"
+              ? "message parameter cannot be empty."
               : `${mode} is not a valid mode.`,
           });
           return;
@@ -703,11 +624,7 @@ function apiWorkspaceEndpoints(app) {
           user: null,
           thread: null,
           sessionId: !!sessionId ? String(sessionId) : null,
-<<<<<<< HEAD
           attachments,
-          reset,
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
 
         await Telemetry.sendTelemetry("sent_chat", {
@@ -751,7 +668,6 @@ function apiWorkspaceEndpoints(app) {
            example: {
              message: "What is AnythingLLM?",
              mode: "query | chat",
-<<<<<<< HEAD
              sessionId: "identifier-to-partition-chats-by-external-id",
              attachments: [
                {
@@ -759,11 +675,7 @@ function apiWorkspaceEndpoints(app) {
                  mime: "image/png",
                  contentString: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
                }
-             ],
-             reset: false
-=======
-             sessionId: "identifier-to-partition-chats-by-external-id"
->>>>>>> 48ef74aa (sync-fork-2)
+             ]
            }
          }
        }
@@ -814,17 +726,12 @@ function apiWorkspaceEndpoints(app) {
    */
       try {
         const { slug } = request.params;
-<<<<<<< HEAD
         const {
           message,
           mode = "query",
           sessionId = null,
           attachments = [],
-          reset = false,
         } = reqBody(request);
-=======
-        const { message, mode = "query", sessionId = null } = reqBody(request);
->>>>>>> 48ef74aa (sync-fork-2)
         const workspace = await Workspace.get({ slug: String(slug) });
 
         if (!workspace) {
@@ -839,7 +746,7 @@ function apiWorkspaceEndpoints(app) {
           return;
         }
 
-        if ((!message?.length || !VALID_CHAT_MODE.includes(mode)) && !reset) {
+        if (!message?.length || !VALID_CHAT_MODE.includes(mode)) {
           response.status(400).json({
             id: uuidv4(),
             type: "abort",
@@ -867,11 +774,7 @@ function apiWorkspaceEndpoints(app) {
           user: null,
           thread: null,
           sessionId: !!sessionId ? String(sessionId) : null,
-<<<<<<< HEAD
           attachments,
-          reset,
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
         await Telemetry.sendTelemetry("sent_chat", {
           LLMSelection:
@@ -896,136 +799,6 @@ function apiWorkspaceEndpoints(app) {
           error: e.message,
         });
         response.end();
-      }
-    }
-  );
-
-  app.post(
-    "/v1/workspace/:slug/vector-search",
-    [validApiKey],
-    async (request, response) => {
-      /*
-    #swagger.tags = ['Workspaces']
-    #swagger.description = 'Perform a vector similarity search in a workspace'
-    #swagger.parameters['slug'] = {
-        in: 'path',
-        description: 'Unique slug of workspace to search in',
-        required: true,
-        type: 'string'
-    }
-    #swagger.requestBody = {
-      description: 'Query to perform vector search with and optional parameters',
-      required: true,
-      content: {
-        "application/json": {
-          example: {
-            query: "What is the meaning of life?",
-            topN: 4,
-            scoreThreshold: 0.75
-          }
-        }
-      }
-    }
-    #swagger.responses[200] = {
-      content: {
-        "application/json": {
-          schema: {
-            type: 'object',
-            example: {
-              results: [
-                {
-                  id: "5a6bee0a-306c-47fc-942b-8ab9bf3899c4",
-                  text: "Document chunk content...",
-                  metadata: {
-                    url: "file://document.txt",
-                    title: "document.txt",
-                    author: "no author specified",
-                    description: "no description found",
-                    docSource: "post:123456",
-                    chunkSource: "document.txt",
-                    published: "12/1/2024, 11:39:39 AM",
-                    wordCount: 8,
-                    tokenCount: 9
-                  },
-                  distance: 0.541887640953064,
-                  score: 0.45811235904693604
-                }
-              ]
-            }
-          }
-        }
-      }
-    }
-    */
-      try {
-        const { slug } = request.params;
-        const { query, topN, scoreThreshold } = reqBody(request);
-        const workspace = await Workspace.get({ slug: String(slug) });
-
-        if (!workspace)
-          return response.status(400).json({
-            message: `Workspace ${slug} is not a valid workspace.`,
-          });
-
-        if (!query?.length)
-          return response.status(400).json({
-            message: "Query parameter cannot be empty.",
-          });
-
-        const VectorDb = getVectorDbClass();
-        const hasVectorizedSpace = await VectorDb.hasNamespace(workspace.slug);
-        const embeddingsCount = await VectorDb.namespaceCount(workspace.slug);
-
-        if (!hasVectorizedSpace || embeddingsCount === 0)
-          return response.status(200).json({
-            results: [],
-            message: "No embeddings found for this workspace.",
-          });
-
-        const parseSimilarityThreshold = () => {
-          let input = parseFloat(scoreThreshold);
-          if (isNaN(input) || input < 0 || input > 1)
-            return workspace?.similarityThreshold ?? 0.25;
-          return input;
-        };
-
-        const parseTopN = () => {
-          let input = Number(topN);
-          if (isNaN(input) || input < 1) return workspace?.topN ?? 4;
-          return input;
-        };
-
-        const results = await VectorDb.performSimilaritySearch({
-          namespace: workspace.slug,
-          input: String(query),
-          LLMConnector: getLLMProvider(),
-          similarityThreshold: parseSimilarityThreshold(),
-          topN: parseTopN(),
-          rerank: workspace?.vectorSearchMode === "rerank",
-        });
-
-        response.status(200).json({
-          results: results.sources.map((source) => ({
-            id: source.id,
-            text: source.text,
-            metadata: {
-              url: source.url,
-              title: source.title,
-              author: source.docAuthor,
-              description: source.description,
-              docSource: source.docSource,
-              chunkSource: source.chunkSource,
-              published: source.published,
-              wordCount: source.wordCount,
-              tokenCount: source.token_count_estimate,
-            },
-            distance: source._distance,
-            score: source.score,
-          })),
-        });
-      } catch (e) {
-        console.error(e.message, e);
-        response.sendStatus(500).end();
       }
     }
   );

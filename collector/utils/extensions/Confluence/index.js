@@ -19,19 +19,18 @@ async function loadConfluence(
     username = null,
     accessToken = null,
     cloud = true,
-    personalAccessToken = null,
   },
   response
 ) {
-  if (!personalAccessToken && (!username || !accessToken)) {
+  if (!baseUrl || !spaceKey || !username || !accessToken) {
     return {
       success: false,
       reason:
-        "You need either a personal access token (PAT), or a username and access token to use the Confluence connector.",
+        "You need either a username and access token, or a personal access token (PAT), to use the Confluence connector.",
     };
   }
 
-  if (!baseUrl || !validBaseUrl(baseUrl)) {
+  if (!validBaseUrl(baseUrl)) {
     return {
       success: false,
       reason: "Provided base URL is not a valid URL.",
@@ -53,7 +52,6 @@ async function loadConfluence(
     username,
     accessToken,
     cloud,
-    personalAccessToken,
   });
 
   const { docs, error } = await loader
@@ -106,7 +104,7 @@ async function loadConfluence(
       published: new Date().toLocaleString(),
       wordCount: doc.pageContent.split(" ").length,
       pageContent: doc.pageContent,
-      token_count_estimate: tokenizeString(doc.pageContent),
+      token_count_estimate: tokenizeString(doc.pageContent).length,
     };
 
     console.log(

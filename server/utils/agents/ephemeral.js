@@ -1,11 +1,6 @@
 const AIbitat = require("./aibitat");
 const AgentPlugins = require("./aibitat/plugins");
-<<<<<<< HEAD
 const ImportedPlugin = require("./imported");
-const MCPCompatibilityLayer = require("../MCP");
-const { AgentFlows } = require("../agentFlows");
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 const { httpSocket } = require("./aibitat/plugins/http-socket.js");
 const { WorkspaceChats } = require("../../models/workspaceChats");
 const { safeJsonParse } = require("../http");
@@ -25,42 +20,6 @@ const {
  * not persist between invocations
  */
 class EphemeralAgentHandler extends AgentHandler {
-<<<<<<< HEAD
-  /** @type {string|null} the unique identifier for the agent invocation */
-  #invocationUUID = null;
-  /** @type {import("@prisma/client").workspaces|null} the workspace to use for the agent */
-  #workspace = null;
-  /** @type {import("@prisma/client").users|null} the user id to use for the agent */
-  #userId = null;
-  /** @type {import("@prisma/client").workspace_threads|null} the workspace thread id to use for the agent */
-  #threadId = null;
-  /** @type {string|null} the session id to use for the agent */
-  #sessionId = null;
-  /** @type {string|null} the prompt to use for the agent */
-  #prompt = null;
-  /** @type {string[]} the functions to load into the agent (Aibitat plugins) */
-  #funcsToLoad = [];
-
-  /** @type {AIbitat|null} */
-  aibitat = null;
-  /** @type {string|null} */
-  channel = null;
-  /** @type {string|null} */
-  provider = null;
-  /** @type {string|null} the model to use for the agent */
-  model = null;
-
-  /**
-   * @param {{
-   * uuid: string,
-   * workspace: import("@prisma/client").workspaces,
-   * prompt: string,
-   * userId: import("@prisma/client").users["id"]|null,
-   * threadId: import("@prisma/client").workspace_threads["id"]|null,
-   * sessionId: string|null
-   * }} parameters
-   */
-=======
   #invocationUUID = null;
   #workspace = null;
   #userId = null;
@@ -74,7 +33,6 @@ class EphemeralAgentHandler extends AgentHandler {
   provider = null;
   model = null;
 
->>>>>>> 48ef74aa (sync-fork-2)
   constructor({
     uuid,
     workspace,
@@ -142,63 +100,10 @@ class EphemeralAgentHandler extends AgentHandler {
   }
 
   /**
-<<<<<<< HEAD
-   * Attempts to find a fallback provider and model to use if the workspace
-   * does not have an explicit `agentProvider` and `agentModel` set.
-   * 1. Fallback to the workspace `chatProvider` and `chatModel` if they exist.
-   * 2. Fallback to the system `LLM_PROVIDER` and try to load the the associated default model via ENV params or a base available model.
-   * 3. Otherwise, return null - will likely throw an error the user can act on.
-   * @returns {object|null} - An object with provider and model keys.
-   */
-  #getFallbackProvider() {
-    // First, fallback to the workspace chat provider and model if they exist
-    if (this.#workspace.chatProvider && this.#workspace.chatModel) {
-      return {
-        provider: this.#workspace.chatProvider,
-        model: this.#workspace.chatModel,
-      };
-    }
-
-    // If workspace does not have chat provider and model fallback
-    // to system provider and try to load provider default model
-    const systemProvider = process.env.LLM_PROVIDER;
-    const systemModel = this.providerDefault(systemProvider);
-    if (systemProvider && systemModel) {
-      return {
-        provider: systemProvider,
-        model: systemModel,
-      };
-    }
-
-    return null;
-  }
-
-  /**
-=======
->>>>>>> 48ef74aa (sync-fork-2)
    * Finds or assumes the model preference value to use for API calls.
    * If multi-model loading is supported, we use their agent model selection of the workspace
    * If not supported, we attempt to fallback to the system provider value for the LLM preference
    * and if that fails - we assume a reasonable base model to exist.
-<<<<<<< HEAD
-   * @returns {string|null} the model preference value to use in API calls
-   */
-  #fetchModel() {
-    // Provider was not explicitly set for workspace, so we are going to run our fallback logic
-    // that will set a provider and model for us to use.
-    if (!this.provider) {
-      const fallback = this.#getFallbackProvider();
-      if (!fallback) throw new Error("No valid provider found for the agent.");
-      this.provider = fallback.provider; // re-set the provider to the fallback provider so it is not null.
-      return fallback.model; // set its defined model based on fallback logic.
-    }
-
-    // The provider was explicitly set, so check if the workspace has an agent model set.
-    if (this.#workspace.agentModel) return this.#workspace.agentModel;
-
-    // Otherwise, we have no model to use - so guess a default model to use via the provider
-    // and it's system ENV params and if that fails - we return either a base model or null.
-=======
    * @returns {string} the model preference value to use in API calls
    */
   #fetchModel() {
@@ -212,30 +117,17 @@ class EphemeralAgentHandler extends AgentHandler {
       return process.env[sysModelKey] ?? this.providerDefault();
 
     // If all else fails - look at the provider default list
->>>>>>> 48ef74aa (sync-fork-2)
     return this.providerDefault();
   }
 
   #providerSetupAndCheck() {
-<<<<<<< HEAD
-    this.provider = this.#workspace.agentProvider ?? null;
-    this.model = this.#fetchModel();
-
-    if (!this.provider)
-      throw new Error("No valid provider found for the agent.");
-=======
     this.provider = this.#workspace.agentProvider;
     this.model = this.#fetchModel();
->>>>>>> 48ef74aa (sync-fork-2)
     this.log(`Start ${this.#invocationUUID}::${this.provider}:${this.model}`);
     this.checkSetup();
   }
 
-<<<<<<< HEAD
-  async #attachPlugins(args) {
-=======
   #attachPlugins(args) {
->>>>>>> 48ef74aa (sync-fork-2)
     for (const name of this.#funcsToLoad) {
       // Load child plugin
       if (name.includes("#")) {
@@ -269,62 +161,6 @@ class EphemeralAgentHandler extends AgentHandler {
         continue;
       }
 
-<<<<<<< HEAD
-      // Load flow plugin. This is marked by `@@flow_` in the array of functions to load.
-      if (name.startsWith("@@flow_")) {
-        const uuid = name.replace("@@flow_", "");
-        const plugin = AgentFlows.loadFlowPlugin(uuid, this.aibitat);
-        if (!plugin) {
-          this.log(
-            `Flow ${uuid} not found in flows directory. Skipping inclusion to agent cluster.`
-          );
-          continue;
-        }
-
-        this.aibitat.use(plugin.plugin());
-        this.log(
-          `Attached flow ${plugin.name} (${plugin.flowName}) plugin to Agent cluster`
-        );
-        continue;
-      }
-
-      // Load MCP plugin. This is marked by `@@mcp_` in the array of functions to load.
-      // All sub-tools are loaded here and are denoted by `pluginName:toolName` as their identifier.
-      // This will replace the parent MCP server plugin with the sub-tools as child plugins so they
-      // can be called directly by the agent when invoked.
-      // Since to get to this point, the `activeMCPServers` method has already been called, we can
-      // safely assume that the MCP server is running and the tools are available/loaded.
-      if (name.startsWith("@@mcp_")) {
-        const mcpPluginName = name.replace("@@mcp_", "");
-        const plugins =
-          await new MCPCompatibilityLayer().convertServerToolsToPlugins(
-            mcpPluginName,
-            this.aibitat
-          );
-        if (!plugins) {
-          this.log(
-            `MCP ${mcpPluginName} not found in MCP server config. Skipping inclusion to agent cluster.`
-          );
-          continue;
-        }
-
-        // Remove the old function from the agent functions directly
-        // and push the new ones onto the end of the array so that they are loaded properly.
-        this.aibitat.agents.get("@agent").functions = this.aibitat.agents
-          .get("@agent")
-          .functions.filter((f) => f.name !== name);
-        for (const plugin of plugins)
-          this.aibitat.agents.get("@agent").functions.push(plugin.name);
-
-        plugins.forEach((plugin) => {
-          this.aibitat.use(plugin.plugin());
-          this.log(
-            `Attached MCP::${plugin.toolName} MCP tool to Agent cluster`
-          );
-        });
-        continue;
-      }
-
       // Load imported plugin. This is marked by `@@` in the array of functions to load.
       // and is the @@hubID of the plugin.
       if (name.startsWith("@@")) {
@@ -346,8 +182,6 @@ class EphemeralAgentHandler extends AgentHandler {
         continue;
       }
 
-=======
->>>>>>> 48ef74aa (sync-fork-2)
       // Load single-stage plugin.
       if (!AgentPlugins.hasOwnProperty(name)) {
         this.log(
@@ -376,17 +210,11 @@ class EphemeralAgentHandler extends AgentHandler {
     );
 
     this.#funcsToLoad = [
-<<<<<<< HEAD
-      ...(await agentSkillsFromSystemSettings()),
-      ...ImportedPlugin.activeImportedPlugins(),
-      ...AgentFlows.activeFlowPlugins(),
-      ...(await new MCPCompatibilityLayer().activeMCPServers()),
-=======
       AgentPlugins.memory.name,
       AgentPlugins.docSummarizer.name,
       AgentPlugins.webScraping.name,
       ...(await agentSkillsFromSystemSettings()),
->>>>>>> 48ef74aa (sync-fork-2)
+      ...(await ImportedPlugin.activeImportedPlugins()),
     ];
   }
 
@@ -427,11 +255,7 @@ class EphemeralAgentHandler extends AgentHandler {
     await this.#loadAgents();
 
     // Attach all required plugins for functions to operate.
-<<<<<<< HEAD
-    await this.#attachPlugins(args);
-=======
     this.#attachPlugins(args);
->>>>>>> 48ef74aa (sync-fork-2)
   }
 
   startAgentCluster() {
@@ -529,10 +353,6 @@ class EphemeralEventListener extends EventEmitter {
           attachments: [],
           close: false,
           error: null,
-<<<<<<< HEAD
-          animate: true,
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         });
       }
 
@@ -544,10 +364,6 @@ class EphemeralEventListener extends EventEmitter {
         attachments: [],
         close: true,
         error: null,
-<<<<<<< HEAD
-        animate: false,
-=======
->>>>>>> 48ef74aa (sync-fork-2)
       });
     };
     this.on("chunk", onChunkHandler);

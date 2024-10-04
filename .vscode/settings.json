@@ -49,11 +49,13 @@
 =======
 >>>>>>> 48ef74aa (sync-fork-2)
     "searxng",
+    "SearchApi",
     "Serper",
     "Serply",
     "streamable",
     "textgenwebui",
     "togetherai",
+    "fireworksai",
     "Unembed",
 <<<<<<< HEAD
     "uuidv",

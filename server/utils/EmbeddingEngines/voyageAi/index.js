@@ -6,14 +6,15 @@ class VoyageAiEmbedder {
     const {
       VoyageEmbeddings,
     } = require("@langchain/community/embeddings/voyage");
-
-    this.model = process.env.EMBEDDING_MODEL_PREF || "voyage-3-lite";
-    this.voyage = new VoyageEmbeddings({
+    const voyage = new VoyageEmbeddings({
       apiKey: process.env.VOYAGEAI_API_KEY,
-      modelName: this.model,
-      // Voyage AI's limit per request is 128 https://docs.voyageai.com/docs/rate-limits#use-larger-batches
-      batchSize: 128,
     });
+
+    this.voyage = voyage;
+    this.model = process.env.EMBEDDING_MODEL_PREF || "voyage-3-lite";
+
+    // Limit of how many strings we can process in a single pass to stay with resource or network limits
+    this.batchSize = 128; // Voyage AI's limit per request is 128 https://docs.voyageai.com/docs/rate-limits#use-larger-batches
     this.embeddingMaxChunkLength = this.#getMaxEmbeddingLength();
   }
 
@@ -22,13 +23,8 @@ class VoyageAiEmbedder {
     switch (this.model) {
       case "voyage-finance-2":
       case "voyage-multilingual-2":
-<<<<<<< HEAD
       case "voyage-3":
       case "voyage-3-lite":
-      case "voyage-3-large":
-      case "voyage-code-3":
-=======
->>>>>>> 48ef74aa (sync-fork-2)
         return 32_000;
       case "voyage-large-2-instruct":
       case "voyage-law-2":
@@ -44,7 +40,8 @@ class VoyageAiEmbedder {
 
   async embedTextInput(textInput) {
     const result = await this.voyage.embedDocuments(
-      Array.isArray(textInput) ? textInput : [textInput]
+      Array.isArray(textInput) ? textInput : [textInput],
+      { modelName: this.model }
     );
 
     // If given an array return the native Array[Array] format since that should be the outcome.
@@ -54,7 +51,10 @@ class VoyageAiEmbedder {
 
   async embedChunks(textChunks = []) {
     try {
-      const embeddings = await this.voyage.embedDocuments(textChunks);
+      const embeddings = await this.voyage.embedDocuments(textChunks, {
+        modelName: this.model,
+        batchSize: this.batchSize,
+      });
       return embeddings;
     } catch (error) {
       console.error("Voyage AI Failed to embed:", error);

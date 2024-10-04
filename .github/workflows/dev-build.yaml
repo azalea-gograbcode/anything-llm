@@ -6,11 +6,7 @@ concurrency:
 
 on:
   push:
-<<<<<<< HEAD
-    branches: ['2237-auto-stt-submit-preference'] # put your current branch to create a build. Core team only.
-=======
-    branches: ['chrome-extension'] # put your current branch to create a build. Core team only.
->>>>>>> 48ef74aa (sync-fork-2)
+    branches: ['agent-skill-plugins'] # put your current branch to create a build. Core team only.
     paths-ignore:
       - '**.md'
       - 'cloud-deployments/*'
@@ -18,11 +14,8 @@ on:
       - '.vscode/**/*'
       - '**/.env.example'
       - '.github/ISSUE_TEMPLATE/**/*'
-      - '.devcontainer/**/*'
       - 'embed/**/*' # Embed should be published to frontend (yarn build:publish) if any changes are introduced
-      - 'browser-extension/**/*' # Chrome extension is submodule
       - 'server/utils/agents/aibitat/example/**/*' # Do not push new image for local dev testing of new aibitat images.
-      - 'extras/**/*' # Extra is just for news and other local content.
 
 jobs:
   push_multi_platform_to_registries:
@@ -48,14 +41,8 @@ jobs:
           fi
         id: dockerhub
 
-      # Uncomment this + add linux/arm64 to platforms if you want to build for arm64 as well
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          version: v0.22.0
       
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -83,7 +70,6 @@ jobs:
           sbom: true
           provenance: mode=max
           platforms: linux/amd64
-          # platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -108,8 +94,6 @@ jobs:
 
       # About VEX attestations https://docs.docker.com/scout/explore/exceptions/
       # Justifications https://github.com/openvex/spec/blob/main/OPENVEX-SPEC.md#status-justifications
-      # Fixed to use v1.15.1 of scout-cli as v1.16.0 install script is broken
-      # https://github.com/docker/scout-cli
       - name: Add VEX attestations
         env:
           CVE_EXCEPTIONS: ${{ steps.cve-list.outputs.CVE_EXCEPTIONS }}
@@ -126,3 +110,5 @@ jobs:
             done
           done
         shell: bash
+
+      

@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 // Providers which cannot use this feature for workspace<>model selection
 export const DISABLED_PROVIDERS = [
   "azure",
+  "native",
   "textgenwebui",
   "generic-openai",
   "bedrock",
 ];
 const PROVIDER_DEFAULT_MODELS = {
   openai: [],
-<<<<<<< HEAD
-  gemini: [],
-  anthropic: [],
-=======
   gemini: [
     "gemini-pro",
     "gemini-1.0-pro",
     "gemini-1.5-pro-latest",
     "gemini-1.5-flash-latest",
     "gemini-1.5-pro-exp-0801",
+    "gemini-1.5-pro-exp-0827",
+    "gemini-1.5-flash-exp-0827",
+    "gemini-1.5-flash-8b-exp-0827",
   ],
   anthropic: [
     "claude-instant-1.2",
@@ -30,15 +30,14 @@ const PROVIDER_DEFAULT_MODELS = {
     "claude-3-haiku-20240307",
     "claude-3-5-sonnet-20240620",
   ],
->>>>>>> 48ef74aa (sync-fork-2)
   azure: [],
   lmstudio: [],
   localai: [],
   ollama: [],
   togetherai: [],
   fireworksai: [],
-  "nvidia-nim": [],
   groq: [],
+  native: [],
   cohere: [
     "command-r",
     "command-r-plus",
@@ -50,7 +49,6 @@ const PROVIDER_DEFAULT_MODELS = {
   textgenwebui: [],
   "generic-openai": [],
   bedrock: [],
-  xai: ["grok-beta"],
 };
 
 // For providers with large model lists (e.g. togetherAi) - we subgroup the options
@@ -64,14 +62,7 @@ function groupModels(models) {
   }, {});
 }
 
-const groupedProviders = [
-  "togetherai",
-  "fireworksai",
-  "openai",
-  "novita",
-  "openrouter",
-  "ppio",
-];
+const groupedProviders = ["togetherai", "fireworksai", "openai", "openrouter"];
 export default function useGetProviderModels(provider = null) {
   const [defaultModels, setDefaultModels] = useState([]);
   const [customModels, setCustomModels] = useState([]);

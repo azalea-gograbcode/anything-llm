@@ -3,14 +3,11 @@ import { dollarFormat } from "@/utils/numbers";
 import WorkspaceFileRow from "./WorkspaceFileRow";
 import { memo, useEffect, useState } from "react";
 import ModalWrapper from "@/components/ModalWrapper";
-import { Eye, PushPin, X } from "@phosphor-icons/react";
+import { Eye, PushPin } from "@phosphor-icons/react";
 import { SEEN_DOC_PIN_ALERT, SEEN_WATCH_ALERT } from "@/utils/constants";
 import paths from "@/utils/paths";
 import { Link } from "react-router-dom";
 import Workspace from "@/models/workspace";
-import { Tooltip } from "react-tooltip";
-import { safeJsonParse } from "@/utils/request";
-import { useTranslation } from "react-i18next";
 
 function WorkspaceDirectory({
   workspace,
@@ -26,7 +23,6 @@ function WorkspaceDirectory({
   embeddingCosts,
   movedItems,
 }) {
-  const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState({});
 
   const toggleSelection = (item) => {
@@ -95,8 +91,8 @@ function WorkspaceDirectory({
             {workspace.name}
           </h3>
         </div>
-        <div className="relative w-[560px] h-[445px] bg-theme-settings-input-bg rounded-2xl mt-5 border border-theme-modal-border">
-          <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-3.5 border-b border-white/20 bg-theme-settings-input-bg sticky top-0 z-10 rounded-t-2xl shadow-lg">
+        <div className="relative w-[560px] h-[445px] bg-zinc-900 rounded-2xl mt-5">
+          <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-3.5 border-b border-white/20 bg-zinc-900 sticky top-0 z-10 rounded-t-2xl">
             <div className="col-span-10 flex items-center gap-x-[4px]">
               <div className="shrink-0 w-3 h-3" />
               <p className="ml-[7px]">Name</p>
@@ -105,7 +101,7 @@ function WorkspaceDirectory({
           </div>
           <div className="w-full h-[calc(100%-40px)] flex items-center justify-center flex-col gap-y-5">
             <PreLoader />
-            <p className="text-white text-sm font-semibold animate-pulse text-center w-1/3">
+            <p className="text-white/80 text-sm font-semibold animate-pulse text-center w-1/3">
               {loadingMessage}
             </p>
           </div>
@@ -128,13 +124,13 @@ function WorkspaceDirectory({
               highlightWorkspace ? "border-4 border-cyan-300/80 z-[999]" : ""
             }`}
           />
-          <div className="relative w-full h-full bg-theme-settings-input-bg rounded-2xl overflow-hidden border border-theme-modal-border">
-            <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-3.5 border-b border-white/20 bg-theme-settings-input-bg sticky top-0 z-10 shadow-md">
+          <div className="relative w-full h-full bg-zinc-900 rounded-2xl overflow-hidden">
+            <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-3.5 border-b border-white/20 bg-zinc-900 sticky top-0 z-10">
               <div className="col-span-10 flex items-center gap-x-[4px]">
                 {!hasChanges &&
                 files.items.some((folder) => folder.items.length > 0) ? (
                   <div
-                    className={`shrink-0 w-3 h-3 rounded border-[1px] border-solid border-white text-theme-text-primary light:invert flex justify-center items-center cursor-pointer`}
+                    className="shrink-0 w-3 h-3 rounded border-[1px] border-white flex justify-center items-center cursor-pointer"
                     role="checkbox"
                     aria-checked={
                       Object.keys(selectedItems).length ===
@@ -155,18 +151,14 @@ function WorkspaceDirectory({
                 ) : (
                   <div className="shrink-0 w-3 h-3" />
                 )}
-                <p className="ml-[7px] light:text-theme-text-primary">Name</p>
+                <p className="ml-[7px]">Name</p>
               </div>
               <p className="col-span-2" />
             </div>
             <div className="overflow-y-auto h-[calc(100%-40px)]">
               {files.items.some((folder) => folder.items.length > 0) ||
               movedItems.length > 0 ? (
-                <RenderFileRows
-                  files={files}
-                  movedItems={movedItems}
-                  workspace={workspace}
-                >
+                <RenderFileRows files={files} movedItems={movedItems}>
                   {({ item, folder }) => (
                     <WorkspaceFileRow
                       key={item.id}
@@ -188,33 +180,32 @@ function WorkspaceDirectory({
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <p className="text-white text-opacity-40 text-sm font-medium">
-                    {t("connectors.directory.no_docs")}
+                    No Documents
                   </p>
                 </div>
               )}
             </div>
-
             {Object.keys(selectedItems).length > 0 && !hasChanges && (
               <div className="absolute bottom-[12px] left-0 right-0 flex justify-center pointer-events-none">
-                <div className="mx-auto bg-white/40 light:bg-white rounded-lg py-1 px-2 pointer-events-auto light:shadow-lg">
+                <div className="mx-auto bg-white/40 rounded-lg py-1 px-2 pointer-events-auto">
                   <div className="flex flex-row items-center gap-x-2">
                     <button
                       onClick={toggleSelectAll}
-                      className="border-none text-sm font-semibold bg-white light:bg-[#E0F2FE] h-[30px] px-2.5 rounded-lg hover:bg-neutral-800/80 hover:text-white light:text-[#026AA2] light:hover:bg-[#026AA2] light:hover:text-white"
+                      className="border-none text-sm font-semibold bg-white h-[30px] px-2.5 rounded-lg hover:text-white hover:bg-neutral-800/80"
                     >
                       {Object.keys(selectedItems).length ===
                       files.items.reduce(
                         (sum, folder) => sum + folder.items.length,
                         0
                       )
-                        ? t("connectors.directory.deselect_all")
-                        : t("connectors.directory.select_all")}
+                        ? "Deselect All"
+                        : "Select All"}
                     </button>
                     <button
                       onClick={removeSelectedItems}
-                      className="border-none text-sm font-semibold bg-white light:bg-[#E0F2FE] h-[30px] px-2.5 rounded-lg hover:bg-neutral-800/80 hover:text-white light:text-[#026AA2] light:hover:bg-[#026AA2] light:hover:text-white"
+                      className="border-none text-sm font-semibold bg-white h-[30px] px-2.5 rounded-lg hover:text-white hover:bg-neutral-800/80"
                     >
-                      {t("connectors.directory.remove_selected")}
+                      Remove Selected
                     </button>
                   </div>
                 </div>
@@ -235,7 +226,7 @@ function WorkspaceDirectory({
                     }`}
               </p>
               <p className="mt-2 text-xs italic" hidden={embeddingCosts === 0}>
-                {t("connectors.directory.costs")}
+                *One time cost for embeddings
               </p>
             </div>
 
@@ -243,20 +234,18 @@ function WorkspaceDirectory({
               onClick={(e) => handleSaveChanges(e)}
               className="border border-slate-200 px-5 py-2.5 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
             >
-              {t("connectors.directory.save_embed")}
+              Save and Embed
             </button>
           </div>
         )}
       </div>
       <PinAlert />
       <DocumentWatchAlert />
-      <WorkspaceDocumentTooltips />
     </>
   );
 }
 
 const PinAlert = memo(() => {
-  const { t } = useTranslation();
   const [showAlert, setShowAlert] = useState(false);
   function dismissAlert() {
     setShowAlert(false);
@@ -276,44 +265,42 @@ const PinAlert = memo(() => {
 
   return (
     <ModalWrapper isOpen={showAlert} noPortal={true}>
-      <div className="w-full max-w-2xl bg-theme-bg-secondary rounded-lg shadow border-2 border-theme-modal-border overflow-hidden">
-        <div className="relative p-6 border-b rounded-t border-theme-modal-border">
-          <div className="flex items-center gap-2">
-            <PushPin
-              className="text-theme-text-primary text-lg w-6 h-6"
-              weight="regular"
-            />
-            <h3 className="text-xl font-semibold text-white">
-              {t("connectors.pinning.what_pinning")}
-            </h3>
+      <div className="relative w-full max-w-2xl max-h-full">
+        <div className="relative bg-main-gradient rounded-lg shadow">
+          <div className="flex items-start justify-between p-4 rounded-t border-gray-500/50">
+            <div className="flex items-center gap-2">
+              <PushPin className="text-red-600 text-lg w-6 h-6" weight="fill" />
+              <h3 className="text-xl font-semibold text-white">
+                What is document pinning?
+              </h3>
+            </div>
           </div>
-        </div>
-        <div className="py-7 px-9 space-y-2 flex-col">
-          <div className="w-full text-white text-md flex flex-col gap-y-2">
+          <div className="w-full p-6 text-white text-md flex flex-col gap-y-2">
             <p>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t("connectors.pinning.pin_explained_block1"),
-                }}
-              />
+              When you <b>pin</b> a document in AnythingLLM we will inject the
+              entire content of the document into your prompt window for your
+              LLM to fully comprehend.
             </p>
             <p>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t("connectors.pinning.pin_explained_block2"),
-                }}
-              />
+              This works best with <b>large-context models</b> or small files
+              that are critical to its knowledge-base.
             </p>
-            <p>{t("connectors.pinning.pin_explained_block3")}</p>
+            <p>
+              If you are not getting the answers you desire from AnythingLLM by
+              default then pinning is a great way to get higher quality answers
+              in a click.
+            </p>
           </div>
-        </div>
-        <div className="flex w-full justify-end items-center p-6 space-x-2 border-t border-theme-modal-border rounded-b">
-          <button
-            onClick={dismissAlert}
-            className="transition-all duration-300 bg-white text-black hover:opacity-60 px-4 py-2 rounded-lg text-sm"
-          >
-            {t("connectors.pinning.accept")}
-          </button>
+
+          <div className="flex w-full justify-between items-center p-6 space-x-2 border-t rounded-b border-gray-500/50">
+            <button disabled={true} className="invisible" />
+            <button
+              onClick={dismissAlert}
+              className="border border-slate-200 px-4 py-2 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
+            >
+              Okay, got it
+            </button>
+          </div>
         </div>
       </div>
     </ModalWrapper>
@@ -321,7 +308,6 @@ const PinAlert = memo(() => {
 });
 
 const DocumentWatchAlert = memo(() => {
-  const { t } = useTranslation();
   const [showAlert, setShowAlert] = useState(false);
   function dismissAlert() {
     setShowAlert(false);
@@ -341,66 +327,63 @@ const DocumentWatchAlert = memo(() => {
 
   return (
     <ModalWrapper isOpen={showAlert} noPortal={true}>
-      <div className="w-full max-w-2xl bg-theme-bg-secondary rounded-lg shadow border-2 border-theme-modal-border overflow-hidden">
-        <div className="relative p-6 border-b rounded-t border-theme-modal-border">
-          <div className="flex items-center gap-2">
-            <Eye
-              className="text-theme-text-primary text-lg w-6 h-6"
-              weight="regular"
-            />
-            <h3 className="text-xl font-semibold text-white">
-              {t("connectors.watching.what_watching")}
-            </h3>
-          </div>
-        </div>
-        <div className="py-7 px-9 space-y-2 flex-col">
-          <div className="w-full text-white text-md flex flex-col gap-y-2">
-            <p>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t("connectors.watching.watch_explained_block1"),
-                }}
+      <div className="relative w-full max-w-2xl max-h-full">
+        <div className="relative bg-main-gradient rounded-lg shadow">
+          <div className="flex items-start justify-between p-4 rounded-t border-gray-500/50">
+            <div className="flex items-center gap-2">
+              <Eye
+                className="text-yellow-600 text-lg w-6 h-6"
+                weight="regular"
               />
-            </p>
-            <p>{t("connectors.watching.watch_explained_block2")}</p>
+              <h3 className="text-xl font-semibold text-white">
+                What does watching a document do?
+              </h3>
+            </div>
+          </div>
+          <div className="w-full p-6 text-white text-md flex flex-col gap-y-2">
             <p>
-              {t("connectors.watching.watch_explained_block3_start")}
+              When you <b>watch</b> a document in AnythingLLM we will{" "}
+              <i>automatically</i> sync your document content from it's original
+              source on regular intervals. This will automatically update the
+              content in every workspace where this file is managed.
+            </p>
+            <p>
+              This feature currently supports online-based content and will not
+              be available for manually uploaded documents.
+            </p>
+            <p>
+              You can manage what documents are watched from the{" "}
               <Link
                 to={paths.experimental.liveDocumentSync.manage()}
                 className="text-blue-600 underline"
               >
-                {t("connectors.watching.watch_explained_block3_link")}
-              </Link>
-              {t("connectors.watching.watch_explained_block3_end")}
+                File manager
+              </Link>{" "}
+              admin view.
             </p>
           </div>
-        </div>
-        <div className="flex w-full justify-end items-center p-6 space-x-2 border-t border-theme-modal-border rounded-b">
-          <button
-            onClick={dismissAlert}
-            className="transition-all duration-300 bg-white text-black hover:opacity-60 px-4 py-2 rounded-lg text-sm"
-          >
-            {t("connectors.watching.accept")}
-          </button>
+
+          <div className="flex w-full justify-between items-center p-6 space-x-2 border-t rounded-b border-gray-500/50">
+            <button disabled={true} className="invisible" />
+            <button
+              onClick={dismissAlert}
+              className="border border-slate-200 px-4 py-2 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
+            >
+              Okay, got it
+            </button>
+          </div>
         </div>
       </div>
     </ModalWrapper>
   );
 });
 
-function RenderFileRows({ files, movedItems, children, workspace }) {
+function RenderFileRows({ files, movedItems, children }) {
   function sortMovedItemsAndFiles(a, b) {
     const aIsMovedItem = movedItems.some((movedItem) => movedItem.id === a.id);
     const bIsMovedItem = movedItems.some((movedItem) => movedItem.id === b.id);
     if (aIsMovedItem && !bIsMovedItem) return -1;
     if (!aIsMovedItem && bIsMovedItem) return 1;
-
-    // Sort pinned items to the top
-    const aIsPinned = a.pinnedWorkspaces?.includes(workspace.id);
-    const bIsPinned = b.pinnedWorkspaces?.includes(workspace.id);
-    if (aIsPinned && !bIsPinned) return -1;
-    if (!aIsPinned && bIsPinned) return 1;
-
     return 0;
   }
 
@@ -411,60 +394,6 @@ function RenderFileRows({ files, movedItems, children, workspace }) {
       const folder = files.items.find((f) => f.items.includes(item));
       return children({ item, folder });
     });
-}
-
-/**
- * Tooltips for the workspace directory components. Renders when the workspace directory is shown
- * or updated so that tooltips are attached as the items are changed.
- */
-function WorkspaceDocumentTooltips() {
-  return (
-    <>
-      <Tooltip
-        id="ws-directory-item"
-        place="bottom"
-        delayShow={800}
-        className="tooltip invert light:invert-0 z-99 max-w-[200px]"
-        render={({ content }) => {
-          const data = safeJsonParse(content, null);
-          if (!data) return null;
-          return (
-            <div className="text-xs">
-              <p className="text-white light:invert font-medium">
-                {data.title}
-              </p>
-              <div className="flex mt-1 gap-x-2">
-                <p className="">
-                  Date: <b>{data.date}</b>
-                </p>
-                <p className="">
-                  Type: <b>{data.extension}</b>
-                </p>
-              </div>
-            </div>
-          );
-        }}
-      />
-      <Tooltip
-        id="watch-changes"
-        place="bottom"
-        delayShow={300}
-        className="tooltip invert !text-xs"
-      />
-      <Tooltip
-        id="pin-document"
-        place="bottom"
-        delayShow={300}
-        className="tooltip invert !text-xs"
-      />
-      <Tooltip
-        id="remove-document"
-        place="bottom"
-        delayShow={300}
-        className="tooltip invert !text-xs"
-      />
-    </>
-  );
 }
 
 export default memo(WorkspaceDirectory);

@@ -55,20 +55,11 @@ AnythingLLM divides your documents into objects called `workspaces`. A Workspace
 
 ## Cool features of AnythingLLM
 
-<<<<<<< HEAD
-- 🆕 [**Full MCP-compatibility**](https://docs.anythingllm.com/mcp-compatibility/overview)
-- 🆕 [**No-code AI Agent builder**](https://docs.anythingllm.com/agent-flows/overview)
+- 🆕 [**Custom AI Agents**](https://docs.anythingllm.com/agent/custom/introduction)
 - 🖼️ **Multi-modal support (both closed and open-source LLMs!)**
-- [**Custom AI Agents**](https://docs.anythingllm.com/agent/custom/introduction)
-- 👤 Multi-user instance support and permissioning _Docker version only_
-- 🦾 Agents inside your workspace (browse the web, etc)
-- 💬 [Custom Embeddable Chat widget for your website](https://github.com/Mintplex-Labs/anythingllm-embed/blob/main/README.md) _Docker version only_
-=======
-- 🆕 **Multi-modal support (both closed and open-source LLMs!)**
 - 👤 Multi-user instance support and permissioning _Docker version only_
 - 🦾 Agents inside your workspace (browse the web, run code, etc)
 - 💬 [Custom Embeddable Chat widget for your website](./embed/README.md) _Docker version only_
->>>>>>> 48ef74aa (sync-fork-2)
 - 📖 Multiple document type support (PDF, TXT, DOCX, etc)
 - Simple chat UI with Drag-n-Drop funcitonality and clear citations.
 - 100% Cloud deployment ready.
@@ -87,7 +78,6 @@ AnythingLLM divides your documents into objects called `workspaces`. A Workspace
 - [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
 - [AWS Bedrock](https://aws.amazon.com/bedrock/)
 - [Anthropic](https://www.anthropic.com/)
-- [NVIDIA NIM (chat models)](https://build.nvidia.com/explore/discover)
 - [Google Gemini Pro](https://ai.google.dev/)
 - [Hugging Face (chat models)](https://huggingface.co/)
 - [Ollama (chat models)](https://ollama.ai/)
@@ -104,10 +94,6 @@ AnythingLLM divides your documents into objects called `workspaces`. A Workspace
 - [KoboldCPP](https://github.com/LostRuins/koboldcpp)
 - [LiteLLM](https://github.com/BerriAI/litellm)
 - [Text Generation Web UI](https://github.com/oobabooga/text-generation-webui)
-- [Apipie](https://apipie.ai/)
-- [xAI](https://x.ai/)
-- [Novita AI (chat models)](https://novita.ai/model-api/product/llm-api?utm_source=github_anything-llm&utm_medium=github_readme&utm_campaign=link)
-- [PPIO](https://ppinfra.com?utm_source=github_anything-llm)
 
 **Embedder models:**
 
@@ -130,7 +116,6 @@ AnythingLLM divides your documents into objects called `workspaces`. A Workspace
 - [PiperTTSLocal - runs in browser](https://github.com/rhasspy/piper)
 - [OpenAI TTS](https://platform.openai.com/docs/guides/text-to-speech/voice-options)
 - [ElevenLabs](https://elevenlabs.io/)
-- Any OpenAI Compatible TTS service.
 
 **STT (speech-to-text) support:**
 
@@ -162,7 +147,7 @@ This monorepo consists of three main sections:
 
 Mintplex Labs & the community maintain a number of deployment methods, scripts, and templates that you can use to run AnythingLLM locally. Refer to the table below to read how to deploy on your preferred environment or to automatically deploy.
 | Docker | AWS | GCP | Digital Ocean | Render.com |
-|----------------------------------------|----|-----|---------------|------------|
+|----------------------------------------|----:|-----|---------------|------------|
 | [![Deploy on Docker][docker-btn]][docker-deploy] | [![Deploy on AWS][aws-btn]][aws-deploy] | [![Deploy on GCP][gcp-btn]][gcp-deploy] | [![Deploy on DigitalOcean][do-btn]][do-deploy] | [![Deploy on Render.com][render-btn]][render-deploy] |
 
 | Railway  |  RepoCloud | Elestio |
@@ -183,14 +168,6 @@ Mintplex Labs & the community maintain a number of deployment methods, scripts, 
 
 [Learn about vector caching](./server/storage/vector-cache/VECTOR_CACHE.md)
 
-## External Apps & Integrations
-
-_These are apps that are not maintained by Mintplex Labs, but are compatible with AnythingLLM. A listing here is not an endorsement._
-
-- [Midori AI Subsystem Manager](https://io.midori-ai.xyz/subsystem/anythingllm/) - A streamlined and efficient way to deploy AI systems using Docker container technology.
-- [Coolify](https://coolify.io/docs/services/anythingllm/) - Deploy AnythingLLM with a single click.
-- [GPTLocalhost for Microsoft Word](https://gptlocalhost.com/demo/) - A local Word Add-in for you to use AnythingLLM in Microsoft Word.
-
 ## Telemetry & Privacy
 
 AnythingLLM by Mintplex Labs Inc contains a telemetry feature that collects anonymous usage information.
@@ -210,19 +187,13 @@ Set `DISABLE_TELEMETRY` in your server or docker .env settings to "true" to opt 
 
 We will only track usage details that help us make product and roadmap decisions, specifically:
 
-- Type of your installation (Docker or Desktop)
-
+- Typ of your installation (Docker or Desktop)
 - When a document is added or removed. No information _about_ the document. Just that the event occurred. This gives us an idea of use.
-
 - Type of vector database in use. Let's us know which vector database provider is the most used to prioritize changes when updates arrive for that provider.
+- Type of LLM in use. Let's us know the most popular choice and prioritize changes when updates arrive for that provider.
+- Chat is sent. This is the most regular "event" and gives us an idea of the daily-activity of this project across all installations. Again, only the event is sent - we have no information on the nature or content of the chat itself.
 
-- Type of LLM provider & model tag in use. Let's us know the most popular choice and prioritize changes when updates arrive for that provider or model, or combination thereof. eg: reasoning vs regular, multi-modal models, etc.
-
-- When a chat is sent. This is the most regular "event" and gives us an idea of the daily-activity of this project across all installations. Again, only the **event** is sent - we have no information on the nature or content of the chat itself.
-
-You can verify these claims by finding all locations `Telemetry.sendTelemetry` is called. Additionally these events are written to the output log so you can also see the specific data which was sent - if enabled. **No IP or other identifying information is collected**. The Telemetry provider is [PostHog](https://posthog.com/) - an open-source telemetry collection service.
-
-We take privacy very seriously and hopefully you can understand our position to also glimpse into how our tool is used with asking for annoying popup surveys so we can build something worth using. The anonymous data is _never_ shared with third parties, ever.
+You can verify these claims by finding all locations `Telemetry.sendTelemetry` is called. Additionally these events are written to the output log so you can also see the specific data which was sent - if enabled. No IP or other identifying information is collected. The Telemetry provider is [PostHog](https://posthog.com/) - an open-source telemetry collection service.
 
 [View all telemetry events in source code](https://github.com/search?q=repo%3AMintplex-Labs%2Fanything-llm%20.sendTelemetry\(&type=code)
 
@@ -254,7 +225,7 @@ We take privacy very seriously and hopefully you can understand our position to 
 
 ---
 
-Copyright © 2025 [Mintplex Labs][profile-link]. <br />
+Copyright © 2024 [Mintplex Labs][profile-link]. <br />
 This project is [MIT](./LICENSE) licensed.
 
 <!-- LINK GROUP -->
