@@ -30,7 +30,6 @@ class SnowflakeConnector {
       warehouse: parsedJson.warehouse,
       database: parsedJson.database,
     };
-    console.log(this.connectionConfig);
   }
 
   async connect() {
@@ -82,7 +81,6 @@ class SnowflakeConnector {
         this.#connected = false;
       });
     }
-    console.log(result);
     return result;
   }
 
