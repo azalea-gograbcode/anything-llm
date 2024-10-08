@@ -27,8 +27,5 @@
     "generate::gcp_deployment": "node cloud-deployments/gcp/deployment/generate.mjs",
     "verify:translations": "cd frontend/src/locales && node verifyTranslations.mjs"
   },
-  "private": false,
-  "dependencies": {
-    "snowflake-sdk": "^1.14.0"
-  }
+  "private": false
 }
