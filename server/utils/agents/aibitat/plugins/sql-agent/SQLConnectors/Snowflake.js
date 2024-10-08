@@ -1,5 +1,5 @@
 const snowflake = require("snowflake-sdk");
-const url = require("url");
+const crypto = require('crypto');
 
 class SnowflakeConnector {
   #connected = false;
@@ -10,14 +10,27 @@ class SnowflakeConnector {
   ) {
     this.connectionString = config.connectionString;
     this._client = null;
-    const parsedUrl = new url.URL(config.connectionString);
+    const parsedJson = JSON.parse(this.connectionString);
+
+    const privateKeyObject = crypto.createPrivateKey({
+      key: parsedJson.privateKey.replaceAll("\\n", "\n"),
+      format: 'pem',
+      passphrase: parsedJson.privateKeyPassPhrase
+    });
+    var privateKey = privateKeyObject.export({
+      format: 'pem',
+      type: 'pkcs8'
+    });
+
     this.connectionConfig = {
-      account: parsedUrl.hostname,
-      username: parsedUrl.username,
-      password: parsedUrl.password,
-      warehouse: parsedUrl.pathname.replace('/', ''),
-      database: parsedUrl.searchParams.get('database'),
+      authenticator: "SNOWFLAKE_JWT",
+      account: parsedJson.host,
+      username: parsedJson.username,
+      privateKey: privateKey,
+      warehouse: parsedJson.warehouse,
+      database: parsedJson.database,
     };
+    console.log(this.connectionConfig);
   }
 
   async connect() {
@@ -69,6 +82,7 @@ class SnowflakeConnector {
         this.#connected = false;
       });
     }
+    console.log(result);
     return result;
   }
 
