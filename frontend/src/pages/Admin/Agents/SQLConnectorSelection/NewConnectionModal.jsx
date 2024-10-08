@@ -22,7 +22,7 @@ function assembleConnectionString({
     case "sql-server":
       return `mssql://${username}:${password}@${host}:${port}/${database}`;
     case "snowflake":
-      return `snowflake://${username}:${password}@${host}/${warehouse}?database=${database}`;
+      return `snowflake://${username}:${password}@${host}/${port}?database=${database}`;
     default:
       return null;
   }
@@ -219,11 +219,7 @@ export default function NewSQLConnection({ isOpen, closeModal, onSubmit }) {
                   </label>
                   <input
                     type="text"
-                    name={engine === "snowflake" ? (
-                      "warehouse"
-                      ) : (
-                      "port"
-                      )}
+                    name="port"
                     className="border-none bg-zinc-900 text-white placeholder:text-white/20 text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
                     placeholder={engine === "snowflake" ? (
                       "WAREHOUSE"

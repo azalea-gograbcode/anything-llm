@@ -3,10 +3,9 @@ const url = require("url");
 
 class SnowflakeConnector {
   #connected = false;
-
   constructor(
     config = {
-      connectionString: null
+      connectionString: null,
     }
   ) {
     this.connectionString = config.connectionString;
