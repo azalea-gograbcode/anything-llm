@@ -128,6 +128,7 @@ RUN echo "Running common build flow of AnythingLLM image for all architectures"
 USER anythingllm
 WORKDIR /app
 
+
 # Install & Build frontend layer
 FROM build AS frontend-build
 COPY --chown=anythingllm:anythingllm ./frontend /app/frontend/
