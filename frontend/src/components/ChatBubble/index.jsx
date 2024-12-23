@@ -1,8 +1,6 @@
 import React from "react";
 import UserIcon from "../UserIcon";
 import { userFromStorage } from "@/utils/request";
-import renderMarkdown from "@/utils/chat/markdown";
-import DOMPurify from "@/utils/chat/purify";
 
 export default function ChatBubble({ message, type, popMsg }) {
   const isUser = type === "user";
@@ -18,12 +16,11 @@ export default function ChatBubble({ message, type, popMsg }) {
             role={type}
           />
 
-          <div
-            className={`markdown whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(renderMarkdown(message)),
-            }}
-          />
+          <span
+            className={`whitespace-pre-line text-white font-normal text-sm md:text-sm flex flex-col gap-y-1 mt-2`}
+          >
+            {message}
+          </span>
         </div>
       </div>
     </div>

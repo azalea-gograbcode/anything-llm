@@ -1,16 +1,5 @@
 import { API_BASE } from "./constants";
 
-function applyOptions(path, options = {}) {
-  let updatedPath = path;
-  if (!options || Object.keys(options).length === 0) return updatedPath;
-
-  if (options.search) {
-    const searchParams = new URLSearchParams(options.search);
-    updatedPath += `?${searchParams.toString()}`;
-  }
-  return updatedPath;
-}
-
 export default {
   home: () => {
     return "/";
@@ -60,18 +49,15 @@ export default {
     return "https://my.mintplexlabs.com/aio-checkout?product=anythingllm";
   },
   workspace: {
-    chat: (slug, options = {}) => {
-      return applyOptions(`/workspace/${slug}`, options);
+    chat: (slug) => {
+      return `/workspace/${slug}`;
     },
     settings: {
       generalAppearance: (slug) => {
         return `/workspace/${slug}/settings/general-appearance`;
       },
-      chatSettings: function (slug, options = {}) {
-        return applyOptions(
-          `/workspace/${slug}/settings/chat-settings`,
-          options
-        );
+      chatSettings: (slug) => {
+        return `/workspace/${slug}/settings/chat-settings`;
       },
       vectorDatabase: (slug) => {
         return `/workspace/${slug}/settings/vector-database`;
@@ -125,22 +111,15 @@ export default {
     security: () => {
       return "/settings/security";
     },
-    interface: () => {
-      return "/settings/interface";
-    },
-    branding: () => {
-      return "/settings/branding";
+    appearance: () => {
+      return "/settings/appearance";
     },
     agentSkills: () => {
       return "/settings/agents";
     },
-    chat: () => {
-      return "/settings/chat";
-    },
     apiKeys: () => {
       return "/settings/api-keys";
     },
-    systemPromptVariables: () => "/settings/system-prompt-variables",
     logs: () => {
       return "/settings/event-logs";
     },
@@ -158,14 +137,6 @@ export default {
     },
     experimental: () => {
       return `/settings/beta-features`;
-    },
-  },
-  agents: {
-    builder: () => {
-      return `/settings/agents/builder`;
-    },
-    editAgent: (uuid) => {
-      return `/settings/agents/builder/${uuid}`;
     },
   },
   communityHub: {

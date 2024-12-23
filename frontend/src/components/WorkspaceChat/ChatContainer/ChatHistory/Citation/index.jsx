@@ -15,7 +15,6 @@ import {
   YoutubeLogo,
 } from "@phosphor-icons/react";
 import ConfluenceLogo from "@/media/dataConnectors/confluence.png";
-import DrupalWikiLogo from "@/media/dataConnectors/drupalwiki.png";
 import { toPercentString } from "@/utils/numbers";
 
 function combineLikeSources(sources) {
@@ -198,17 +197,14 @@ function parseChunkSource({ title = "", chunks = [] }) {
     !chunks.length ||
     (!chunks[0].chunkSource?.startsWith("link://") &&
       !chunks[0].chunkSource?.startsWith("confluence://") &&
-      !chunks[0].chunkSource?.startsWith("github://") &&
-      !chunks[0].chunkSource?.startsWith("drupalwiki://"))
+      !chunks[0].chunkSource?.startsWith("github://"))
   )
     return nullResponse;
-
   try {
     const url = new URL(
       chunks[0].chunkSource.split("link://")[1] ||
         chunks[0].chunkSource.split("confluence://")[1] ||
-        chunks[0].chunkSource.split("github://")[1] ||
-        chunks[0].chunkSource.split("drupalwiki://")[1]
+        chunks[0].chunkSource.split("github://")[1]
     );
     let text = url.host + url.pathname;
     let icon = "link";
@@ -228,11 +224,6 @@ function parseChunkSource({ title = "", chunks = [] }) {
       icon = "confluence";
     }
 
-    if (url.host.includes("drupal-wiki.net")) {
-      text = title;
-      icon = "drupalwiki";
-    }
-
     return {
       isUrl: true,
       href: url.toString(),
@@ -248,16 +239,10 @@ const ConfluenceIcon = ({ ...props }) => (
   <img src={ConfluenceLogo} {...props} />
 );
 
-// Patch to render DrupalWiki icon as a element like we do with Phosphor
-const DrupalWikiIcon = ({ ...props }) => (
-  <img src={DrupalWikiLogo} {...props} />
-);
-
 const ICONS = {
   file: FileText,
   link: Link,
   youtube: YoutubeLogo,
   github: GithubLogo,
   confluence: ConfluenceIcon,
-  drupalwiki: DrupalWikiIcon,
 };

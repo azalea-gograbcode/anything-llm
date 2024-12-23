@@ -1,59 +1,52 @@
 import ConnectorImages from "@/components/DataConnectorOption/media";
 import { MagnifyingGlass } from "@phosphor-icons/react";
-import { useTranslation } from "react-i18next";
 import GithubOptions from "./Connectors/Github";
 import GitlabOptions from "./Connectors/Gitlab";
 import YoutubeOptions from "./Connectors/Youtube";
 import ConfluenceOptions from "./Connectors/Confluence";
-import DrupalWikiOptions from "./Connectors/DrupalWiki";
 import { useState } from "react";
 import ConnectorOption from "./ConnectorOption";
 import WebsiteDepthOptions from "./Connectors/WebsiteDepth";
 
-export const getDataConnectors = (t) => ({
+export const DATA_CONNECTORS = {
   github: {
-    name: t("connectors.github.name"),
+    name: "GitHub Repo",
     image: ConnectorImages.github,
-    description: t("connectors.github.description"),
+    description:
+      "Import an entire public or private Github repository in a single click.",
     options: <GithubOptions />,
   },
   gitlab: {
-    name: t("connectors.gitlab.name"),
+    name: "GitLab Repo",
     image: ConnectorImages.gitlab,
-    description: t("connectors.gitlab.description"),
+    description:
+      "Import an entire public or private GitLab repository in a single click.",
     options: <GitlabOptions />,
   },
   "youtube-transcript": {
-    name: t("connectors.youtube.name"),
+    name: "YouTube Transcript",
     image: ConnectorImages.youtube,
-    description: t("connectors.youtube.description"),
+    description:
+      "Import the transcription of an entire YouTube video from a link.",
     options: <YoutubeOptions />,
   },
   "website-depth": {
-    name: t("connectors.website-depth.name"),
+    name: "Bulk Link Scraper",
     image: ConnectorImages.websiteDepth,
-    description: t("connectors.website-depth.description"),
+    description: "Scrape a website and its sub-links up to a certain depth.",
     options: <WebsiteDepthOptions />,
   },
   confluence: {
-    name: t("connectors.confluence.name"),
+    name: "Confluence",
     image: ConnectorImages.confluence,
-    description: t("connectors.confluence.description"),
+    description: "Import an entire Confluence page in a single click.",
     options: <ConfluenceOptions />,
   },
-  drupalwiki: {
-    name: "Drupal Wiki",
-    image: ConnectorImages.drupalwiki,
-    description: "Import Drupal Wiki spaces in a single click.",
-    options: <DrupalWikiOptions />,
-  },
-});
+};
 
 export default function DataConnectors() {
-  const { t } = useTranslation();
   const [selectedConnector, setSelectedConnector] = useState("github");
   const [searchQuery, setSearchQuery] = useState("");
-  const DATA_CONNECTORS = getDataConnectors(t);
 
   const filteredConnectors = Object.keys(DATA_CONNECTORS).filter((slug) =>
     DATA_CONNECTORS[slug].name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -70,7 +63,7 @@ export default function DataConnectors() {
           />
           <input
             type="text"
-            placeholder={t("connectors.search-placeholder")}
+            placeholder="Search data connectors"
             className="border-none z-20 pl-10 h-[38px] rounded-full w-full px-4 py-1 text-sm border-2 border-slate-300/40 outline-none focus:outline-primary-button active:outline-primary-button outline-none placeholder:text-theme-settings-input-placeholder text-white bg-theme-settings-input-bg"
             autoComplete="off"
             value={searchQuery}
@@ -92,7 +85,7 @@ export default function DataConnectors() {
             ))
           ) : (
             <div className="text-white text-center mt-4">
-              {t("connectors.no-connectors")}
+              No data connectors found.
             </div>
           )}
         </div>

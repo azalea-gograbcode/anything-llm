@@ -3,7 +3,6 @@ const { v4: uuidv4 } = require("uuid");
 const {
   writeResponseChunk,
   clientAbortedHandler,
-  formatChatHistory,
 } = require("../../helpers/chat/responses");
 const fs = require("fs");
 const path = require("path");
@@ -178,7 +177,7 @@ class ApiPieLLM {
     };
     return [
       prompt,
-      ...formatChatHistory(chatHistory, this.#generateContent),
+      ...chatHistory,
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),

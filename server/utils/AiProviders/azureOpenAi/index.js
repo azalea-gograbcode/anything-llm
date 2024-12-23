@@ -1,29 +1,25 @@
 const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const {
-  formatChatHistory,
-  handleDefaultStreamResponseV2,
-} = require("../../helpers/chat/responses");
-const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
+const {
+  writeResponseChunk,
+  clientAbortedHandler,
+} = require("../../helpers/chat/responses");
 
 class AzureOpenAiLLM {
   constructor(embedder = null, modelPreference = null) {
-    const { AzureOpenAI } = require("openai");
+    const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
     if (!process.env.AZURE_OPENAI_ENDPOINT)
       throw new Error("No Azure API endpoint was set.");
     if (!process.env.AZURE_OPENAI_KEY)
       throw new Error("No Azure API key was set.");
 
-    this.apiVersion = "2024-12-01-preview";
-    this.openai = new AzureOpenAI({
-      apiKey: process.env.AZURE_OPENAI_KEY,
-      apiVersion: this.apiVersion,
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-    });
+    this.openai = new OpenAIClient(
+      process.env.AZURE_OPENAI_ENDPOINT,
+      new AzureKeyCredential(process.env.AZURE_OPENAI_KEY)
+    );
     this.model = modelPreference ?? process.env.OPEN_MODEL_PREF;
-    this.isOTypeModel =
-      process.env.AZURE_OPENAI_MODEL_TYPE === "reasoning" || false;
     this.limits = {
       history: this.promptWindowLimit() * 0.15,
       system: this.promptWindowLimit() * 0.15,
@@ -32,13 +28,6 @@ class AzureOpenAiLLM {
 
     this.embedder = embedder ?? new NativeEmbedder();
     this.defaultTemp = 0.7;
-    this.#log(
-      `Initialized. Model "${this.model}" @ ${this.promptWindowLimit()} tokens.\nAPI-Version: ${this.apiVersion}.\nModel Type: ${this.isOTypeModel ? "reasoning" : "default"}`
-    );
-  }
-
-  #log(text, ...args) {
-    console.log(`\x1b[32m[AzureOpenAi]\x1b[0m ${text}`, ...args);
   }
 
   #appendContext(contextTexts = []) {
@@ -54,13 +43,6 @@ class AzureOpenAiLLM {
   }
 
   streamingEnabled() {
-    // Streaming of reasoning models is not supported
-    if (this.isOTypeModel) {
-      this.#log(
-        "Streaming will be disabled. AZURE_OPENAI_MODEL_TYPE is set to 'reasoning'."
-      );
-      return false;
-    }
     return "streamGetChatCompletion" in this;
   }
 
@@ -116,16 +98,12 @@ class AzureOpenAiLLM {
     attachments = [], // This is the specific attachment for only this prompt
   }) {
     const prompt = {
-      role: this.isOTypeModel ? "user" : "system",
+      role: "system",
       content: `${systemPrompt}${this.#appendContext(contextTexts)}`,
     };
     return [
       prompt,
-<<<<<<< HEAD
-      ...formatChatHistory(chatHistory, this.#generateContent),
-=======
       ...chatHistory,
->>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),
@@ -140,10 +118,8 @@ class AzureOpenAiLLM {
       );
 
     const result = await LLMPerformanceMonitor.measureAsyncFunction(
-      this.openai.chat.completions.create({
-        messages,
-        model: this.model,
-        ...(this.isOTypeModel ? {} : { temperature }),
+      this.openai.getChatCompletions(this.model, messages, {
+        temperature,
       })
     );
 
@@ -156,10 +132,10 @@ class AzureOpenAiLLM {
     return {
       textResponse: result.output.choices[0].message.content,
       metrics: {
-        prompt_tokens: result.output.usage.prompt_tokens || 0,
-        completion_tokens: result.output.usage.completion_tokens || 0,
-        total_tokens: result.output.usage.total_tokens || 0,
-        outputTps: result.output.usage.completion_tokens / result.duration,
+        prompt_tokens: result.output.usage.promptTokens || 0,
+        completion_tokens: result.output.usage.completionTokens || 0,
+        total_tokens: result.output.usage.totalTokens || 0,
+        outputTps: result.output.usage.completionTokens / result.duration,
         duration: result.duration,
       },
     };
@@ -172,12 +148,9 @@ class AzureOpenAiLLM {
       );
 
     const measuredStreamRequest = await LLMPerformanceMonitor.measureStream(
-      await this.openai.chat.completions.create({
-        messages,
-        model: this.model,
-        ...(this.isOTypeModel ? {} : { temperature }),
+      await this.openai.streamChatCompletions(this.model, messages, {
+        temperature,
         n: 1,
-        stream: true,
       }),
       messages
     );
@@ -185,8 +158,64 @@ class AzureOpenAiLLM {
     return measuredStreamRequest;
   }
 
+  /**
+   * Handles the stream response from the AzureOpenAI API.
+   * Azure does not return the usage metrics in the stream response, but 1msg = 1token
+   * so we can estimate the completion tokens by counting the number of messages.
+   * @param {Object} response - the response object
+   * @param {import('../../helpers/chat/LLMPerformanceMonitor').MonitoredStream} stream - the stream response from the AzureOpenAI API w/tracking
+   * @param {Object} responseProps - the response properties
+   * @returns {Promise<string>}
+   */
   handleStream(response, stream, responseProps) {
-    return handleDefaultStreamResponseV2(response, stream, responseProps);
+    const { uuid = uuidv4(), sources = [] } = responseProps;
+
+    return new Promise(async (resolve) => {
+      let fullText = "";
+      let usage = {
+        completion_tokens: 0,
+      };
+
+      // Establish listener to early-abort a streaming response
+      // in case things go sideways or the user does not like the response.
+      // We preserve the generated text but continue as if chat was completed
+      // to preserve previously generated content.
+      const handleAbort = () => {
+        stream?.endMeasurement(usage);
+        clientAbortedHandler(resolve, fullText);
+      };
+      response.on("close", handleAbort);
+
+      for await (const event of stream) {
+        for (const choice of event.choices) {
+          const delta = choice.delta?.content;
+          if (!delta) continue;
+          fullText += delta;
+          usage.completion_tokens++;
+
+          writeResponseChunk(response, {
+            uuid,
+            sources: [],
+            type: "textResponseChunk",
+            textResponse: delta,
+            close: false,
+            error: false,
+          });
+        }
+      }
+
+      writeResponseChunk(response, {
+        uuid,
+        sources,
+        type: "textResponseChunk",
+        textResponse: "",
+        close: true,
+        error: false,
+      });
+      response.removeListener("close", handleAbort);
+      stream?.endMeasurement(usage);
+      resolve(fullText);
+    });
   }
 
   // Simple wrapper for dynamic embedder & normalize interface for all LLM implementations

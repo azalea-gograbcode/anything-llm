@@ -135,7 +135,7 @@ export default function OllamaLLMOptions({ settings }) {
             <input
               type="url"
               name="OllamaLLMBasePath"
-              className="bg-zinc-900 text-white placeholder:text-white/20 text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
+              className="border-none bg-theme-settings-input-bg text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
               placeholder="http://127.0.0.1:11434"
               value={basePathValue.value}
               required={true}
@@ -156,7 +156,7 @@ export default function OllamaLLMOptions({ settings }) {
             <select
               name="OllamaLLMKeepAliveSeconds"
               required={true}
-              className="bg-zinc-900 border-gray-500 text-white text-sm rounded-lg block w-full p-2.5"
+              className="border-none bg-theme-settings-input-bg border-gray-500 text-white text-sm rounded-lg block w-full p-2.5"
               defaultValue={settings?.OllamaLLMKeepAliveSeconds ?? "300"}
             >
               <option value="0">No cache</option>
@@ -274,7 +274,7 @@ export default function OllamaLLMOptions({ settings }) {
             <select
               name="OllamaLLMPerformanceMode"
               required={true}
-              className="bg-zinc-900 border-gray-500 text-white text-sm rounded-lg block w-full p-2.5"
+              className="border-none bg-theme-settings-input-bg border-gray-500 text-white text-sm rounded-lg block w-full p-2.5"
               value={performanceMode}
               onChange={(e) => setPerformanceMode(e.target.value)}
             >
@@ -290,18 +290,22 @@ export default function OllamaLLMOptions({ settings }) {
               className="tooltip !text-xs max-w-xs"
             >
               <p className="text-red-500">
-                <strong>Note:</strong> Only change this setting if you
-                understand its implications on performance and resource usage.
+                <strong>Note:</strong> Be careful with the Maximum mode. It may
+                increase resource usage significantly.
               </p>
               <br />
               <p>
                 <strong>Base:</strong> Ollama automatically limits the context
-                to 2048 tokens, reducing VRAM usage. Suitable for most users.
+                to 2048 tokens, keeping resources usage low while maintaining
+                good performance. Suitable for most users and models.
               </p>
               <br />
               <p>
                 <strong>Maximum:</strong> Uses the full context window (up to
-                Max Tokens). May increase VRAM usage significantly.
+                Max Tokens). Will result in increased resource usage but allows
+                for larger context conversations. <br />
+                <br />
+                This is not recommended for most users.
               </p>
             </Tooltip>
           </div>

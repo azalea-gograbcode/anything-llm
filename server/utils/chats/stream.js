@@ -42,7 +42,7 @@ async function streamChatWithWorkspace(
   const isAgentChat = await grepAgents({
     uuid,
     response,
-    message: updatedMessage,
+    message,
     user,
     workspace,
     thread,
@@ -134,12 +134,11 @@ async function streamChatWithWorkspace(
     embeddingsCount !== 0
       ? await VectorDb.performSimilaritySearch({
           namespace: workspace.slug,
-          input: updatedMessage,
+          input: message,
           LLMConnector,
           similarityThreshold: workspace?.similarityThreshold,
           topN: workspace?.topN,
           filterIdentifiers: pinnedDocIdentifiers,
-          rerank: workspace?.vectorSearchMode === "rerank",
         })
       : {
           contextTexts: [],
@@ -213,7 +212,7 @@ async function streamChatWithWorkspace(
   // and build system messages based on inputs and history.
   const messages = await LLMConnector.compressMessages(
     {
-      systemPrompt: await chatPrompt(workspace, user),
+      systemPrompt: chatPrompt(workspace),
       userPrompt: updatedMessage,
       contextTexts,
       chatHistory,
@@ -259,7 +258,6 @@ async function streamChatWithWorkspace(
     const { chat } = await WorkspaceChats.new({
       workspaceId: workspace.id,
       prompt: message,
-<<<<<<< HEAD
       response: {
         text: completeText,
         sources,
@@ -267,9 +265,6 @@ async function streamChatWithWorkspace(
         attachments,
         metrics,
       },
-=======
-      response: { text: completeText, sources, type: chatMode, attachments },
->>>>>>> 48ef74aa (sync-fork-2)
       threadId: thread?.id || null,
       user,
     });

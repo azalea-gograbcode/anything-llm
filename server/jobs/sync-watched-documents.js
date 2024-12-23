@@ -34,7 +34,7 @@ const { DocumentSyncRun } = require('../models/documentSyncRun.js');
         continue;
       }
 
-      if (['link', 'youtube'].includes(type)) {
+      if (type === 'link' || type === 'youtube') {
         const response = await collector.forwardExtensionRequest({
           endpoint: "/ext/resync-source-document",
           method: "POST",
@@ -46,7 +46,7 @@ const { DocumentSyncRun } = require('../models/documentSyncRun.js');
         newContent = response?.content;
       }
 
-      if (['confluence', 'github', 'gitlab', 'drupalwiki'].includes(type)) {
+      if (type === 'confluence' || type === 'github' || type === 'gitlab') {
         const response = await collector.forwardExtensionRequest({
           endpoint: "/ext/resync-source-document",
           method: "POST",

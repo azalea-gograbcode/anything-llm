@@ -2,10 +2,8 @@ import Admin from "@/models/admin";
 import System from "@/models/system";
 import showToast from "@/utils/toast";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 export default function CustomAppName() {
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [hasChanges, setHasChanges] = useState(false);
   const [customAppName, setCustomAppName] = useState("");
@@ -59,21 +57,20 @@ export default function CustomAppName() {
   if (!canCustomize || loading) return null;
 
   return (
-    <form
-      className="flex flex-col gap-y-0.5 mt-4"
-      onSubmit={updateCustomAppName}
-    >
-      <p className="text-sm leading-6 font-semibold text-white">
-        {t("customization.items.app-name.title")}
-      </p>
-      <p className="text-xs text-white/60">
-        {t("customization.items.app-name.description")}
-      </p>
+    <form className="mb-6" onSubmit={updateCustomAppName}>
+      <div className="flex flex-col gap-y-1">
+        <h2 className="text-base leading-6 font-bold text-white">
+          Custom App Name
+        </h2>
+        <p className="text-xs leading-[18px] font-base text-white/60">
+          Set a custom app name that is displayed on the login page.
+        </p>
+      </div>
       <div className="flex items-center gap-x-4">
         <input
           name="customAppName"
           type="text"
-          className="border-none bg-theme-settings-input-bg mt-2 text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-fit py-2 px-4"
+          className="border-none bg-theme-settings-input-bg mt-3 text-white text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5 max-w-[275px] placeholder:text-theme-settings-input-placeholder"
           placeholder="AnythingLLM"
           required={true}
           autoComplete="off"
@@ -84,7 +81,7 @@ export default function CustomAppName() {
           <button
             type="button"
             onClick={(e) => updateCustomAppName(e, "")}
-            className="text-white text-base font-medium hover:text-opacity-60"
+            className="mt-4 text-white text-base font-medium hover:text-opacity-60"
           >
             Clear
           </button>
@@ -93,7 +90,7 @@ export default function CustomAppName() {
       {hasChanges && (
         <button
           type="submit"
-          className="transition-all mt-2 w-fit duration-300 border border-slate-200 px-5 py-2.5 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
+          className="transition-all mt-6 w-fit duration-300 border border-slate-200 px-5 py-2.5 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
         >
           Save
         </button>

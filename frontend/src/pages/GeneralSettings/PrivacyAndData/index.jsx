@@ -8,7 +8,6 @@ import {
   EMBEDDING_ENGINE_PRIVACY,
   LLM_SELECTION_PRIVACY,
   VECTOR_DB_PRIVACY,
-  FALLBACKS,
 } from "@/pages/OnboardingFlow/Steps/DataHandling";
 import { useTranslation } from "react-i18next";
 
@@ -68,13 +67,6 @@ function ThirdParty({ settings }) {
   const vectorDb = settings?.VectorDB || "lancedb";
   const { t } = useTranslation();
 
-  const LLMSelection =
-    LLM_SELECTION_PRIVACY?.[llmChoice] || FALLBACKS.LLM(llmChoice);
-  const EmbeddingEngine =
-    EMBEDDING_ENGINE_PRIVACY?.[embeddingEngine] ||
-    FALLBACKS.EMBEDDING(embeddingEngine);
-  const VectorDb = VECTOR_DB_PRIVACY?.[vectorDb] || FALLBACKS.VECTOR(vectorDb);
-
   return (
     <div className="py-8 w-full flex items-start justify-center flex-col gap-y-6 border-b-2 border-theme-sidebar-border">
       <div className="flex flex-col gap-8">
@@ -84,16 +76,16 @@ function ThirdParty({ settings }) {
           </div>
           <div className="flex items-center gap-2.5">
             <img
-              src={LLMSelection.logo}
+              src={LLM_SELECTION_PRIVACY[llmChoice].logo}
               alt="LLM Logo"
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-              {LLMSelection.name}
+              {LLM_SELECTION_PRIVACY[llmChoice].name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
-            {LLMSelection.description.map((desc) => (
+            {LLM_SELECTION_PRIVACY[llmChoice].description.map((desc) => (
               <li className="text-theme-text-secondary text-sm">{desc}</li>
             ))}
           </ul>
@@ -104,18 +96,20 @@ function ThirdParty({ settings }) {
           </div>
           <div className="flex items-center gap-2.5">
             <img
-              src={EmbeddingEngine.logo}
+              src={EMBEDDING_ENGINE_PRIVACY[embeddingEngine].logo}
               alt="LLM Logo"
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-              {EmbeddingEngine.name}
+              {EMBEDDING_ENGINE_PRIVACY[embeddingEngine].name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
-            {EmbeddingEngine.description.map((desc) => (
-              <li className="text-theme-text-secondary text-sm">{desc}</li>
-            ))}
+            {EMBEDDING_ENGINE_PRIVACY[embeddingEngine].description.map(
+              (desc) => (
+                <li className="text-theme-text-secondary text-sm">{desc}</li>
+              )
+            )}
           </ul>
         </div>
 
@@ -125,16 +119,16 @@ function ThirdParty({ settings }) {
           </div>
           <div className="flex items-center gap-2.5">
             <img
-              src={VectorDb.logo}
+              src={VECTOR_DB_PRIVACY[vectorDb].logo}
               alt="LLM Logo"
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-              {VectorDb.name}
+              {VECTOR_DB_PRIVACY[vectorDb].name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
-            {VectorDb.description.map((desc) => (
+            {VECTOR_DB_PRIVACY[vectorDb].description.map((desc) => (
               <li className="text-theme-text-secondary text-sm">{desc}</li>
             ))}
           </ul>
@@ -194,7 +188,7 @@ function TelemetryLogs({ settings }) {
               className="underline text-blue-400"
               target="_blank"
             >
-              GitHub here
+              Github here
             </a>
             .
           </p>

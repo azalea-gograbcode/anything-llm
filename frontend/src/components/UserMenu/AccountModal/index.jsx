@@ -1,15 +1,11 @@
 import { useLanguageOptions } from "@/hooks/useLanguageOptions";
 import usePfp from "@/hooks/usePfp";
 import System from "@/models/system";
-import Appearance from "@/models/appearance";
 import { AUTH_USER } from "@/utils/constants";
 import showToast from "@/utils/toast";
-import { Info, Plus, X } from "@phosphor-icons/react";
+import { Plus, X } from "@phosphor-icons/react";
 import ModalWrapper from "@/components/ModalWrapper";
 import { useTheme } from "@/hooks/useTheme";
-import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
-import { Tooltip } from "react-tooltip";
 
 export default function AccountModal({ user, hideModal }) {
   const { pfp, setPfp } = usePfp();
@@ -54,9 +50,9 @@ export default function AccountModal({ user, hideModal }) {
     const { success, error } = await System.updateUser(data);
     if (success) {
       let storedUser = JSON.parse(localStorage.getItem(AUTH_USER));
+
       if (storedUser) {
         storedUser.username = data.username;
-        storedUser.bio = data.bio;
         localStorage.setItem(AUTH_USER, JSON.stringify(storedUser));
       }
       showToast("Profile updated.", "success", { clear: true });
@@ -65,14 +61,14 @@ export default function AccountModal({ user, hideModal }) {
       showToast(`Failed to update user: ${error}`, "error");
     }
   };
-  const { t } = useTranslation();
+
   return (
     <ModalWrapper isOpen={true}>
       <div className="w-full max-w-2xl bg-theme-bg-secondary rounded-lg shadow border-2 border-theme-modal-border overflow-hidden">
         <div className="relative p-6 border-b rounded-t border-theme-modal-border">
           <div className="w-full flex gap-x-2 items-center">
             <h3 className="text-xl font-semibold text-white overflow-hidden overflow-ellipsis whitespace-nowrap">
-              {t("profile_settings.edit_account")}
+              Edit Account
             </h3>
           </div>
           <button
@@ -108,7 +104,7 @@ export default function AccountModal({ user, hideModal }) {
                     <div className="flex flex-col items-center justify-center p-3">
                       <Plus className="w-8 h-8 text-theme-text-secondary m-2" />
                       <span className="text-theme-text-secondary text-opacity-80 text-sm font-semibold">
-                        {t("profile_settings.profile_picture")}
+                        Profile Picture
                       </span>
                       <span className="text-theme-text-secondary text-opacity-60 text-xs">
                         800 x 800
@@ -122,7 +118,7 @@ export default function AccountModal({ user, hideModal }) {
                     onClick={handleRemovePfp}
                     className="mt-3 text-theme-text-secondary text-opacity-60 text-sm font-medium hover:underline"
                   >
-                    {t("profile_settings.remove_profile_picture")}
+                    Remove Profile Picture
                   </button>
                 )}
               </div>
@@ -133,7 +129,7 @@ export default function AccountModal({ user, hideModal }) {
                   htmlFor="username"
                   className="block mb-2 text-sm font-medium text-theme-text-primary"
                 >
-                  {t("profile_settings.username")}
+                  Username
                 </label>
                 <input
                   name="username"
@@ -146,7 +142,8 @@ export default function AccountModal({ user, hideModal }) {
                   autoComplete="off"
                 />
                 <p className="mt-2 text-xs text-white/60">
-                  {t("profile_settings.username_description")}
+                  Username must be only contain lowercase letters, numbers,
+                  underscores, and hyphens with no spaces
                 </p>
               </div>
               <div>
@@ -154,7 +151,7 @@ export default function AccountModal({ user, hideModal }) {
                   htmlFor="password"
                   className="block mb-2 text-sm font-medium text-white"
                 >
-                  {t("profile_settings.new_password")}
+                  New Password
                 </label>
                 <input
                   name="password"
@@ -164,32 +161,12 @@ export default function AccountModal({ user, hideModal }) {
                   minLength={8}
                 />
                 <p className="mt-2 text-xs text-white/60">
-                  {t("profile_settings.passwort_description")}
+                  Password must be at least 8 characters long
                 </p>
               </div>
-              <div>
-                <label
-                  htmlFor="bio"
-                  className="block mb-2 text-sm font-medium text-white"
-                >
-                  Bio
-                </label>
-                <textarea
-                  name="bio"
-                  className="border-none bg-theme-settings-input-bg placeholder:text-theme-settings-input-placeholder border-gray-500 text-white text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5 min-h-[100px] resize-y"
-                  placeholder="Tell us about yourself..."
-                  defaultValue={user.bio}
-                />
-              </div>
-              <div className="flex gap-x-16">
-                <div className="flex flex-col gap-y-6">
-                  <ThemePreference />
-                  <LanguagePreference />
-                </div>
-                <div className="flex flex-col gap-y-6">
-                  <AutoSubmitPreference />
-                  <AutoSpeakPreference />
-                </div>
+              <div className="flex flex-row gap-x-8">
+                <ThemePreference />
+                <LanguagePreference />
               </div>
             </div>
             <div className="flex justify-between items-center border-t border-theme-modal-border pt-4 p-6">
@@ -198,51 +175,14 @@ export default function AccountModal({ user, hideModal }) {
                 type="button"
                 className="transition-all duration-300 text-white hover:bg-zinc-700 px-4 py-2 rounded-lg text-sm"
               >
-<<<<<<< HEAD
-                {t("profile_settings.cancel")}
+                Cancel
               </button>
               <button
                 type="submit"
                 className="transition-all duration-300 bg-white text-black hover:opacity-60 px-4 py-2 rounded-lg text-sm"
               >
-                {t("profile_settings.update_account")}
+                Update Account
               </button>
-=======
-                Username
-              </label>
-              <input
-                name="username"
-                type="text"
-                className="bg-zinc-900 placeholder:text-white/20 border-gray-500 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="User's username"
-                minLength={2}
-                defaultValue={user.username}
-                required
-                autoComplete="off"
-              />
-              <p className="mt-2 text-xs text-white/60">
-                Username must be only contain lowercase letters, numbers,
-                underscores, and hyphens with no spaces
-              </p>
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-white"
-              >
-                New Password
-              </label>
-              <input
-                name="password"
-                type="text"
-                className="bg-zinc-900 placeholder:text-white/20 border-gray-500 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder={`${user.username}'s new password`}
-                minLength={8}
-              />
-              <p className="mt-2 text-xs text-white/60">
-                Password must be at least 8 characters long
-              </p>
->>>>>>> 48ef74aa (sync-fork-2)
             </div>
           </form>
         </div>
@@ -258,14 +198,14 @@ function LanguagePreference() {
     getLanguageName,
     changeLanguage,
   } = useLanguageOptions();
-  const { t } = useTranslation();
+
   return (
     <div>
       <label
         htmlFor="userLang"
         className="block mb-2 text-sm font-medium text-white"
       >
-        {t("profile_settings.language")}
+        Preferred language
       </label>
       <select
         name="userLang"
@@ -287,14 +227,14 @@ function LanguagePreference() {
 
 function ThemePreference() {
   const { theme, setTheme, availableThemes } = useTheme();
-  const { t } = useTranslation();
+
   return (
     <div>
       <label
         htmlFor="theme"
         className="block mb-2 text-sm font-medium text-white"
       >
-        {t("profile_settings.theme")}
+        Theme Preference
       </label>
       <select
         name="theme"
@@ -308,119 +248,6 @@ function ThemePreference() {
           </option>
         ))}
       </select>
-    </div>
-  );
-}
-
-function AutoSubmitPreference() {
-  const [autoSubmitSttInput, setAutoSubmitSttInput] = useState(true);
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    const settings = Appearance.getSettings();
-    setAutoSubmitSttInput(settings.autoSubmitSttInput ?? true);
-  }, []);
-
-  const handleChange = (e) => {
-    const newValue = e.target.checked;
-    setAutoSubmitSttInput(newValue);
-    Appearance.updateSettings({ autoSubmitSttInput: newValue });
-  };
-
-  return (
-    <div>
-      <div className="flex items-center gap-x-1 mb-2">
-        <label
-          htmlFor="autoSubmit"
-          className="block text-sm font-medium text-white"
-        >
-          {t("customization.chat.auto_submit.title")}
-        </label>
-        <div
-          data-tooltip-id="auto-submit-info"
-          data-tooltip-content={t("customization.chat.auto_submit.description")}
-          className="cursor-pointer h-fit"
-        >
-          <Info size={16} weight="bold" className="text-white" />
-        </div>
-      </div>
-      <div className="flex items-center gap-x-4">
-        <label className="relative inline-flex cursor-pointer items-center">
-          <input
-            id="autoSubmit"
-            type="checkbox"
-            name="autoSubmit"
-            checked={autoSubmitSttInput}
-            onChange={handleChange}
-            className="peer sr-only"
-          />
-          <div className="pointer-events-none peer h-6 w-11 rounded-full bg-[#CFCFD0] after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:shadow-xl after:border-none after:bg-white after:box-shadow-md after:transition-all after:content-[''] peer-checked:bg-[#32D583] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-transparent"></div>
-        </label>
-      </div>
-      <Tooltip
-        id="auto-submit-info"
-        place="bottom"
-        delayShow={300}
-        className="allm-tooltip !allm-text-xs"
-      />
-    </div>
-  );
-}
-
-function AutoSpeakPreference() {
-  const [autoPlayAssistantTtsResponse, setAutoPlayAssistantTtsResponse] =
-    useState(false);
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    const settings = Appearance.getSettings();
-    setAutoPlayAssistantTtsResponse(
-      settings.autoPlayAssistantTtsResponse ?? false
-    );
-  }, []);
-
-  const handleChange = (e) => {
-    const newValue = e.target.checked;
-    setAutoPlayAssistantTtsResponse(newValue);
-    Appearance.updateSettings({ autoPlayAssistantTtsResponse: newValue });
-  };
-
-  return (
-    <div>
-      <div className="flex items-center gap-x-1 mb-2">
-        <label
-          htmlFor="autoSpeak"
-          className="block text-sm font-medium text-white"
-        >
-          {t("customization.chat.auto_speak.title")}
-        </label>
-        <div
-          data-tooltip-id="auto-speak-info"
-          data-tooltip-content={t("customization.chat.auto_speak.description")}
-          className="cursor-pointer h-fit"
-        >
-          <Info size={16} weight="bold" className="text-white" />
-        </div>
-      </div>
-      <div className="flex items-center gap-x-4">
-        <label className="relative inline-flex cursor-pointer items-center">
-          <input
-            id="autoSpeak"
-            type="checkbox"
-            name="autoSpeak"
-            checked={autoPlayAssistantTtsResponse}
-            onChange={handleChange}
-            className="peer sr-only"
-          />
-          <div className="pointer-events-none peer h-6 w-11 rounded-full bg-[#CFCFD0] after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:shadow-xl after:border-none after:bg-white after:box-shadow-md after:transition-all after:content-[''] peer-checked:bg-[#32D583] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-transparent"></div>
-        </label>
-      </div>
-      <Tooltip
-        id="auto-speak-info"
-        place="bottom"
-        delayShow={300}
-        className="allm-tooltip !allm-text-xs"
-      />
     </div>
   );
 }

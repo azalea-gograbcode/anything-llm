@@ -1,6 +1,5 @@
 import React, { useState, useEffect, memo } from "react";
 import { X } from "@phosphor-icons/react";
-import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import Workspace from "../../../models/workspace";
 import System from "../../../models/system";
@@ -12,7 +11,6 @@ import ModalWrapper from "@/components/ModalWrapper";
 
 const noop = () => {};
 const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
-  const { t } = useTranslation();
   const { slug } = useParams();
   const { user } = useUser();
   const [workspace, setWorkspace] = useState(null);
@@ -44,7 +42,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
           <div className="relative p-6 border-b rounded-t border-theme-modal-border">
             <div className="w-full flex gap-x-2 items-center">
               <h3 className="text-xl font-semibold text-white overflow-hidden overflow-ellipsis whitespace-nowrap">
-                {t("connectors.manage.editing")} "{workspace.name}"
+                Editing "{workspace.name}"
               </h3>
             </div>
             <button
@@ -61,7 +59,8 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
           >
             <div className="py-7 px-9 space-y-2 flex-col">
               <p className="text-white">
-                {t("connectors.manage.desktop-only")}
+                Editing these settings are only available on a desktop device.
+                Please access this page on your desktop to continue.
               </p>
             </div>
           </div>
@@ -71,7 +70,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
               type="button"
               className="transition-all duration-300 bg-white text-black hover:opacity-60 px-4 py-2 rounded-lg text-sm"
             >
-              {t("connectors.manage.dismiss")}
+              Dismiss
             </button>
           </div>
         </div>
@@ -115,7 +114,6 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
 export default memo(ManageWorkspace);
 
 const ModalTabSwitcher = ({ selectedTab, setSelectedTab }) => {
-  const { t } = useTranslation();
   return (
     <div className="w-full flex justify-center z-10 relative">
       <div className="gap-x-2 flex justify-center -mt-[68px] mb-10 bg-theme-bg-secondary p-1 rounded-xl shadow border-2 border-theme-modal-border w-fit">
@@ -127,7 +125,7 @@ const ModalTabSwitcher = ({ selectedTab, setSelectedTab }) => {
               : "text-white/20 font-medium hover:text-white light:bg-white light:text-[#535862] light:hover:bg-[#E0F2FE]"
           }`}
         >
-          {t("connectors.manage.documents")}
+          Documents
         </button>
         <button
           onClick={() => setSelectedTab("dataConnectors")}
@@ -137,7 +135,7 @@ const ModalTabSwitcher = ({ selectedTab, setSelectedTab }) => {
               : "text-white/20 font-medium hover:text-white light:bg-white light:text-[#535862] light:hover:bg-[#E0F2FE]"
           }`}
         >
-          {t("connectors.manage.data-connectors")}
+          Data Connectors
         </button>
       </div>
     </div>

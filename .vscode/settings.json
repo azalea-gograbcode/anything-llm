@@ -41,13 +41,9 @@
     "opendocument",
     "openrouter",
     "pagerender",
-    "ppio",
     "Qdrant",
     "royalblue",
-<<<<<<< HEAD
     "SearchApi",
-=======
->>>>>>> 48ef74aa (sync-fork-2)
     "searxng",
     "SearchApi",
     "Serper",
@@ -57,10 +53,7 @@
     "togetherai",
     "fireworksai",
     "Unembed",
-<<<<<<< HEAD
     "uuidv",
-=======
->>>>>>> 48ef74aa (sync-fork-2)
     "vectordbs",
     "Weaviate",
     "XAILLM",

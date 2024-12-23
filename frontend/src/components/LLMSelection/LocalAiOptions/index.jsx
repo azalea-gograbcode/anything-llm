@@ -93,11 +93,7 @@ export default function LocalAiOptions({ settings, showAlert = false }) {
             e.preventDefault();
             setShowAdvancedControls(!showAdvancedControls);
           }}
-<<<<<<< HEAD
           className="border-none text-theme-text-primary hover:text-theme-text-secondary flex items-center text-sm"
-=======
-          className="text-white hover:text-white/70 flex items-center text-sm"
->>>>>>> 48ef74aa (sync-fork-2)
         >
           {showAdvancedControls ? "Hide" : "Show"} advanced settings
           {showAdvancedControls ? (
@@ -132,11 +128,7 @@ export default function LocalAiOptions({ settings, showAlert = false }) {
             <input
               type="url"
               name="LocalAiBasePath"
-<<<<<<< HEAD
               className="border-none bg-theme-settings-input-bg text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
-=======
-              className="bg-zinc-900 text-white placeholder:text-white/20 text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
->>>>>>> 48ef74aa (sync-fork-2)
               placeholder="http://localhost:8080/v1"
               value={basePathValue.value}
               required={true}

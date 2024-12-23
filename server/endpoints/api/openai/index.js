@@ -212,7 +212,7 @@ function apiOpenAICompatibleEndpoints(app) {
           content: {
             "application/json": {
               example: {
-                input: [
+                inputs: [
                 "This is my first string to embed",
                 "This is my second string to embed",
                 ],

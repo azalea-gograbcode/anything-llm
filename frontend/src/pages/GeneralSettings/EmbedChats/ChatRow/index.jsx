@@ -35,8 +35,8 @@ export default function ChatRow({ chat, onDelete }) {
 
   return (
     <>
-      <tr className="bg-transparent text-white text-opacity-80 text-xs font-medium border-b border-white/10 h-10">
-        <td className="px-6 font-medium whitespace-nowrap text-white">
+      <tr className="bg-transparent text-white text-opacity-80 text-sm font-medium">
+        <td className="px-6 py-4 font-medium whitespace-nowrap text-white">
           <a
             href={paths.settings.embedSetup()}
             target="_blank"
@@ -49,33 +49,32 @@ export default function ChatRow({ chat, onDelete }) {
         </td>
         <td
           onClick={openConnectionDetailsModal}
-<<<<<<< HEAD
-          className="px-6 cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
-=======
           className="px-6 py-4 cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
->>>>>>> 48ef74aa (sync-fork-2)
         >
           <div className="flex flex-col">
             <p>{truncate(chat.session_id, 20)}</p>
+            <ConnectionDetails
+              connection_information={chat.connection_information}
+            />
           </div>
         </td>
         <td
           onClick={openPromptModal}
-          className="px-6 border-transparent cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+          className="px-6 py-4 border-transparent cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
         >
           {truncate(chat.prompt, 40)}
         </td>
         <td
           onClick={openResponseModal}
-          className="px-6 cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
+          className="px-6 py-4 cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:shadow-lg"
         >
           {truncate(JSON.parse(chat.response)?.text, 40)}
         </td>
-        <td className="px-6">{chat.createdAt}</td>
-        <td className="px-6 flex items-center gap-x-6 h-full mt-1">
+        <td className="px-6 py-4">{chat.createdAt}</td>
+        <td className="px-6 py-4 flex items-center gap-x-6">
           <button
             onClick={handleDelete}
-            className="text-xs font-medium text-white/80 light:text-black/80 hover:light:text-red-500 hover:text-red-300 rounded-lg px-2 py-1 hover:bg-white hover:light:bg-red-50 hover:bg-opacity-10"
+            className="border-none font-medium px-2 py-1 rounded-lg text-theme-text-primary hover:text-red-500"
           >
             <Trash className="h-5 w-5" />
           </button>
@@ -145,7 +144,6 @@ const ConnectionDetails = ({
   if (verbose) {
     return (
       <>
-<<<<<<< HEAD
         <p className="text-xs text-theme-text-secondary">
           sessionID: {sessionId}
         </p>
@@ -156,23 +154,11 @@ const ConnectionDetails = ({
         )}
         {details.ip && (
           <p className="text-xs text-theme-text-secondary">
-=======
-        <p className="text-xs text-slate-400">sessionID: {sessionId}</p>
-        {details.username && (
-          <p className="text-xs text-slate-400">username: {details.username}</p>
-        )}
-        {details.ip && (
-          <p className="text-xs text-slate-400">
->>>>>>> 48ef74aa (sync-fork-2)
             client ip address: {details.ip}
           </p>
         )}
         {details.host && (
-<<<<<<< HEAD
           <p className="text-xs text-theme-text-secondary">
-=======
-          <p className="text-xs text-slate-400">
->>>>>>> 48ef74aa (sync-fork-2)
             client host URL: {details.host}
           </p>
         )}
@@ -183,7 +169,6 @@ const ConnectionDetails = ({
   return (
     <>
       {details.username && (
-<<<<<<< HEAD
         <p className="text-xs text-theme-text-secondary">{details.username}</p>
       )}
       {details.ip && (
@@ -192,12 +177,6 @@ const ConnectionDetails = ({
       {details.host && (
         <p className="text-xs text-theme-text-secondary">{details.host}</p>
       )}
-=======
-        <p className="text-xs text-slate-400">{details.username}</p>
-      )}
-      {details.ip && <p className="text-xs text-slate-400">{details.ip}</p>}
-      {details.host && <p className="text-xs text-slate-400">{details.host}</p>}
->>>>>>> 48ef74aa (sync-fork-2)
     </>
   );
 };

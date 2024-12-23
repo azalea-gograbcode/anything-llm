@@ -2,16 +2,12 @@ const { v4 } = require("uuid");
 const {
   writeResponseChunk,
   clientAbortedHandler,
-  formatChatHistory,
 } = require("../../helpers/chat/responses");
 const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const { MODEL_MAP } = require("../modelMap");
-<<<<<<< HEAD
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 class AnthropicLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -25,9 +21,7 @@ class AnthropicLLM {
     });
     this.anthropic = anthropic;
     this.model =
-      modelPreference ||
-      process.env.ANTHROPIC_MODEL_PREF ||
-      "claude-3-5-sonnet-20241022";
+      modelPreference || process.env.ANTHROPIC_MODEL_PREF || "claude-2.0";
     this.limits = {
       history: this.promptWindowLimit() * 0.15,
       system: this.promptWindowLimit() * 0.15,
@@ -36,11 +30,6 @@ class AnthropicLLM {
 
     this.embedder = embedder ?? new NativeEmbedder();
     this.defaultTemp = 0.7;
-    this.log(`Initialized with ${this.model}`);
-  }
-
-  log(text, ...args) {
-    console.log(`\x1b[36m[${this.constructor.name}]\x1b[0m ${text}`, ...args);
   }
 
   streamingEnabled() {
@@ -49,45 +38,27 @@ class AnthropicLLM {
 
   static promptWindowLimit(modelName) {
     return MODEL_MAP.anthropic[modelName] ?? 100_000;
-<<<<<<< HEAD
-=======
-  }
-
-  promptWindowLimit() {
-    return MODEL_MAP.anthropic[this.model] ?? 100_000;
->>>>>>> 48ef74aa (sync-fork-2)
   }
 
   promptWindowLimit() {
     return MODEL_MAP.anthropic[this.model] ?? 100_000;
   }
 
-  isValidChatCompletionModel(_modelName = "") {
-    return true;
-  }
-
-  /**
-   * Generates appropriate content array for a message + attachments.
-   * @param {{userPrompt:string, attachments: import("../../helpers").Attachment[]}}
-   * @returns {string|object[]}
-   */
-  #generateContent({ userPrompt, attachments = [] }) {
-    if (!attachments.length) {
-      return userPrompt;
-    }
-
-    const content = [{ type: "text", text: userPrompt }];
-    for (let attachment of attachments) {
-      content.push({
-        type: "image",
-        source: {
-          type: "base64",
-          media_type: attachment.mime,
-          data: attachment.contentString.split("base64,")[1],
-        },
-      });
-    }
-    return content.flat();
+  isValidChatCompletionModel(modelName = "") {
+    const validModels = [
+      "claude-instant-1.2",
+      "claude-2.0",
+      "claude-2.1",
+      "claude-3-haiku-20240307",
+      "claude-3-sonnet-20240229",
+      "claude-3-opus-latest",
+      "claude-3-5-haiku-latest",
+      "claude-3-5-haiku-20241022",
+      "claude-3-5-sonnet-latest",
+      "claude-3-5-sonnet-20241022",
+      "claude-3-5-sonnet-20240620",
+    ];
+    return validModels.includes(modelName);
   }
 
   /**
@@ -128,11 +99,7 @@ class AnthropicLLM {
 
     return [
       prompt,
-<<<<<<< HEAD
-      ...formatChatHistory(chatHistory, this.#generateContent),
-=======
       ...chatHistory,
->>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),
@@ -141,6 +108,11 @@ class AnthropicLLM {
   }
 
   async getChatCompletion(messages = null, { temperature = 0.7 }) {
+    if (!this.isValidChatCompletionModel(this.model))
+      throw new Error(
+        `Anthropic chat: ${this.model} is not valid for chat completion!`
+      );
+
     try {
       const result = await LLMPerformanceMonitor.measureAsyncFunction(
         this.anthropic.messages.create({
@@ -171,6 +143,11 @@ class AnthropicLLM {
   }
 
   async streamGetChatCompletion(messages = null, { temperature = 0.7 }) {
+    if (!this.isValidChatCompletionModel(this.model))
+      throw new Error(
+        `Anthropic chat: ${this.model} is not valid for chat completion!`
+      );
+
     const measuredStreamRequest = await LLMPerformanceMonitor.measureStream(
       this.anthropic.messages.stream({
         model: this.model,

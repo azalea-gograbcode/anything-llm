@@ -1,6 +1,5 @@
 import { CloudArrowUp } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import showToast from "../../../../../utils/toast";
 import System from "../../../../../models/system";
 import { useDropzone } from "react-dropzone";
@@ -15,7 +14,6 @@ export default function UploadFile({
   setLoading,
   setLoadingMessage,
 }) {
-  const { t } = useTranslation();
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState([]);
   const [fetchingUrl, setFetchingUrl] = useState(false);
@@ -42,11 +40,9 @@ export default function UploadFile({
     setFetchingUrl(false);
   };
 
-  // Queue all fetchKeys calls through the same debouncer to prevent spamming the server.
-  // either a success or error will trigger a fetchKeys call so the UI is not stuck loading.
-  const debouncedFetchKeys = debounce(() => fetchKeys(true), 1000);
-  const handleUploadSuccess = () => debouncedFetchKeys();
-  const handleUploadError = () => debouncedFetchKeys();
+  // Don't spam fetchKeys, wait 1s between calls at least.
+  const handleUploadSuccess = debounce(() => fetchKeys(true), 1000);
+  const handleUploadError = (_msg) => null; // stubbed.
 
   const onDrop = async (acceptedFiles, rejections) => {
     const newAccepted = acceptedFiles.map((file) => {
@@ -94,20 +90,21 @@ export default function UploadFile({
           <div className="flex flex-col items-center justify-center h-full">
             <CloudArrowUp className="w-8 h-8 text-white/80 light:invert" />
             <div className="text-white text-opacity-80 text-sm font-semibold py-1">
-              {t("connectors.upload.processor-offline")}
+              Document Processor Unavailable
             </div>
             <div className="text-white text-opacity-60 text-xs font-medium py-1 px-20 text-center">
-              {t("connectors.upload.processor-offline-desc")}
+              We can't upload your files right now because the document
+              processor is offline. Please try again later.
             </div>
           </div>
         ) : files.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
             <CloudArrowUp className="w-8 h-8 text-white/80 light:invert" />
             <div className="text-white text-opacity-80 text-sm font-semibold py-1">
-              {t("connectors.upload.click-upload")}
+              Click to upload or drag and drop
             </div>
             <div className="text-white text-opacity-60 text-xs font-medium py-1">
-              {t("connectors.upload.file-types")}
+              supports text files, csv's, spreadsheets, audio files, and more!
             </div>
           </div>
         ) : (
@@ -131,7 +128,7 @@ export default function UploadFile({
         )}
       </div>
       <div className="text-center text-white text-opacity-50 text-xs font-medium w-[560px] py-2">
-        {t("connectors.upload.or-submit-link")}
+        or submit a link
       </div>
       <form onSubmit={handleSendLink} className="flex gap-x-2">
         <input
@@ -139,7 +136,7 @@ export default function UploadFile({
           name="link"
           type="url"
           className="border-none disabled:bg-theme-settings-input-bg disabled:text-theme-settings-input-placeholder bg-theme-settings-input-bg text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-3/4 p-2.5"
-          placeholder={t("connectors.upload.placeholder-link")}
+          placeholder={"https://example.com"}
           autoComplete="off"
         />
         <button
@@ -147,13 +144,13 @@ export default function UploadFile({
           type="submit"
           className="disabled:bg-white/20 disabled:text-slate-300 disabled:border-slate-400 disabled:cursor-wait bg bg-transparent hover:bg-slate-200 hover:text-slate-800 w-auto border border-white light:border-theme-modal-border text-sm text-white p-2.5 rounded-lg"
         >
-          {fetchingUrl
-            ? t("connectors.upload.fetching")
-            : t("connectors.upload.fetch-website")}
+          {fetchingUrl ? "Fetching..." : "Fetch website"}
         </button>
       </form>
       <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-[560px]">
-        {t("connectors.upload.privacy-notice")}
+        These files will be uploaded to the document processor running on this
+        AnythingLLM instance. These files are not sent or shared with a third
+        party.
       </div>
     </div>
   );

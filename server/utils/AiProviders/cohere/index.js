@@ -2,12 +2,9 @@ const { v4 } = require("uuid");
 const { writeResponseChunk } = require("../../helpers/chat/responses");
 const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const { MODEL_MAP } = require("../modelMap");
-<<<<<<< HEAD
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 class CohereLLM {
   constructor(embedder = null) {

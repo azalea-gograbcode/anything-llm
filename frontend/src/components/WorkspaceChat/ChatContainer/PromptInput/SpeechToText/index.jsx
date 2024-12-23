@@ -6,21 +6,9 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { PROMPT_INPUT_EVENT } from "../../PromptInput";
-<<<<<<< HEAD
-import { useTranslation } from "react-i18next";
-import Appearance from "@/models/appearance";
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 let timeout;
 const SILENCE_INTERVAL = 3_200; // wait in seconds of silence before closing.
-
-/**
- * Speech-to-text input component for the chat window.
- * @param {Object} props - The component props
- * @param {(textToAppend: string, autoSubmit: boolean) => void} props.sendCommand - The function to send the command
- * @returns {React.ReactElement} The SpeechToText component
- */
 export default function SpeechToText({ sendCommand }) {
   const {
     transcript,
@@ -32,7 +20,7 @@ export default function SpeechToText({ sendCommand }) {
   } = useSpeechRecognition({
     clearTranscriptOnListen: true,
   });
-  const { t } = useTranslation();
+
   function startSTTSession() {
     if (!isMicrophoneAvailable) {
       alert(
@@ -48,10 +36,10 @@ export default function SpeechToText({ sendCommand }) {
     });
   }
 
-  function endSTTSession() {
+  function endTTSSession() {
     SpeechRecognition.stopListening();
     if (transcript.length > 0) {
-      sendCommand(transcript, Appearance.get("autoSubmitSttInput"));
+      sendCommand(transcript, true);
     }
 
     resetTranscript();
@@ -60,35 +48,20 @@ export default function SpeechToText({ sendCommand }) {
 
   const handleKeyPress = useCallback(
     (event) => {
-<<<<<<< HEAD
-      // CTRL + m on Mac and Windows to toggle STT listening
-      if (event.ctrlKey && event.keyCode === 77) {
-        if (listening) {
-          endSTTSession();
-=======
       if (event.ctrlKey && event.keyCode === 77) {
         if (listening) {
           endTTSSession();
->>>>>>> 48ef74aa (sync-fork-2)
         } else {
           startSTTSession();
         }
       }
     },
-<<<<<<< HEAD
-    [listening, endSTTSession, startSTTSession]
-=======
     [listening, endTTSSession, startSTTSession]
->>>>>>> 48ef74aa (sync-fork-2)
   );
 
   function handlePromptUpdate(e) {
     if (!e?.detail && timeout) {
-<<<<<<< HEAD
-      endSTTSession();
-=======
       endTTSSession();
->>>>>>> 48ef74aa (sync-fork-2)
       clearTimeout(timeout);
     }
   }
@@ -112,7 +85,7 @@ export default function SpeechToText({ sendCommand }) {
       sendCommand(transcript, false);
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        endSTTSession();
+        endTTSSession();
       }, SILENCE_INTERVAL);
     }
   }, [transcript, listening]);
@@ -122,21 +95,17 @@ export default function SpeechToText({ sendCommand }) {
     <div
       id="text-size-btn"
       data-tooltip-id="tooltip-text-size-btn"
-      data-tooltip-content={`${t("chat_window.microphone")} (CTRL + M)`}
-      aria-label={t("chat_window.microphone")}
-      onClick={listening ? endSTTSession : startSTTSession}
+      data-tooltip-content="Speak your prompt"
+      aria-label="Speak your prompt"
+      onClick={listening ? endTTSSession : startSTTSession}
       className={`border-none relative flex justify-center items-center opacity-60 hover:opacity-100 light:opacity-100 light:hover:opacity-60 cursor-pointer ${
         !!listening ? "!opacity-100" : ""
       }`}
     >
       <Microphone
         weight="fill"
-<<<<<<< HEAD
         color="var(--theme-sidebar-footer-icon-fill)"
         className={`w-[22px] h-[22px] pointer-events-none text-theme-text-primary ${
-=======
-        className={`w-6 h-6 pointer-events-none text-white overflow-hidden rounded-full ${
->>>>>>> 48ef74aa (sync-fork-2)
           listening ? "animate-pulse-glow" : ""
         }`}
       />

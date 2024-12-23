@@ -1,15 +1,11 @@
 const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const {
   handleDefaultStreamResponseV2,
-  formatChatHistory,
 } = require("../../helpers/chat/responses");
 const { MODEL_MAP } = require("../modelMap");
-<<<<<<< HEAD
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
-=======
->>>>>>> 48ef74aa (sync-fork-2)
 
 class OpenAiLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -34,8 +30,8 @@ class OpenAiLLM {
    * Check if the model is an o1 model.
    * @returns {boolean}
    */
-  get isOTypeModel() {
-    return this.model.startsWith("o");
+  get isO1Model() {
+    return this.model.startsWith("o1");
   }
 
   #appendContext(contextTexts = []) {
@@ -51,8 +47,7 @@ class OpenAiLLM {
   }
 
   streamingEnabled() {
-    // o3-mini is the only o-type model that supports streaming
-    if (this.isOTypeModel && this.model !== "o3-mini") return false;
+    if (this.isO1Model) return false;
     return "streamGetChatCompletion" in this;
   }
 
@@ -72,7 +67,7 @@ class OpenAiLLM {
   async isValidChatCompletionModel(modelName = "") {
     const isPreset =
       modelName.toLowerCase().includes("gpt") ||
-      modelName.toLowerCase().startsWith("o");
+      modelName.toLowerCase().includes("o1");
     if (isPreset) return true;
 
     const model = await this.openai.models
@@ -121,16 +116,12 @@ class OpenAiLLM {
     // in order to combat this, we can use the "user" role as a replacement for now
     // https://community.openai.com/t/o1-models-do-not-support-system-role-in-chat-completion/953880
     const prompt = {
-      role: this.isOTypeModel ? "user" : "system",
+      role: this.isO1Model ? "user" : "system",
       content: `${systemPrompt}${this.#appendContext(contextTexts)}`,
     };
     return [
       prompt,
-<<<<<<< HEAD
-      ...formatChatHistory(chatHistory, this.#generateContent),
-=======
       ...chatHistory,
->>>>>>> 48ef74aa (sync-fork-2)
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),
@@ -149,7 +140,7 @@ class OpenAiLLM {
         .create({
           model: this.model,
           messages,
-          temperature: this.isOTypeModel ? 1 : temperature, // o1 models only accept temperature 1
+          temperature: this.isO1Model ? 1 : temperature, // o1 models only accept temperature 1
         })
         .catch((e) => {
           throw new Error(e.message);
@@ -185,12 +176,11 @@ class OpenAiLLM {
         model: this.model,
         stream: true,
         messages,
-        temperature: this.isOTypeModel ? 1 : temperature, // o1 models only accept temperature 1
+        temperature: this.isO1Model ? 1 : temperature, // o1 models only accept temperature 1
       }),
       messages
       // runPromptTokenCalculation: true - We manually count the tokens because OpenAI does not provide them in the stream
       // since we are not using the OpenAI API version that supports this `stream_options` param.
-      // TODO: implement this once we upgrade to the OpenAI API version that supports this param.
     );
 
     return measuredStreamRequest;
