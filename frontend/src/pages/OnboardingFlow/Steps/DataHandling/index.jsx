@@ -76,15 +76,9 @@ export const LLM_SELECTION_PRIVACY = {
     logo: GeminiLogo,
   },
   "nvidia-nim": {
-<<<<<<< HEAD
-    name: "Nvidia NIM",
-    description: [
-      "Your model and chats are only accessible on the machine running the Nvidia NIM service",
-=======
     name: "NVIDIA NIM",
     description: [
       "Your model and chats are only accessible on the machine running the NVIDIA NIM",
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     ],
     logo: NvidiaNimLogo,
   },
@@ -471,19 +465,11 @@ export default function DataHandling({ setHeader, setForwardBtn, setBackBtn }) {
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-<<<<<<< HEAD
-              {LLM_SELECTION_PRIVACY[llmChoice].name}
-            </p>
-          </div>
-          <ul className="flex flex-col list-disc ml-4">
-            {LLM_SELECTION_PRIVACY[llmChoice].description.map((desc) => (
-=======
               {LLMSelection.name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
             {LLMSelection.description.map((desc) => (
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               <li className="text-theme-text-primary text-sm">{desc}</li>
             ))}
           </ul>
@@ -499,17 +485,6 @@ export default function DataHandling({ setHeader, setForwardBtn, setBackBtn }) {
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-<<<<<<< HEAD
-              {EMBEDDING_ENGINE_PRIVACY[embeddingEngine].name}
-            </p>
-          </div>
-          <ul className="flex flex-col list-disc ml-4">
-            {EMBEDDING_ENGINE_PRIVACY[embeddingEngine].description.map(
-              (desc) => (
-                <li className="text-theme-text-primary text-sm">{desc}</li>
-              )
-            )}
-=======
               {EmbeddingEngine.name}
             </p>
           </div>
@@ -517,7 +492,6 @@ export default function DataHandling({ setHeader, setForwardBtn, setBackBtn }) {
             {EmbeddingEngine.description.map((desc) => (
               <li className="text-theme-text-primary text-sm">{desc}</li>
             ))}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           </ul>
         </div>
 
@@ -532,30 +506,18 @@ export default function DataHandling({ setHeader, setForwardBtn, setBackBtn }) {
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-<<<<<<< HEAD
-              {VECTOR_DB_PRIVACY[vectorDb].name}
-            </p>
-          </div>
-          <ul className="flex flex-col list-disc ml-4">
-            {VECTOR_DB_PRIVACY[vectorDb].description.map((desc) => (
-=======
               {VectorDb.name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
             {VectorDb.description.map((desc) => (
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               <li className="text-theme-text-primary text-sm">{desc}</li>
             ))}
           </ul>
         </div>
       </div>
       <p className="text-theme-text-secondary text-sm font-medium py-1">
-<<<<<<< HEAD
-        These settings can be reconfigured at any time in the settings.
-=======
         {t("onboarding.data.settingsHint")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       </p>
     </div>
   );

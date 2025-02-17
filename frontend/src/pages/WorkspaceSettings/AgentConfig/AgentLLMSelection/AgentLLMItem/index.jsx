@@ -62,17 +62,6 @@ export default function AgentLLMItem({
           readOnly={true}
           formNoValidate={true}
         />
-<<<<<<< HEAD
-        <div className="flex gap-x-4 items-center">
-          <img
-            src={logo}
-            alt={`${name} logo`}
-            className="w-10 h-10 rounded-md"
-          />
-          <div className="flex flex-col">
-            <div className="text-sm font-semibold text-white">{name}</div>
-            <div className="mt-1 text-xs text-white/60">{description}</div>
-=======
         <div className="flex gap-x-4 items-center justify-between">
           <div className="flex gap-x-4 items-center">
             <img
@@ -84,7 +73,6 @@ export default function AgentLLMItem({
               <div className="text-sm font-semibold text-white">{name}</div>
               <div className="mt-1 text-xs text-white/60">{description}</div>
             </div>
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           </div>
           {checked &&
             value !== "none" &&
@@ -152,11 +140,7 @@ function SetupProvider({
           <div className="relative p-6 border-b rounded-t border-theme-modal-border">
             <div className="w-full flex gap-x-2 items-center">
               <h3 className="text-xl font-semibold text-white overflow-hidden overflow-ellipsis whitespace-nowrap">
-<<<<<<< HEAD
-                Setup {LLMOption.name}
-=======
                 {LLMOption.name} Settings
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </h3>
             </div>
             <button
@@ -169,14 +153,6 @@ function SetupProvider({
           </div>
           <form id="provider-form" onSubmit={handleUpdate}>
             <div className="px-7 py-6">
-<<<<<<< HEAD
-              <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
-                <p className="text-sm text-white/60">
-                  To use {LLMOption.name} as this workspace's LLM you need to
-                  set it up first.
-                </p>
-                <div>{LLMOption.options({ credentialsOnly: true })}</div>
-=======
               <div className="space-y-6 max-h-[60vh] overflow-y-auto p-1">
                 <p className="text-sm text-white/60">
                   To use {LLMOption.name} as this workspace's agent LLM you need
@@ -185,7 +161,6 @@ function SetupProvider({
                 <div>
                   {LLMOption.options(settings, { credentialsOnly: true })}
                 </div>
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </div>
             </div>
             <div className="flex justify-between items-center mt-6 pt-6 border-t border-theme-modal-border px-7 pb-6">

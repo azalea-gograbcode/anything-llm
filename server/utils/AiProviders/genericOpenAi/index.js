@@ -3,13 +3,9 @@ const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
 const {
-<<<<<<< HEAD
-  handleDefaultStreamResponseV2,
-=======
   formatChatHistory,
   writeResponseChunk,
   clientAbortedHandler,
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 } = require("../../helpers/chat/responses");
 const { toValidNumber } = require("../../http");
 
@@ -139,18 +135,12 @@ class GenericOpenAiLLM {
     };
     return [
       prompt,
-<<<<<<< HEAD
-      ...chatHistory,
-=======
       ...formatChatHistory(chatHistory, this.#generateContent),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       {
         role: "user",
         content: this.#generateContent({ userPrompt, attachments }),
       },
     ];
-<<<<<<< HEAD
-=======
   }
 
   /**
@@ -166,7 +156,6 @@ class GenericOpenAiLLM {
     )
       textResponse = `<think>${message.reasoning_content}</think>${textResponse}`;
     return textResponse;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   async getChatCompletion(messages = null, { temperature = 0.7 }) {
@@ -190,11 +179,7 @@ class GenericOpenAiLLM {
       return null;
 
     return {
-<<<<<<< HEAD
-      textResponse: result.output.choices[0].message.content,
-=======
       textResponse: this.#parseReasoningFromResponse(result.output.choices[0]),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       metrics: {
         prompt_tokens: result.output?.usage?.prompt_tokens || 0,
         completion_tokens: result.output?.usage?.completion_tokens || 0,

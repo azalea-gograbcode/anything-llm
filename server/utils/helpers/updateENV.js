@@ -512,7 +512,6 @@ const KEY_MAPPING = {
     envKey: "AGENT_TAVILY_API_KEY",
     checks: [],
   },
-<<<<<<< HEAD
   
   // Azure Login Providers
   AzureADClientId: {
@@ -531,8 +530,6 @@ const KEY_MAPPING = {
     envKey: "AZURE_AD_GROUPS",
     checks: [isNotEmpty],
   },
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
   // TTS/STT Integration ENVS
   TextToSpeechProvider: {

@@ -43,11 +43,7 @@ async function getCustomModels(provider = "", apiKey = null, basePath = null) {
     case "ollama":
       return await ollamaAIModels(basePath);
     case "togetherai":
-<<<<<<< HEAD
-      return await getTogetherAiModels();
-=======
       return await getTogetherAiModels(apiKey);
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     case "fireworksai":
       return await getFireworksAiModels(apiKey);
     case "mistral":
@@ -149,11 +145,7 @@ async function openAiModels(apiKey = null) {
     .filter(
       (model) =>
         (model.id.includes("gpt") && !model.id.startsWith("ft:")) ||
-<<<<<<< HEAD
-        model.id.includes("o1")
-=======
         model.id.startsWith("o") // o1, o1-mini, o3, etc
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     )
     .filter(
       (model) =>
@@ -573,13 +565,8 @@ async function getNvidiaNimModels(basePath = null) {
 
     return { models, error: null };
   } catch (e) {
-<<<<<<< HEAD
-    console.error(`Nvidia NIM:getNvidiaNimModels`, e.message);
-    return { models: [], error: "Could not fetch Nvidia NIM Models" };
-=======
     console.error(`NVIDIA NIM:getNvidiaNimModels`, e.message);
     return { models: [], error: "Could not fetch NVIDIA NIM Models" };
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 }
 

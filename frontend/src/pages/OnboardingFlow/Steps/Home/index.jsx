@@ -6,10 +6,7 @@ import RGroupImgLight from "./r_group-light.png";
 import AnythingLLMLogo from "@/media/logo/anything-llm.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/hooks/useTheme";
-<<<<<<< HEAD
-=======
 import { useTranslation } from "react-i18next";
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 const IMG_SRCSET = {
   light: {
@@ -25,10 +22,7 @@ const IMG_SRCSET = {
 export default function OnboardingHome() {
   const navigate = useNavigate();
   const { theme } = useTheme();
-<<<<<<< HEAD
-=======
   const { t } = useTranslation();
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   const srcSet = IMG_SRCSET?.[theme] || IMG_SRCSET.default;
 
   return (
@@ -47,11 +41,7 @@ export default function OnboardingHome() {
         <div className="relative flex justify-center items-center m-auto">
           <div className="flex flex-col justify-center items-center">
             <p className="text-theme-text-primary font-thin text-[24px]">
-<<<<<<< HEAD
-              Welcome to
-=======
               {t("onboarding.home.title")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
             </p>
             <img
               src={AnythingLLMLogo}

@@ -272,32 +272,6 @@ export const AVAILABLE_LLM_PROVIDERS = [
     value: "generic-openai",
     logo: GenericOpenAiLogo,
     options: (settings) => <GenericOpenAiOptions settings={settings} />,
-<<<<<<< HEAD
-    description:
-      "Connect to any OpenAi-compatible service via a custom configuration",
-    requiredConfig: [
-      "GenericOpenAiBasePath",
-      "GenericOpenAiModelPref",
-      "GenericOpenAiTokenLimit",
-      "GenericOpenAiKey",
-    ],
-  },
-  {
-    name: "xAI",
-    value: "xai",
-    logo: XAILogo,
-    options: (settings) => <XAILLMOptions settings={settings} />,
-    description: "Run xAI's powerful LLMs like Grok-2 and more.",
-    requiredConfig: ["XAIApiKey", "XAIModelPref"],
-  },
-
-  {
-    name: "Native",
-    value: "native",
-    logo: AnythingLLMIcon,
-    options: (settings) => <NativeLLMOptions settings={settings} />,
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     description:
       "Connect to any OpenAi-compatible service via a custom configuration",
     requiredConfig: [

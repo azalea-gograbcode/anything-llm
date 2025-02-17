@@ -374,12 +374,9 @@ function adminEndpoints(app) {
             case "default_agent_skills":
               requestedSettings[label] = safeJsonParse(setting?.value, []);
               break;
-<<<<<<< HEAD
-=======
             case "disabled_agent_skills":
               requestedSettings[label] = safeJsonParse(setting?.value, []);
               break;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
             case "imported_agent_skills":
               requestedSettings[label] = ImportedPlugin.listImportedPlugins();
               break;
@@ -446,15 +443,12 @@ function adminEndpoints(app) {
                 ?.value,
               []
             ) || [],
-<<<<<<< HEAD
-=======
           disabled_agent_skills:
             safeJsonParse(
               (await SystemSettings.get({ label: "disabled_agent_skills" }))
                 ?.value,
               []
             ) || [],
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           imported_agent_skills: ImportedPlugin.listImportedPlugins(),
           custom_app_name:
             (await SystemSettings.get({ label: "custom_app_name" }))?.value ||

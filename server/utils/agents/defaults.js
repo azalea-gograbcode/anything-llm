@@ -3,8 +3,6 @@ const { SystemSettings } = require("../../models/systemSettings");
 const { safeJsonParse } = require("../http");
 const Provider = require("./aibitat/providers/ai-provider");
 const ImportedPlugin = require("./imported");
-<<<<<<< HEAD
-=======
 const { AgentFlows } = require("../agentFlows");
 
 // This is a list of skills that are built-in and default enabled.
@@ -13,7 +11,6 @@ const DEFAULT_SKILLS = [
   AgentPlugins.docSummarizer.name,
   AgentPlugins.webScraping.name,
 ];
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 const USER_AGENT = {
   name: "USER",
@@ -32,12 +29,8 @@ const WORKSPACE_AGENT = {
       role: Provider.systemPrompt(provider),
       functions: [
         ...(await agentSkillsFromSystemSettings()),
-<<<<<<< HEAD
-        ...(await ImportedPlugin.activeImportedPlugins()),
-=======
         ...ImportedPlugin.activeImportedPlugins(),
         ...AgentFlows.activeFlowPlugins(),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       ],
     };
   },

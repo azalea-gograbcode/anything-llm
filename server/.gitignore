@@ -9,10 +9,7 @@ storage/vector-cache/*.json
 storage/exports
 storage/imports
 storage/plugins/agent-skills/*
-<<<<<<< HEAD
-=======
 storage/plugins/agent-flows/*
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 !storage/documents/DOCUMENTS.md
 logs/server.log
 *.db

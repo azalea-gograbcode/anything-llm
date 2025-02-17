@@ -8,16 +8,12 @@
 // copy outputs into the export in ../models.js
 
 // Update the date below if you run this again because Perplexity added new models.
-<<<<<<< HEAD
-// Last Collected: Sept 12, 2024
-=======
 // Last Collected: Jan 23, 2025
 
 // UPDATE: Jan 23, 2025
 // The table is no longer available on the website, but Perplexity has deprecated the
 // old models so now we can just update the chat_models.txt file with the new models
 // manually and then run this script to get the new models.
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 import fs from "fs";
 

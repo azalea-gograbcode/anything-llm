@@ -212,12 +212,9 @@ class OpenRouterLLM {
           model: this.model,
           messages,
           temperature,
-<<<<<<< HEAD
-=======
           // This is an OpenRouter specific option that allows us to get the reasoning text
           // before the token text.
           include_reasoning: true,
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
         })
         .catch((e) => {
           throw new Error(e.message);
@@ -225,15 +222,6 @@ class OpenRouterLLM {
     );
 
     if (
-<<<<<<< HEAD
-      !result.output.hasOwnProperty("choices") ||
-      result.output.choices.length === 0
-    )
-      return null;
-
-    return {
-      textResponse: result.output.choices[0].message.content,
-=======
       !result?.output?.hasOwnProperty("choices") ||
       result?.output?.choices?.length === 0
     )
@@ -243,7 +231,6 @@ class OpenRouterLLM {
 
     return {
       textResponse: this.#parseReasoningFromResponse(result.output.choices[0]),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       metrics: {
         prompt_tokens: result.output.usage.prompt_tokens || 0,
         completion_tokens: result.output.usage.completion_tokens || 0,
@@ -266,12 +253,9 @@ class OpenRouterLLM {
         stream: true,
         messages,
         temperature,
-<<<<<<< HEAD
-=======
         // This is an OpenRouter specific option that allows us to get the reasoning text
         // before the token text.
         include_reasoning: true,
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       }),
       messages
       // We have to manually count the tokens

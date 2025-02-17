@@ -326,13 +326,7 @@ const MyTeam = ({ setMultiUserLoginValid, myTeamSubmitRef, navigate }) => {
         </div>
         <div className="flex w-full justify-between items-center px-6 py-4 space-x-6 border-t rounded-b border-theme-sidebar-border">
           <div className="text-theme-text-secondary text-opacity-80 text-xs font-base">
-<<<<<<< HEAD
-            By default, you will be the only admin. Once onboarding is completed
-            you can create and invite others to be users or admins. Do not lose
-            your password as only admins can reset passwords.
-=======
             {t("onboarding.userSetup.teamHint")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           </div>
         </div>
         <button

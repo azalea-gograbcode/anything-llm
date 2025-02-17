@@ -71,7 +71,6 @@ const User = {
     const { password, ...rest } = user;
     return { ...rest };
   },
-<<<<<<< HEAD
   createAdminWithAzureAD: async function ({ 
     username, 
     role = "default",
@@ -90,9 +89,6 @@ const User = {
       return { user: null, error: error.message };
     }
   },
-=======
-
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   create: async function ({
     username,
     password,

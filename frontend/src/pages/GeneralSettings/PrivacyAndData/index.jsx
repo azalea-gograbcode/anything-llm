@@ -89,19 +89,11 @@ function ThirdParty({ settings }) {
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-<<<<<<< HEAD
-              {LLM_SELECTION_PRIVACY[llmChoice].name}
-            </p>
-          </div>
-          <ul className="flex flex-col list-disc ml-4">
-            {LLM_SELECTION_PRIVACY[llmChoice].description.map((desc) => (
-=======
               {LLMSelection.name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
             {LLMSelection.description.map((desc) => (
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               <li className="text-theme-text-secondary text-sm">{desc}</li>
             ))}
           </ul>
@@ -117,17 +109,6 @@ function ThirdParty({ settings }) {
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-<<<<<<< HEAD
-              {EMBEDDING_ENGINE_PRIVACY[embeddingEngine].name}
-            </p>
-          </div>
-          <ul className="flex flex-col list-disc ml-4">
-            {EMBEDDING_ENGINE_PRIVACY[embeddingEngine].description.map(
-              (desc) => (
-                <li className="text-theme-text-secondary text-sm">{desc}</li>
-              )
-            )}
-=======
               {EmbeddingEngine.name}
             </p>
           </div>
@@ -135,7 +116,6 @@ function ThirdParty({ settings }) {
             {EmbeddingEngine.description.map((desc) => (
               <li className="text-theme-text-secondary text-sm">{desc}</li>
             ))}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           </ul>
         </div>
 
@@ -150,19 +130,11 @@ function ThirdParty({ settings }) {
               className="w-8 h-8 rounded"
             />
             <p className="text-theme-text-primary text-sm font-bold">
-<<<<<<< HEAD
-              {VECTOR_DB_PRIVACY[vectorDb].name}
-            </p>
-          </div>
-          <ul className="flex flex-col list-disc ml-4">
-            {VECTOR_DB_PRIVACY[vectorDb].description.map((desc) => (
-=======
               {VectorDb.name}
             </p>
           </div>
           <ul className="flex flex-col list-disc ml-4">
             {VectorDb.description.map((desc) => (
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               <li className="text-theme-text-secondary text-sm">{desc}</li>
             ))}
           </ul>

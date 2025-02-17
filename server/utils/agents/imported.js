@@ -59,15 +59,9 @@ class ImportedPlugin {
   /**
    * Loads plugins from `plugins` folder in storage that are custom loaded and defined.
    * only loads plugins that are active: true.
-<<<<<<< HEAD
-   * @returns {Promise<string[]>} - array of plugin names to be loaded later.
-   */
-  static async activeImportedPlugins() {
-=======
    * @returns {string[]} - array of plugin names to be loaded later.
    */
   static activeImportedPlugins() {
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     const plugins = [];
     this.checkPluginFolderExists();
     const folders = fs.readdirSync(path.resolve(pluginsPath));

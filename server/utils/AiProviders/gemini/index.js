@@ -10,9 +10,6 @@ const {
   formatChatHistory,
 } = require("../../helpers/chat/responses");
 const { MODEL_MAP } = require("../modelMap");
-<<<<<<< HEAD
-const { defaultGeminiModels, v1BetaModels } = require("./defaultModals");
-=======
 const { defaultGeminiModels, v1BetaModels } = require("./defaultModels");
 const { safeJsonParse } = require("../../http");
 const cacheFolder = path.resolve(
@@ -20,7 +17,6 @@ const cacheFolder = path.resolve(
     ? path.resolve(process.env.STORAGE_DIR, "models", "gemini")
     : path.resolve(__dirname, `../../../storage/models/gemini`)
 );
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 class GeminiLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -57,9 +53,6 @@ class GeminiLLM {
     this.embedder = embedder ?? new NativeEmbedder();
     this.defaultTemp = 0.7; // not used for Gemini
     this.safetyThreshold = this.#fetchSafetyThreshold();
-<<<<<<< HEAD
-    this.#log(`Initialized with model: ${this.model}`);
-=======
 
     if (!fs.existsSync(cacheFolder))
       fs.mkdirSync(cacheFolder, { recursive: true });
@@ -68,13 +61,10 @@ class GeminiLLM {
     this.#log(
       `Initialized with model: ${this.model} (${this.promptWindowLimit()})`
     );
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   #log(text, ...args) {
     console.log(`\x1b[32m[GeminiLLM]\x1b[0m ${text}`, ...args);
-<<<<<<< HEAD
-=======
   }
 
   // This checks if the .cached_at file has a timestamp that is more than 1Week (in millis)
@@ -88,7 +78,6 @@ class GeminiLLM {
       fs.readFileSync(path.resolve(cacheFolder, ".cached_at"))
     );
     return now - timestampMs > MAX_STALE;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   #appendContext(contextTexts = []) {
@@ -187,8 +176,6 @@ class GeminiLLM {
    * @returns {Promise<[{id: string, name: string, contextWindow: number, experimental: boolean}]>} A promise that resolves to an array of Gemini models
    */
   static async fetchModels(apiKey, limit = 1_000, pageToken = null) {
-<<<<<<< HEAD
-=======
     if (!apiKey) return [];
     if (fs.existsSync(cacheFolder) && !this.cacheIsStale()) {
       console.log(
@@ -199,21 +186,15 @@ class GeminiLLM {
       );
     }
 
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     const url = new URL(
       "https://generativelanguage.googleapis.com/v1beta/models"
     );
     url.searchParams.set("pageSize", limit);
     url.searchParams.set("key", apiKey);
     if (pageToken) url.searchParams.set("pageToken", pageToken);
-<<<<<<< HEAD
-
-    return fetch(url.toString(), {
-=======
     let success = false;
 
     const models = await fetch(url.toString(), {
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -222,14 +203,9 @@ class GeminiLLM {
         if (data.error) throw new Error(data.error.message);
         return data.models ?? [];
       })
-<<<<<<< HEAD
-      .then((models) =>
-        models
-=======
       .then((models) => {
         success = true;
         return models
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           .filter(
             (model) => !model.displayName.toLowerCase().includes("tuning")
           )
@@ -243,14 +219,6 @@ class GeminiLLM {
               contextWindow: model.inputTokenLimit,
               experimental: model.name.includes("exp"),
             };
-<<<<<<< HEAD
-          })
-      )
-      .catch((e) => {
-        console.error(`Gemini:getGeminiModels`, e.message);
-        return defaultGeminiModels;
-      });
-=======
           });
       })
       .catch((e) => {
@@ -286,19 +254,8 @@ class GeminiLLM {
   async isValidChatCompletionModel(modelName = "") {
     const models = await this.fetchModels(process.env.GEMINI_API_KEY);
     return models.some((model) => model.id === modelName);
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
-  /**
-   * Checks if a model is valid for chat completion (unused)
-   * @deprecated
-   * @param {string} modelName - The name of the model to check
-   * @returns {Promise<boolean>} A promise that resolves to a boolean indicating if the model is valid
-   */
-  async isValidChatCompletionModel(modelName = "") {
-    const models = await this.fetchModels(true);
-    return models.some((model) => model.id === modelName);
-  }
   /**
    * Generates appropriate content array for a message + attachments.
    * @param {{userPrompt:string, attachments: import("../../helpers").Attachment[]}}

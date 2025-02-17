@@ -37,10 +37,7 @@ const fileAPIUploadStorage = multer.diskStorage({
     cb(null, uploadOutput);
   },
   filename: function (_, file, cb) {
-<<<<<<< HEAD
-=======
     file.originalname = normalizePath(file.originalname);
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     cb(null, file.originalname);
   },
 });

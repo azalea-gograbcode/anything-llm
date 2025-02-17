@@ -10,11 +10,7 @@ class NovitaProvider extends InheritMultiple([Provider, UnTooled]) {
   model;
 
   constructor(config = {}) {
-<<<<<<< HEAD
-    const { model = "gryphe/mythomax-l2-13b" } = config;
-=======
     const { model = "deepseek/deepseek-r1" } = config;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     super();
     const client = new OpenAI({
       baseURL: "https://api.novita.ai/v3/openai",

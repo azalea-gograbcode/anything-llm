@@ -425,11 +425,7 @@ const webBrowsing = {
 
             const result = JSON.stringify(searchResponse);
             this.super.introspect(
-<<<<<<< HEAD
-              `${this.caller}: I found ${searchResponse.length} results - looking over them now.`
-=======
               `${this.caller}: I found ${searchResponse.length} results - reviewing the results now. (~${this.countTokens(result)} tokens)`
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
             );
             return result;
           },

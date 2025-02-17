@@ -25,11 +25,8 @@ class AzureOpenAiLLM {
       }
     );
     this.model = modelPreference ?? process.env.OPEN_MODEL_PREF;
-<<<<<<< HEAD
-=======
     this.isOTypeModel =
       process.env.AZURE_OPENAI_MODEL_TYPE === "reasoning" || false;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     this.limits = {
       history: this.promptWindowLimit() * 0.15,
       system: this.promptWindowLimit() * 0.15,
@@ -143,11 +140,7 @@ class AzureOpenAiLLM {
 
     const result = await LLMPerformanceMonitor.measureAsyncFunction(
       this.openai.getChatCompletions(this.model, messages, {
-<<<<<<< HEAD
-        temperature,
-=======
         ...(this.isOTypeModel ? {} : { temperature }),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       })
     );
 
@@ -177,11 +170,7 @@ class AzureOpenAiLLM {
 
     const measuredStreamRequest = await LLMPerformanceMonitor.measureStream(
       await this.openai.streamChatCompletions(this.model, messages, {
-<<<<<<< HEAD
-        temperature,
-=======
         ...(this.isOTypeModel ? {} : { temperature }),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
         n: 1,
       }),
       messages

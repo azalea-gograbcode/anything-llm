@@ -10,10 +10,6 @@ import LMStudioLogo from "@/media/llmprovider/lmstudio.png";
 import LocalAiLogo from "@/media/llmprovider/localai.png";
 import TogetherAILogo from "@/media/llmprovider/togetherai.png";
 import FireworksAILogo from "@/media/llmprovider/fireworksai.jpeg";
-<<<<<<< HEAD
-import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 import MistralLogo from "@/media/llmprovider/mistral.jpeg";
 import HuggingFaceLogo from "@/media/llmprovider/huggingface.png";
 import PerplexityLogo from "@/media/llmprovider/perplexity.png";
@@ -92,20 +88,12 @@ const LLMS = [
     description: "Google's largest and most capable AI model",
   },
   {
-<<<<<<< HEAD
-    name: "Nvidia NIM",
-=======
     name: "NVIDIA NIM",
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     value: "nvidia-nim",
     logo: NvidiaNimLogo,
     options: (settings) => <NvidiaNimOptions settings={settings} />,
     description:
-<<<<<<< HEAD
-      "Run full parameter LLMs directly on your GPU using Nvidia's inference microservice via Docker.",
-=======
       "Run full parameter LLMs directly on your NVIDIA RTX GPU using NVIDIA NIM.",
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   },
   {
     name: "HuggingFace",
@@ -253,17 +241,6 @@ const LLMS = [
     logo: XAILogo,
     options: (settings) => <XAILLMOptions settings={settings} />,
     description: "Run xAI's powerful LLMs like Grok-2 and more.",
-<<<<<<< HEAD
-  },
-  {
-    name: "Native",
-    value: "native",
-    logo: AnythingLLMIcon,
-    options: (settings) => <NativeLLMOptions settings={settings} />,
-    description:
-      "Use a downloaded custom Llama model for chatting on this AnythingLLM instance.",
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   },
 ];
 

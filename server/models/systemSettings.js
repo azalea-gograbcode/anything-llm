@@ -24,10 +24,7 @@ const SystemSettings = {
     "agent_search_provider",
     "agent_sql_connections",
     "default_agent_skills",
-<<<<<<< HEAD
-=======
     "disabled_agent_skills",
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     "imported_agent_skills",
     "custom_app_name",
     "feature_flags",
@@ -217,7 +214,7 @@ const SystemSettings = {
         !!process.env.GENERIC_OPEN_AI_EMBEDDING_API_KEY,
       GenericOpenAiEmbeddingMaxConcurrentChunks:
         process.env.GENERIC_OPEN_AI_EMBEDDING_MAX_CONCURRENT_CHUNKS || 500,
-<<<<<<< HEAD
+      GeminiEmbeddingApiKey: !!process.env.GEMINI_EMBEDDING_API_KEY,
 
       // --------------------------------------------------------
       // Azure Providers
@@ -226,9 +223,6 @@ const SystemSettings = {
       AzureADRedirectUri: process.env.AZURE_AD_REDIRECT_URI,
       AzureADTenantId: process.env.AZURE_AD_TENANT_ID,
       AzureADGroups: JSON.parse(process.env.AZURE_AD_GROUPS),
-=======
-      GeminiEmbeddingApiKey: !!process.env.GEMINI_EMBEDDING_API_KEY,
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
       // --------------------------------------------------------
       // VectorDB Provider Selection Settings & Configs
@@ -557,12 +551,6 @@ const SystemSettings = {
       CohereApiKey: !!process.env.COHERE_API_KEY,
       CohereModelPref: process.env.COHERE_MODEL_PREF,
 
-<<<<<<< HEAD
-      // VoyageAi API Keys
-      VoyageAiApiKey: !!process.env.VOYAGEAI_API_KEY,
-
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       // DeepSeek API Keys
       DeepSeekApiKey: !!process.env.DEEPSEEK_API_KEY,
       DeepSeekModelPref: process.env.DEEPSEEK_MODEL_PREF,
@@ -575,11 +563,7 @@ const SystemSettings = {
       XAIApiKey: !!process.env.XAI_LLM_API_KEY,
       XAIModelPref: process.env.XAI_LLM_MODEL_PREF,
 
-<<<<<<< HEAD
-      // Nvidia NIM Keys
-=======
       // NVIDIA NIM Keys
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       NvidiaNimLLMBasePath: process.env.NVIDIA_NIM_LLM_BASE_PATH,
       NvidiaNimLLMModelPref: process.env.NVIDIA_NIM_LLM_MODEL_PREF,
       NvidiaNimLLMTokenLimit: process.env.NVIDIA_NIM_LLM_MODEL_TOKEN_LIMIT,

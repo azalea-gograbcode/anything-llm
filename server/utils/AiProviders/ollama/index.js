@@ -187,11 +187,7 @@ class OllamaAILLM {
         keep_alive: this.keepAlive,
         options: {
           temperature,
-<<<<<<< HEAD
-          use_mlock: false,
-=======
           use_mlock: true,
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           // There are currently only two performance settings so if its not "base" - its max context.
           ...(this.performanceMode === "base"
             ? {}

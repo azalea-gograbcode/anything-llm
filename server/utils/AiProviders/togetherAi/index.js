@@ -5,12 +5,9 @@ const {
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
-<<<<<<< HEAD
-=======
 const fs = require("fs");
 const path = require("path");
 const { safeJsonParse } = require("../../http");
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 const cacheFolder = path.resolve(
   process.env.STORAGE_DIR
@@ -129,17 +126,12 @@ class TogetherAiLLM {
     return content.flat();
   }
 
-<<<<<<< HEAD
-  allModelInformation() {
-    return togetherAiModels();
-=======
   async allModelInformation() {
     const models = await togetherAiModels();
     return models.reduce((acc, model) => {
       acc[model.id] = model;
       return acc;
     }, {});
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   streamingEnabled() {

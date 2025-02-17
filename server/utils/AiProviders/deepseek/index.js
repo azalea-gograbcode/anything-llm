@@ -2,19 +2,12 @@ const { NativeEmbedder } = require("../../EmbeddingEngines/native");
 const {
   LLMPerformanceMonitor,
 } = require("../../helpers/chat/LLMPerformanceMonitor");
-<<<<<<< HEAD
-const {
-  handleDefaultStreamResponseV2,
-} = require("../../helpers/chat/responses");
-const { MODEL_MAP } = require("../modelMap");
-=======
 const { v4: uuidv4 } = require("uuid");
 const { MODEL_MAP } = require("../modelMap");
 const {
   writeResponseChunk,
   clientAbortedHandler,
 } = require("../../helpers/chat/responses");
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 class DeepSeekLLM {
   constructor(embedder = null, modelPreference = null) {
@@ -36,14 +29,11 @@ class DeepSeekLLM {
 
     this.embedder = embedder ?? new NativeEmbedder();
     this.defaultTemp = 0.7;
-<<<<<<< HEAD
-=======
     this.log("Initialized with model:", this.model);
   }
 
   log(text, ...args) {
     console.log(`\x1b[36m[${this.constructor.name}]\x1b[0m ${text}`, ...args);
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   #appendContext(contextTexts = []) {
@@ -88,8 +78,6 @@ class DeepSeekLLM {
     return [prompt, ...chatHistory, { role: "user", content: userPrompt }];
   }
 
-<<<<<<< HEAD
-=======
   /**
    * Parses and prepends reasoning from the response and returns the full text response.
    * @param {Object} response
@@ -105,7 +93,6 @@ class DeepSeekLLM {
     return textResponse;
   }
 
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   async getChatCompletion(messages = null, { temperature = 0.7 }) {
     if (!(await this.isValidChatCompletionModel(this.model)))
       throw new Error(
@@ -125,15 +112,6 @@ class DeepSeekLLM {
     );
 
     if (
-<<<<<<< HEAD
-      !result.output.hasOwnProperty("choices") ||
-      result.output.choices.length === 0
-    )
-      return null;
-
-    return {
-      textResponse: result.output.choices[0].message.content,
-=======
       !result?.output?.hasOwnProperty("choices") ||
       result?.output?.choices?.length === 0
     )
@@ -143,7 +121,6 @@ class DeepSeekLLM {
 
     return {
       textResponse: this.#parseReasoningFromResponse(result.output.choices[0]),
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       metrics: {
         prompt_tokens: result.output.usage.prompt_tokens || 0,
         completion_tokens: result.output.usage.completion_tokens || 0,
@@ -174,10 +151,6 @@ class DeepSeekLLM {
     return measuredStreamRequest;
   }
 
-<<<<<<< HEAD
-  handleStream(response, stream, responseProps) {
-    return handleDefaultStreamResponseV2(response, stream, responseProps);
-=======
   // TODO: This is a copy of the generic handleStream function in responses.js
   // to specifically handle the DeepSeek reasoning model `reasoning_content` field.
   // When or if ever possible, we should refactor this to be in the generic function.
@@ -315,7 +288,6 @@ class DeepSeekLLM {
         resolve(fullText); // Return what we currently have - if anything.
       }
     });
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   async embedTextInput(textInput) {

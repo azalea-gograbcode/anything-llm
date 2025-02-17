@@ -15,20 +15,9 @@ export default function Main() {
   }
 
   return (
-<<<<<<< HEAD
-    <>
-      <UserMenu>
-        <div className="w-screen h-screen overflow-hidden bg-theme-bg-container flex">
-          {!isMobile && <Sidebar />}
-          <DefaultChatContainer />
-        </div>
-      </UserMenu>
-    </>
-=======
     <div className="w-screen h-screen overflow-hidden bg-theme-bg-container flex">
       {!isMobile && <Sidebar />}
       <DefaultChatContainer />
     </div>
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   );
 }

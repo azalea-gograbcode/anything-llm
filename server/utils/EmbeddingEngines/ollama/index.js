@@ -47,8 +47,6 @@ class OllamaEmbedder {
    * This function takes an array of text chunks and embeds them using the Ollama API.
    * chunks are processed sequentially to avoid overwhelming the API with too many requests
    * or running out of resources on the endpoint running the ollama instance.
-<<<<<<< HEAD
-=======
    *
    * We will use the num_ctx option to set the maximum context window to the max chunk length defined by the user in the settings
    * so that the maximum context window is used and content is not truncated.
@@ -56,7 +54,6 @@ class OllamaEmbedder {
    * We also assume the default keep alive option. This could cause issues with models being unloaded and reloaded
    * on load memory machines, but that is simply a user-end issue we cannot control. If the LLM and embedder are
    * constantly being loaded and unloaded, the user should use another LLM or Embedder to avoid this issue.
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
    * @param {string[]} textChunks - An array of text chunks to embed.
    * @returns {Promise<Array<number[]>>} - A promise that resolves to an array of embeddings.
    */
@@ -65,10 +62,6 @@ class OllamaEmbedder {
       throw new Error(
         `Ollama service could not be reached. Is Ollama running?`
       );
-<<<<<<< HEAD
-
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     this.log(
       `Embedding ${textChunks.length} chunks of text with ${this.model}.`
     );
@@ -78,17 +71,6 @@ class OllamaEmbedder {
 
     for (const chunk of textChunks) {
       try {
-<<<<<<< HEAD
-        const res = await fetch(this.basePath, {
-          method: "POST",
-          body: JSON.stringify({
-            model: this.model,
-            prompt: chunk,
-          }),
-        });
-
-        const { embedding } = await res.json();
-=======
         const res = await this.client.embeddings({
           model: this.model,
           prompt: chunk,
@@ -100,7 +82,6 @@ class OllamaEmbedder {
         });
 
         const { embedding } = res;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
         if (!Array.isArray(embedding) || embedding.length === 0)
           throw new Error("Ollama returned an empty embedding for chunk!");
 

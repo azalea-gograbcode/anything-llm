@@ -137,8 +137,6 @@ class PerplexityLLM {
       messages
     );
     return measuredStreamRequest;
-<<<<<<< HEAD
-=======
   }
 
   enrichToken(token, citations) {
@@ -151,7 +149,6 @@ class PerplexityLLM {
       });
     }
     return token;
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   }
 
   handleStream(response, stream, responseProps) {

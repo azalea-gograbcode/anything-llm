@@ -134,11 +134,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
             htmlFor="email"
             className="text-theme-text-primary text-base font-medium"
           >
-<<<<<<< HEAD
-            What's your email?{" "}
-=======
             {t("onboarding.survey.email")}{" "}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           </label>
           <input
             name="email"
@@ -180,11 +176,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
                 }`}
               ></div>
               <div className="text-theme-text-primary text-sm font-medium font-['Plus Jakarta Sans'] leading-tight">
-<<<<<<< HEAD
-                For work
-=======
                 {t("onboarding.survey.useCaseWork")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </div>
             </label>
             <label
@@ -210,11 +202,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
                 }`}
               ></div>
               <div className="text-theme-text-primary text-sm font-medium font-['Plus Jakarta Sans'] leading-tight">
-<<<<<<< HEAD
-                For my personal use
-=======
                 {t("onboarding.survey.useCasePersonal")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </div>
             </label>
             <label
@@ -240,11 +228,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
                 }`}
               ></div>
               <div className="text-theme-text-primary text-sm font-medium font-['Plus Jakarta Sans'] leading-tight">
-<<<<<<< HEAD
-                Other
-=======
                 {t("onboarding.survey.useCaseOther")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </div>
             </label>
           </div>
@@ -261,11 +245,7 @@ export default function Survey({ setHeader, setForwardBtn, setBackBtn }) {
             name="comment"
             rows={5}
             className="mt-2 bg-theme-settings-input-bg text-white text-sm rounded-lg focus:outline-primary-button active:outline-primary-button placeholder:text-theme-settings-input-placeholder outline-none block w-full p-2.5"
-<<<<<<< HEAD
-            placeholder="If you have any questions or comments right now, you can leave them here and we will get back to you. You can also email team@mintplexlabs.com"
-=======
             placeholder={t("onboarding.survey.commentPlaceholder")}
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
             wrap="soft"
             autoComplete="off"
           />

@@ -55,14 +55,11 @@ const markdown = markdownIt({
 // Add custom renderer for strong tags to handle theme colors
 markdown.renderer.rules.strong_open = () => '<strong class="text-white">';
 markdown.renderer.rules.strong_close = () => "</strong>";
-<<<<<<< HEAD
-=======
 markdown.renderer.rules.link_open = (tokens, idx) => {
   const token = tokens[idx];
   const href = token.attrs.find((attr) => attr[0] === "href");
   return `<a href="${href[1]}" target="_blank" rel="noopener noreferrer">`;
 };
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 // Custom renderer for responsive images rendered in markdown
 markdown.renderer.rules.image = function (tokens, idx) {

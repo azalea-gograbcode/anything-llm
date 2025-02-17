@@ -7,10 +7,7 @@ const { WorkspaceChats } = require("../../models/workspaceChats");
 const { safeJsonParse } = require("../http");
 const { USER_AGENT, WORKSPACE_AGENT } = require("./defaults");
 const ImportedPlugin = require("./imported");
-<<<<<<< HEAD
-=======
 const { AgentFlows } = require("../agentFlows");
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
 class AgentHandler {
   #invocationUUID;
@@ -184,11 +181,7 @@ class AgentHandler {
       case "nvidia-nim":
         if (!process.env.NVIDIA_NIM_LLM_BASE_PATH)
           throw new Error(
-<<<<<<< HEAD
-            "Nvidia NIM base path must be provided to use agents."
-=======
             "NVIDIA NIM base path must be provided to use agents."
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           );
         break;
 
@@ -253,11 +246,7 @@ class AgentHandler {
       case "xai":
         return process.env.XAI_LLM_MODEL_PREF ?? "grok-beta";
       case "novita":
-<<<<<<< HEAD
-        return process.env.NOVITA_LLM_MODEL_PREF ?? "gryphe/mythomax-l2-13b";
-=======
         return process.env.NOVITA_LLM_MODEL_PREF ?? "deepseek/deepseek-r1";
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       case "nvidia-nim":
         return process.env.NVIDIA_NIM_LLM_MODEL_PREF ?? null;
       default:
@@ -398,8 +387,6 @@ class AgentHandler {
         continue;
       }
 
-<<<<<<< HEAD
-=======
       // Load flow plugin. This is marked by `@@flow_` in the array of functions to load.
       if (name.startsWith("@@flow_")) {
         const uuid = name.replace("@@flow_", "");
@@ -418,7 +405,6 @@ class AgentHandler {
         continue;
       }
 
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
       // Load imported plugin. This is marked by `@@` in the array of functions to load.
       // and is the @@hubID of the plugin.
       if (name.startsWith("@@")) {

@@ -51,10 +51,7 @@ const {
 const { SlashCommandPresets } = require("../models/slashCommandsPresets");
 const { EncryptionManager } = require("../utils/EncryptionManager");
 const { BrowserExtensionApiKey } = require("../models/browserExtensionApiKey");
-<<<<<<< HEAD
 const { AzureAuthProviders } = require("../utils/AzureAuthProviders");
-=======
->>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 const {
   chatHistoryViewable,
 } = require("../utils/middleware/chatHistoryViewable");
