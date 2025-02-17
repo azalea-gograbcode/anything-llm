@@ -34,6 +34,7 @@ const Workspace = {
     "agentProvider",
     "agentModel",
     "queryRefusalResponse",
+    "vectorSearchMode",
   ],
 
   validations: {
@@ -99,6 +100,18 @@ const Workspace = {
       if (!value || typeof value !== "string") return null;
       return String(value);
     },
+<<<<<<< HEAD
+=======
+    vectorSearchMode: (value) => {
+      if (
+        !value ||
+        typeof value !== "string" ||
+        !["default", "rerank"].includes(value)
+      )
+        return "default";
+      return value;
+    },
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   },
 
   /**

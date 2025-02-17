@@ -10,7 +10,10 @@ import LMStudioLogo from "@/media/llmprovider/lmstudio.png";
 import LocalAiLogo from "@/media/llmprovider/localai.png";
 import TogetherAILogo from "@/media/llmprovider/togetherai.png";
 import FireworksAILogo from "@/media/llmprovider/fireworksai.jpeg";
+<<<<<<< HEAD
 import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
+=======
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 import MistralLogo from "@/media/llmprovider/mistral.jpeg";
 import HuggingFaceLogo from "@/media/llmprovider/huggingface.png";
 import PerplexityLogo from "@/media/llmprovider/perplexity.png";
@@ -32,7 +35,6 @@ import AzureAiOptions from "@/components/LLMSelection/AzureAiOptions";
 import AnthropicAiOptions from "@/components/LLMSelection/AnthropicAiOptions";
 import LMStudioOptions from "@/components/LLMSelection/LMStudioOptions";
 import LocalAiOptions from "@/components/LLMSelection/LocalAiOptions";
-import NativeLLMOptions from "@/components/LLMSelection/NativeLLMOptions";
 import GeminiLLMOptions from "@/components/LLMSelection/GeminiLLMOptions";
 import OllamaLLMOptions from "@/components/LLMSelection/OllamaLLMOptions";
 import MistralOptions from "@/components/LLMSelection/MistralOptions";
@@ -58,10 +60,7 @@ import System from "@/models/system";
 import paths from "@/utils/paths";
 import showToast from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
-
-const TITLE = "LLM Preference";
-const DESCRIPTION =
-  "AnythingLLM can work with many LLM providers. This will be the service which handles chatting.";
+import { useTranslation } from "react-i18next";
 
 const LLMS = [
   {
@@ -93,12 +92,20 @@ const LLMS = [
     description: "Google's largest and most capable AI model",
   },
   {
+<<<<<<< HEAD
     name: "Nvidia NIM",
+=======
+    name: "NVIDIA NIM",
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
     value: "nvidia-nim",
     logo: NvidiaNimLogo,
     options: (settings) => <NvidiaNimOptions settings={settings} />,
     description:
+<<<<<<< HEAD
       "Run full parameter LLMs directly on your GPU using Nvidia's inference microservice via Docker.",
+=======
+      "Run full parameter LLMs directly on your NVIDIA RTX GPU using NVIDIA NIM.",
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   },
   {
     name: "HuggingFace",
@@ -246,6 +253,7 @@ const LLMS = [
     logo: XAILogo,
     options: (settings) => <XAILLMOptions settings={settings} />,
     description: "Run xAI's powerful LLMs like Grok-2 and more.",
+<<<<<<< HEAD
   },
   {
     name: "Native",
@@ -254,6 +262,8 @@ const LLMS = [
     options: (settings) => <NativeLLMOptions settings={settings} />,
     description:
       "Use a downloaded custom Llama model for chatting on this AnythingLLM instance.",
+=======
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   },
 ];
 
@@ -262,6 +272,7 @@ export default function LLMPreference({
   setForwardBtn,
   setBackBtn,
 }) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLLMs, setFilteredLLMs] = useState([]);
   const [selectedLLM, setSelectedLLM] = useState(null);
@@ -270,6 +281,9 @@ export default function LLMPreference({
   const hiddenSubmitButtonRef = useRef(null);
   const isHosted = window.location.hostname.includes("useanything.com");
   const navigate = useNavigate();
+
+  const TITLE = t("onboarding.llm.title");
+  const DESCRIPTION = t("onboarding.llm.description");
 
   useEffect(() => {
     async function fetchKeys() {

@@ -35,6 +35,15 @@ const KEY_MAPPING = {
     envKey: "EMBEDDING_MODEL_PREF",
     checks: [isNotEmpty],
   },
+  AzureOpenAiModelType: {
+    envKey: "AZURE_OPENAI_MODEL_TYPE",
+    checks: [
+      (input) =>
+        ["default", "reasoning"].includes(input)
+          ? null
+          : "Invalid model type. Must be one of: default, reasoning.",
+    ],
+  },
 
   // Anthropic Settings
   AnthropicApiKey: {
@@ -120,16 +129,6 @@ const KEY_MAPPING = {
   MistralModelPref: {
     envKey: "MISTRAL_MODEL_PREF",
     checks: [isNotEmpty],
-  },
-
-  // Native LLM Settings
-  NativeLLMModelPref: {
-    envKey: "NATIVE_LLM_MODEL_PREF",
-    checks: [isDownloadedModel],
-  },
-  NativeLLMTokenLimit: {
-    envKey: "NATIVE_LLM_MODEL_TOKEN_LIMIT",
-    checks: [nonZero],
   },
 
   // Hugging Face LLM Inference Settings
@@ -264,6 +263,12 @@ const KEY_MAPPING = {
   EmbeddingModelMaxChunkLength: {
     envKey: "EMBEDDING_MODEL_MAX_CHUNK_LENGTH",
     checks: [nonZero],
+  },
+
+  // Gemini Embedding Settings
+  GeminiEmbeddingApiKey: {
+    envKey: "GEMINI_EMBEDDING_API_KEY",
+    checks: [isNotEmpty],
   },
 
   // Generic OpenAI Embedding Settings
@@ -507,6 +512,7 @@ const KEY_MAPPING = {
     envKey: "AGENT_TAVILY_API_KEY",
     checks: [],
   },
+<<<<<<< HEAD
   
   // Azure Login Providers
   AzureADClientId: {
@@ -525,6 +531,8 @@ const KEY_MAPPING = {
     envKey: "AZURE_AD_GROUPS",
     checks: [isNotEmpty],
   },
+=======
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
 
   // TTS/STT Integration ENVS
   TextToSpeechProvider: {
@@ -712,7 +720,6 @@ function supportedLLM(input = "") {
     "lmstudio",
     "localai",
     "ollama",
-    "native",
     "togetherai",
     "fireworksai",
     "mistral",
@@ -777,6 +784,7 @@ function supportedEmbeddingModel(input = "") {
   const supported = [
     "openai",
     "azure",
+    "gemini",
     "localai",
     "native",
     "ollama",
@@ -824,22 +832,6 @@ function validOpenAiTokenLimit(input = "") {
 
 function requiresForceMode(_, forceModeEnabled = false) {
   return forceModeEnabled === true ? null : "Cannot set this setting.";
-}
-
-function isDownloadedModel(input = "") {
-  const fs = require("fs");
-  const path = require("path");
-  const storageDir = path.resolve(
-    process.env.STORAGE_DIR
-      ? path.resolve(process.env.STORAGE_DIR, "models", "downloaded")
-      : path.resolve(__dirname, `../../storage/models/downloaded`)
-  );
-  if (!fs.existsSync(storageDir)) return false;
-
-  const files = fs
-    .readdirSync(storageDir)
-    .filter((file) => file.includes(".gguf"));
-  return files.includes(input);
 }
 
 async function validDockerizedUrl(input = "") {

@@ -139,6 +139,17 @@ export default {
       return `/settings/beta-features`;
     },
   },
+<<<<<<< HEAD
+=======
+  agents: {
+    builder: () => {
+      return `/settings/agents/builder`;
+    },
+    editAgent: (uuid) => {
+      return `/settings/agents/builder/${uuid}`;
+    },
+  },
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
   communityHub: {
     website: () => {
       return import.meta.env.DEV

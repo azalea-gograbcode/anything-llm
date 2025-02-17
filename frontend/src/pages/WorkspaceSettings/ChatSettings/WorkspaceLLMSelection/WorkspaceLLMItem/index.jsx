@@ -4,10 +4,12 @@
 import { createPortal } from "react-dom";
 import ModalWrapper from "@/components/ModalWrapper";
 import { useModal } from "@/hooks/useModal";
-import { X } from "@phosphor-icons/react";
+import { X, Gear } from "@phosphor-icons/react";
 import System from "@/models/system";
 import showToast from "@/utils/toast";
+import { useEffect, useState } from "react";
 
+const NO_SETTINGS_NEEDED = ["default"];
 export default function WorkspaceLLM({
   llm,
   availableLLMs,
@@ -17,18 +19,31 @@ export default function WorkspaceLLM({
 }) {
   const { isOpen, openModal, closeModal } = useModal();
   const { name, value, logo, description } = llm;
+  const [currentSettings, setCurrentSettings] = useState(settings);
+
+  useEffect(() => {
+    async function getSettings() {
+      if (isOpen) {
+        const _settings = await System.keys();
+        setCurrentSettings(_settings ?? {});
+      }
+    }
+    getSettings();
+  }, [isOpen]);
 
   function handleProviderSelection() {
     // Determine if provider needs additional setup because its minimum required keys are
     // not yet set in settings.
-    const requiresAdditionalSetup = (llm.requiredConfig || []).some(
-      (key) => !settings[key]
-    );
-    if (requiresAdditionalSetup) {
-      openModal();
-      return;
+    if (!checked) {
+      const requiresAdditionalSetup = (llm.requiredConfig || []).some(
+        (key) => !currentSettings[key]
+      );
+      if (requiresAdditionalSetup) {
+        openModal();
+        return;
+      }
+      onClick(value);
     }
-    onClick(value);
   }
 
   return (
@@ -47,6 +62,7 @@ export default function WorkspaceLLM({
           readOnly={true}
           formNoValidate={true}
         />
+<<<<<<< HEAD
         <div className="flex gap-x-4 items-center">
           <img
             src={logo}
@@ -56,7 +72,32 @@ export default function WorkspaceLLM({
           <div className="flex flex-col">
             <div className="text-sm font-semibold text-white">{name}</div>
             <div className="mt-1 text-xs text-white/60">{description}</div>
+=======
+        <div className="flex gap-x-4 items-center justify-between">
+          <div className="flex gap-x-4 items-center">
+            <img
+              src={logo}
+              alt={`${name} logo`}
+              className="w-10 h-10 rounded-md"
+            />
+            <div className="flex flex-col">
+              <div className="text-sm font-semibold text-white">{name}</div>
+              <div className="mt-1 text-xs text-white/60">{description}</div>
+            </div>
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
           </div>
+          {checked && !NO_SETTINGS_NEEDED.includes(value) && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+              className="p-2 text-white/60 hover:text-white hover:bg-theme-bg-hover rounded-md transition-all duration-300"
+              title="Edit Settings"
+            >
+              <Gear size={20} weight="bold" />
+            </button>
+          )}
         </div>
       </div>
       <SetupProvider
@@ -65,6 +106,7 @@ export default function WorkspaceLLM({
         provider={value}
         closeModal={closeModal}
         postSubmit={onClick}
+        settings={currentSettings}
       />
     </>
   );
@@ -76,6 +118,7 @@ function SetupProvider({
   provider,
   closeModal,
   postSubmit,
+  settings,
 }) {
   if (!isOpen) return null;
   const LLMOption = availableLLMs.find((llm) => llm.value === provider);
@@ -107,7 +150,11 @@ function SetupProvider({
           <div className="relative p-6 border-b rounded-t border-theme-modal-border">
             <div className="w-full flex gap-x-2 items-center">
               <h3 className="text-xl font-semibold text-white overflow-hidden overflow-ellipsis whitespace-nowrap">
+<<<<<<< HEAD
                 Setup {LLMOption.name}
+=======
+                {LLMOption.name} Settings
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </h3>
             </div>
             <button
@@ -120,12 +167,22 @@ function SetupProvider({
           </div>
           <form id="provider-form" onSubmit={handleUpdate}>
             <div className="px-7 py-6">
+<<<<<<< HEAD
               <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
+=======
+              <div className="space-y-6 max-h-[60vh] overflow-y-auto p-1">
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
                 <p className="text-sm text-white/60">
                   To use {LLMOption.name} as this workspace's LLM you need to
                   set it up first.
                 </p>
+<<<<<<< HEAD
                 <div>{LLMOption.options({ credentialsOnly: true })}</div>
+=======
+                <div>
+                  {LLMOption.options(settings, { credentialsOnly: true })}
+                </div>
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
               </div>
             </div>
             <div className="flex justify-between items-center mt-6 pt-6 border-t border-theme-modal-border px-7 pb-6">
@@ -141,7 +198,7 @@ function SetupProvider({
                 form="provider-form"
                 className="transition-all duration-300 bg-white text-black hover:opacity-60 px-4 py-2 rounded-lg text-sm"
               >
-                Save {LLMOption.name} settings
+                Save settings
               </button>
             </div>
           </form>

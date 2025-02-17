@@ -24,6 +24,11 @@ class VoyageAiEmbedder {
       case "voyage-multilingual-2":
       case "voyage-3":
       case "voyage-3-lite":
+<<<<<<< HEAD
+=======
+      case "voyage-3-large":
+      case "voyage-code-3":
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
         return 32_000;
       case "voyage-large-2-instruct":
       case "voyage-law-2":

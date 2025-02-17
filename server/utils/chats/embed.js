@@ -93,6 +93,7 @@ async function streamChatWithForEmbed(
           similarityThreshold: embed.workspace?.similarityThreshold,
           topN: embed.workspace?.topN,
           filterIdentifiers: pinnedDocIdentifiers,
+          rerank: embed.workspace?.vectorSearchMode === "rerank",
         })
       : {
           contextTexts: [],
@@ -209,7 +210,11 @@ async function streamChatWithForEmbed(
  * @param {string} sessionId the session id of the user from embed widget
  * @param {Object} embed the embed config object
  * @param {Number} messageLimit the number of messages to return
+<<<<<<< HEAD
  * @returns {Promise<{rawHistory: import("@prisma/client").embed_chats[], chatHistory: {role: string, content: string}[]}>
+=======
+ * @returns {Promise<{rawHistory: import("@prisma/client").embed_chats[], chatHistory: {role: string, content: string, attachments?: Object[]}[]}>
+>>>>>>> 4545ce24cdc1f53073b7350981f7f433d14b25ef
  */
 async function recentEmbedChatHistory(sessionId, embed, messageLimit = 20) {
   const rawHistory = (
