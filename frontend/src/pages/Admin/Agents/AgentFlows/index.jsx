@@ -22,7 +22,7 @@ export default function AgentFlowsList({
   }
 
   return (
-    <div className="bg-theme-bg-secondary text-white rounded-xl w-full md:min-w-[360px]">
+    <div className="bg-theme-bg-secondary text-white rounded-xl min-w-[360px] w-fit">
       {flows.map((flow, index) => (
         <div
           key={flow.uuid}

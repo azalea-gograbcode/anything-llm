@@ -37,26 +37,7 @@ const fileAPIUploadStorage = multer.diskStorage({
     cb(null, uploadOutput);
   },
   filename: function (_, file, cb) {
-    file.originalname = normalizePath(
-      Buffer.from(file.originalname, "latin1").toString("utf8")
-    );
-    cb(null, file.originalname);
-  },
-});
-
-/**
- * Handle API file upload as documents - this does not manipulate the filename
- * at all for encoding/charset reasons.
- */
-const fileAPIUploadStorage = multer.diskStorage({
-  destination: function (_, __, cb) {
-    const uploadOutput =
-      process.env.NODE_ENV === "development"
-        ? path.resolve(__dirname, `../../../collector/hotdir`)
-        : path.resolve(process.env.STORAGE_DIR, `../../collector/hotdir`);
-    cb(null, uploadOutput);
-  },
-  filename: function (_, file, cb) {
+    file.originalname = normalizePath(file.originalname);
     cb(null, file.originalname);
   },
 });

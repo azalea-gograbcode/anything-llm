@@ -6,27 +6,6 @@ const { v4: uuidv4 } = require("uuid");
 const { toChunks, getEmbeddingEngineSelection } = require("../../helpers");
 const { sourceIdentifier } = require("../../chats");
 
-const sanitizeNamespace = (namespace) => {
-  // If namespace already starts with ns_, don't add it again
-  if (namespace.startsWith("ns_")) return namespace;
-
-  // Remove any invalid characters, ensure starts with letter
-  return `ns_${namespace.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-};
-
-// Add this helper method to check if collection exists more reliably
-const collectionExists = async function (client, namespace) {
-  try {
-    const collections = await AstraDB.allNamespaces(client);
-    if (collections) {
-      return collections.includes(namespace);
-    }
-  } catch (error) {
-    console.log("Astra::collectionExists check error", error?.message || error);
-    return false; // Return false for any error to allow creation attempt
-  }
-};
-
 const AstraDB = {
   name: "AstraDB",
   connect: async function () {
@@ -70,10 +49,7 @@ const AstraDB = {
   },
   namespace: async function (client, namespace = null) {
     if (!namespace) throw new Error("No namespace value provided.");
-    const sanitizedNamespace = sanitizeNamespace(namespace);
-    const collection = await client
-      .collection(sanitizedNamespace)
-      .catch(() => null);
+    const collection = await client.collection(namespace).catch(() => null);
     if (!(await this.isRealCollection(collection))) return null;
 
     const count = await collection.countDocuments().catch((e) => {
@@ -94,50 +70,32 @@ const AstraDB = {
   },
   namespaceExists: async function (client, namespace = null) {
     if (!namespace) throw new Error("No namespace value provided.");
-    const sanitizedNamespace = sanitizeNamespace(namespace);
-    const collection = await client.collection(sanitizedNamespace);
+    const collection = await client.collection(namespace);
     return await this.isRealCollection(collection);
   },
   deleteVectorsInNamespace: async function (client, namespace = null) {
-    const sanitizedNamespace = sanitizeNamespace(namespace);
-    await client.dropCollection(sanitizedNamespace);
+    await client.dropCollection(namespace);
     return true;
   },
   // AstraDB requires a dimension aspect for collection creation
   // we pass this in from the first chunk to infer the dimensions like other
   // providers do.
   getOrCreateCollection: async function (client, namespace, dimensions = null) {
-    const sanitizedNamespace = sanitizeNamespace(namespace);
-    try {
-      const exists = await collectionExists(client, sanitizedNamespace);
+    const isExists = await this.namespaceExists(client, namespace);
+    if (!isExists) {
+      if (!dimensions)
+        throw new Error(
+          `AstraDB:getOrCreateCollection Unable to infer vector dimension from input. Open an issue on GitHub for support.`
+        );
 
-      if (!exists) {
-        if (!dimensions) {
-          throw new Error(
-            `AstraDB:getOrCreateCollection Unable to infer vector dimension from input. Open an issue on Github for support.`
-          );
-        }
-
-        // Create new collection
-        await client.createCollection(sanitizedNamespace, {
-          vector: {
-            dimension: dimensions,
-            metric: "cosine",
-          },
-        });
-
-        // Get the newly created collection
-        return await client.collection(sanitizedNamespace);
-      }
-
-      return await client.collection(sanitizedNamespace);
-    } catch (error) {
-      console.error(
-        "Astra::getOrCreateCollection error",
-        error?.message || error
-      );
-      throw error;
+      await client.createCollection(namespace, {
+        vector: {
+          dimension: dimensions,
+          metric: "cosine",
+        },
+      });
     }
+    return await client.collection(namespace);
   },
   addDocumentToNamespace: async function (
     namespace,
@@ -192,14 +150,11 @@ const AstraDB = {
 
       const EmbedderEngine = getEmbeddingEngineSelection();
       const textSplitter = new TextSplitter({
-        chunkSize: Math.min(
-          7500,
-          TextSplitter.determineMaxChunkSize(
-            await SystemSettings.getValueOrFallback({
-              label: "text_splitter_chunk_size",
-            }),
-            EmbedderEngine?.embeddingMaxChunkLength
-          )
+        chunkSize: TextSplitter.determineMaxChunkSize(
+          await SystemSettings.getValueOrFallback({
+            label: "text_splitter_chunk_size",
+          }),
+          EmbedderEngine?.embeddingMaxChunkLength
         ),
         chunkOverlap: await SystemSettings.getValueOrFallback(
           { label: "text_splitter_chunk_overlap" },
@@ -272,7 +227,6 @@ const AstraDB = {
   deleteDocumentFromNamespace: async function (namespace, docId) {
     const { DocumentVectors } = require("../../../models/vectors");
     const { client } = await this.connect();
-    namespace = sanitizeNamespace(namespace);
     if (!(await this.namespaceExists(client, namespace)))
       throw new Error(
         "Invalid namespace - has it been collected and populated yet?"
@@ -305,10 +259,7 @@ const AstraDB = {
       throw new Error("Invalid request to performSimilaritySearch.");
 
     const { client } = await this.connect();
-    // Sanitize namespace before checking existence
-    const sanitizedNamespace = sanitizeNamespace(namespace);
-
-    if (!(await this.namespaceExists(client, sanitizedNamespace))) {
+    if (!(await this.namespaceExists(client, namespace))) {
       return {
         contextTexts: [],
         sources: [],
@@ -320,7 +271,7 @@ const AstraDB = {
     const queryVector = await LLMConnector.embedTextInput(input);
     const { contextTexts, sourceDocuments } = await this.similarityResponse({
       client,
-      namespace: sanitizedNamespace,
+      namespace,
       queryVector,
       similarityThreshold,
       topN,
@@ -349,9 +300,8 @@ const AstraDB = {
       sourceDocuments: [],
       scores: [],
     };
-    // Namespace should already be sanitized, but let's be defensive
-    const sanitizedNamespace = sanitizeNamespace(namespace);
-    const collection = await client.collection(sanitizedNamespace);
+
+    const collection = await client.collection(namespace);
     const responses = await collection
       .find(
         {},

@@ -129,10 +129,12 @@ const Chroma = {
       queryEmbeddings: queryVector,
       nResults: topN,
     });
-
     response.ids[0].forEach((_, i) => {
-      const similarity = this.distanceToSimilarity(response.distances[0][i]);
-      if (similarity < similarityThreshold) return;
+      if (
+        this.distanceToSimilarity(response.distances[0][i]) <
+        similarityThreshold
+      )
+        return;
 
       if (
         filterIdentifiers.includes(sourceIdentifier(response.metadatas[0][i]))
@@ -142,10 +144,9 @@ const Chroma = {
         );
         return;
       }
-
       result.contextTexts.push(response.documents[0][i]);
       result.sourceDocuments.push(response.metadatas[0][i]);
-      result.scores.push(similarity);
+      result.scores.push(this.distanceToSimilarity(response.distances[0][i]));
     });
 
     return result;
@@ -199,7 +200,6 @@ const Chroma = {
           const { client } = await this.connect();
           const collection = await client.getOrCreateCollection({
             name: this.normalize(namespace),
-            // returns [-1, 1] unit vector
             metadata: { "hnsw:space": "cosine" },
           });
           const { chunks } = cacheResult;
@@ -299,18 +299,13 @@ const Chroma = {
 
       if (vectors.length > 0) {
         const chunks = [];
+
         console.log("Inserting vectorized chunks into Chroma collection.");
         for (const chunk of toChunks(vectors, 500)) chunks.push(chunk);
 
-        try {
-          await collection.add(submission);
-          console.log(
-            `Successfully added ${submission.ids.length} vectors to collection ${this.normalize(namespace)}`
-          );
-        } catch (error) {
-          console.error("Error adding to ChromaDB:", error);
-          throw new Error(`Error embedding into ChromaDB: ${error.message}`);
-        }
+        const additionResult = await collection.add(submission);
+        if (!additionResult)
+          throw new Error("Error embedding into ChromaDB", additionResult);
 
         await storeVectorResult(chunks, fullFilePath);
       }
@@ -361,24 +356,18 @@ const Chroma = {
     }
 
     const queryVector = await LLMConnector.embedTextInput(input);
-    const { contextTexts, sourceDocuments, scores } =
-      await this.similarityResponse({
-        client,
-        namespace,
-        queryVector,
-        similarityThreshold,
-        topN,
-        filterIdentifiers,
-      });
+    const { contextTexts, sourceDocuments } = await this.similarityResponse({
+      client,
+      namespace,
+      queryVector,
+      similarityThreshold,
+      topN,
+      filterIdentifiers,
+    });
 
-    const sources = sourceDocuments.map((metadata, i) => ({
-      metadata: {
-        ...metadata,
-        text: contextTexts[i],
-        score: scores?.[i] || null,
-      },
-    }));
-
+    const sources = sourceDocuments.map((metadata, i) => {
+      return { metadata: { ...metadata, text: contextTexts[i] } };
+    });
     return {
       contextTexts,
       sources: this.curateSources(sources),
