@@ -7,7 +7,7 @@ const TRANSLATIONS = {
     llm: {
       title: "LLM Preference",
       description:
-        "AnythingLLM can work with many LLM providers. This will be the service which handles chatting.",
+        "AzaleaGPT can work with many LLM providers. This will be the service which handles chatting.",
     },
     userSetup: {
       title: "User Setup",
@@ -37,15 +37,15 @@ const TRANSLATIONS = {
         "These settings can be reconfigured at any time in the settings.",
     },
     survey: {
-      title: "Welcome to AnythingLLM",
-      description: "Help us make AnythingLLM built for your needs. Optional.",
+      title: "Welcome to AzaleaGPT",
+      description: "Help us make AzaleaGPT built for your needs. Optional.",
 
       email: "What's your email?",
-      useCase: "What will you use AnythingLLM for?",
+      useCase: "What will you use AzaleaGPT for?",
       useCaseWork: "For work",
       useCasePersonal: "For personal use",
       useCaseOther: "Other",
-      comment: "How did you hear about AnythingLLM?",
+      comment: "How did you hear about AzaleaGPT?",
       commentPlaceholder:
         "Reddit, Twitter, GitHub, YouTube, etc. - Let us know how you found us!",
       skip: "Skip Survey",
@@ -54,7 +54,7 @@ const TRANSLATIONS = {
     workspace: {
       title: "Create your first workspace",
       description:
-        "Create your first workspace and get started with AnythingLLM.",
+        "Create your first workspace and get started with AzaleaGPT.",
     },
   },
   common: {
@@ -81,9 +81,6 @@ const TRANSLATIONS = {
     workspaces: "Workspaces",
     "workspace-chats": "Workspace Chats",
     customization: "Customization",
-    interface: "UI Preferences",
-    branding: "Branding & Whitelabeling",
-    chat: "Chat",
     "api-keys": "Developer API",
     llm: "LLM",
     transcription: "Transcription",
@@ -100,7 +97,6 @@ const TRANSLATIONS = {
     "agent-skills": "Agent Skills",
     admin: "Admin",
     tools: "Tools",
-    "system-prompt-variables": "System Prompt Variables",
     "experimental-features": "Experimental Features",
     contact: "Contact Support",
     "browser-extension": "Browser Extension",
@@ -133,11 +129,11 @@ const TRANSLATIONS = {
 
   welcomeMessage: {
     part1:
-      "Welcome to AnythingLLM, AnythingLLM is an open-source AI tool by Mintplex Labs that turns anything into a trained chatbot you can query and chat with. AnythingLLM is a BYOK (bring-your-own-keys) software so there is no subscription, fee, or charges for this software outside of the services you want to use with it.",
+      "Welcome to AzaleaGPT, AzaleaGPT is an open-source AI tool by Mintplex Labs that turns anything into a trained chatbot you can query and chat with. AzaleaGPT is a BYOK (bring-your-own-keys) software so there is no subscription, fee, or charges for this software outside of the services you want to use with it.",
     part2:
-      "AnythingLLM is the easiest way to put powerful AI products like OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB, and other services together in a neat package with no fuss to increase your productivity by 100x.",
+      "AzaleaGPT is the easiest way to put powerful AI products like OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB, and other services together in a neat package with no fuss to increase your productivity by 100x.",
     part3:
-      "AnythingLLM can run totally locally on your machine with little overhead you wont even notice it's there! No GPU needed. Cloud and on-premises installation is available as well.\nThe AI tooling ecosystem gets more powerful everyday. AnythingLLM makes it easy to use.",
+      "AzaleaGPT can run totally locally on your machine with little overhead you wont even notice it's there! No GPU needed. Cloud and on-premises installation is available as well.\nThe AI tooling ecosystem gets more powerful everyday. AzaleaGPT makes it easy to use.",
     githubIssue: "Create an issue on GitHub",
     user1: "How do I get started?!",
     part4:
@@ -146,94 +142,11 @@ const TRANSLATIONS = {
     user2:
       "Is this like an AI dropbox or something? What about chatting? It is a chatbot isn't it?",
     part5:
-      "AnythingLLM is more than a smarter Dropbox.\n\nAnythingLLM offers two ways of talking with your data:\n\n<i>Query:</i> Your chats will return data or inferences found with the documents in your workspace it has access to. Adding more documents to the Workspace make it smarter! \n\n<i>Conversational:</i> Your documents + your on-going chat history both contribute to the LLM knowledge at the same time. Great for appending real-time text-based info or corrections and misunderstandings the LLM might have. \n\nYou can toggle between either mode \n<i>in the middle of chatting!</i>",
+      "AzaleaGPT is more than a smarter Dropbox.\n\nAzaleaGPT offers two ways of talking with your data:\n\n<i>Query:</i> Your chats will return data or inferences found with the documents in your workspace it has access to. Adding more documents to the Workspace make it smarter! \n\n<i>Conversational:</i> Your documents + your on-going chat history both contribute to the LLM knowledge at the same time. Great for appending real-time text-based info or corrections and misunderstandings the LLM might have. \n\nYou can toggle between either mode \n<i>in the middle of chatting!</i>",
     user3: "Wow, this sounds amazing, let me try it out already!",
     part6: "Have Fun!",
     starOnGitHub: "Star on GitHub",
     contact: "Contact Mintplex Labs",
-  },
-
-  "main-page": {
-    noWorkspaceError: "Please create a workspace before starting a chat.",
-    checklist: {
-      title: "Getting Started",
-      tasksLeft: "tasks left",
-      completed: "You're on your way to becoming an AnythingLLM expert!",
-      dismiss: "close",
-      tasks: {
-        create_workspace: {
-          title: "Create a workspace",
-          description: "Create your first workspace to get started",
-          action: "Create",
-        },
-        send_chat: {
-          title: "Send a chat",
-          description: "Start a conversation with your AI assistant",
-          action: "Chat",
-        },
-        embed_document: {
-          title: "Embed a document",
-          description: "Add your first document to your workspace",
-          action: "Embed",
-        },
-        setup_system_prompt: {
-          title: "Set up a system prompt",
-          description: "Configure your AI assistant's behavior",
-          action: "Set Up",
-        },
-        define_slash_command: {
-          title: "Define a slash command",
-          description: "Create custom commands for your assistant",
-          action: "Define",
-        },
-        visit_community: {
-          title: "Visit Community Hub",
-          description: "Explore community resources and templates",
-          action: "Browse",
-        },
-      },
-    },
-    quickLinks: {
-      title: "Quick Links",
-      sendChat: "Send Chat",
-      embedDocument: "Embed a Document",
-      createWorkspace: "Create Workspace",
-    },
-    exploreMore: {
-      title: "Explore more features",
-      features: {
-        customAgents: {
-          title: "Custom AI Agents",
-          description: "Build powerful AI Agents and automations with no code.",
-          primaryAction: "Chat using @agent",
-          secondaryAction: "Build an agent flow",
-        },
-        slashCommands: {
-          title: "Slash Commands",
-          description:
-            "Save time and inject prompts using custom slash commands.",
-          primaryAction: "Create a Slash Command",
-          secondaryAction: "Explore on Hub",
-        },
-        systemPrompts: {
-          title: "System Prompts",
-          description:
-            "Modify the system prompt to customize the AI replies of a workspace.",
-          primaryAction: "Modify a System Prompt",
-          secondaryAction: "Manage prompt variables",
-        },
-      },
-    },
-    announcements: {
-      title: "Updates & Announcements",
-    },
-    resources: {
-      title: "Resources",
-      links: {
-        docs: "Docs",
-        star: "Star on Github",
-      },
-    },
   },
 
   "new-workspace": {
@@ -266,7 +179,7 @@ const TRANSLATIONS = {
       add: "Add new message",
       save: "Save Messages",
       heading: "Explain to me",
-      body: "the benefits of AnythingLLM",
+      body: "the benefits of AzaleaGPT",
     },
     pfp: {
       title: "Assistant Profile Image",
@@ -450,99 +363,35 @@ const TRANSLATIONS = {
     },
   },
 
-  customization: {
-    interface: {
-      title: "UI Preferences",
-      description: "Set your UI preferences for AnythingLLM.",
+  // Appearance
+  appearance: {
+    title: "Appearance",
+    description: "Customize the appearance settings of your platform.",
+    logo: {
+      title: "Customize Logo",
+      description: "Upload your custom logo to make your chatbot yours.",
+      add: "Add a custom logo",
+      recommended: "Recommended size: 800 x 200",
+      remove: "Remove",
+      replace: "Replace",
     },
-    branding: {
-      title: "Branding & Whitelabeling",
+    message: {
+      title: "Customize Messages",
+      description: "Customize the automatic messages displayed to your users.",
+      new: "New",
+      system: "system",
+      user: "user",
+      message: "message",
+      assistant: "AzaleaGPT Chat Assistant",
+      "double-click": "Double click to edit...",
+      save: "Save Messages",
+    },
+    icons: {
+      title: "Custom Footer Icons",
       description:
-        "White-label your AnythingLLM instance with custom branding.",
-    },
-    chat: {
-      title: "Chat",
-      description: "Set your chat preferences for AnythingLLM.",
-      auto_submit: {
-        title: "Auto-Submit Speech Input",
-        description:
-          "Automatically submit speech input after a period of silence",
-      },
-      auto_speak: {
-        title: "Auto-Speak Responses",
-        description: "Automatically speak responses from the AI",
-      },
-    },
-    items: {
-      theme: {
-        title: "Theme",
-        description: "Select your preferred color theme for the application.",
-      },
-      "show-scrollbar": {
-        title: "Show Scrollbar",
-        description: "Enable or disable the scrollbar in the chat window.",
-      },
-      "support-email": {
-        title: "Support Email",
-        description:
-          "Set the support email address that should be accessible by users when they need help.",
-      },
-      "app-name": {
-        title: "Name",
-        description:
-          "Set a name that is displayed on the login page to all users.",
-      },
-      "chat-message-alignment": {
-        title: "Chat Message Alignment",
-        description:
-          "Select the message alignment mode when using the chat interface.",
-      },
-      "display-language": {
-        title: "Display Language",
-        description:
-          "Select the preferred language to render AnythingLLM's UI in - when translations are available.",
-      },
-      logo: {
-        title: "Brand Logo",
-        description: "Upload your custom logo to showcase on all pages.",
-        add: "Add a custom logo",
-        recommended: "Recommended size: 800 x 200",
-        remove: "Remove",
-        replace: "Replace",
-      },
-      "welcome-messages": {
-        title: "Welcome Messages",
-        description:
-          "Customize the welcome messages displayed to your users. Only non-admin users will see these messages.",
-        new: "New",
-        system: "system",
-        user: "user",
-        message: "message",
-        assistant: "AnythingLLM Chat Assistant",
-        "double-click": "Double click to edit...",
-        save: "Save Messages",
-      },
-      "browser-appearance": {
-        title: "Browser Appearance",
-        description:
-          "Customize the appearance of the browser tab and title when the app is open.",
-        tab: {
-          title: "Title",
-          description:
-            "Set a custom tab title when the app is open in a browser.",
-        },
-        favicon: {
-          title: "Favicon",
-          description: "Use a custom favicon for the browser tab.",
-        },
-      },
-      "sidebar-footer": {
-        title: "Sidebar Footer Items",
-        description:
-          "Customize the footer items displayed on the bottom of the sidebar.",
-        icon: "Icon",
-        link: "Link",
-      },
+        "Customize the footer icons displayed on the bottom of the sidebar.",
+      icon: "Icon",
+      link: "Link",
     },
   },
 
@@ -550,7 +399,7 @@ const TRANSLATIONS = {
   api: {
     title: "API Keys",
     description:
-      "API keys allow the holder to programmatically access and manage this AnythingLLM instance.",
+      "API keys allow the holder to programmatically access and manage this AzaleaGPT instance.",
     link: "Read the API documentation",
     generate: "Generate New API Key",
     table: {
@@ -563,7 +412,7 @@ const TRANSLATIONS = {
   llm: {
     title: "LLM Preference",
     description:
-      "These are the credentials and settings for your preferred LLM chat & embedding provider. Its important these keys are current and correct or else AnythingLLM will not function properly.",
+      "These are the credentials and settings for your preferred LLM chat & embedding provider. Its important these keys are current and correct or else AzaleaGPT will not function properly.",
     provider: "LLM Provider",
   },
 
@@ -573,7 +422,7 @@ const TRANSLATIONS = {
       "These are the credentials and settings for your preferred transcription model provider. Its important these keys are current and correct or else media files and audio will not transcribe.",
     provider: "Transcription Provider",
     "warn-start":
-      "Using the local whisper model on machines with limited RAM or CPU can stall AnythingLLM when processing media files.",
+      "Using the local whisper model on machines with limited RAM or CPU can stall AzaleaGPT when processing media files.",
     "warn-recommend":
       "We recommend at least 2GB of RAM and upload files <10Mb.",
     "warn-end":
@@ -585,11 +434,11 @@ const TRANSLATIONS = {
     "desc-start":
       "When using an LLM that does not natively support an embedding engine - you may need to additionally specify credentials to for embedding text.",
     "desc-end":
-      "Embedding is the process of turning text into vectors. These credentials are required to turn your files and prompts into a format which AnythingLLM can use to process.",
+      "Embedding is the process of turning text into vectors. These credentials are required to turn your files and prompts into a format which AzaleaGPT can use to process.",
     provider: {
       title: "Embedding Provider",
       description:
-        "There is no set up required when using AnythingLLM's native embedding engine.",
+        "There is no set up required when using AzaleaGPT's native embedding engine.",
     },
   },
 
@@ -620,7 +469,7 @@ const TRANSLATIONS = {
   vector: {
     title: "Vector Database",
     description:
-      "These are the credentials and settings for how your AnythingLLM instance will function. It's important these keys are current and correct.",
+      "These are the credentials and settings for how your AzaleaGPT instance will function. It's important these keys are current and correct.",
     provider: {
       title: "Vector Database Provider",
       description: "There is no configuration needed for LanceDB.",
@@ -669,7 +518,7 @@ const TRANSLATIONS = {
     password: {
       title: "Password Protection",
       description:
-        "Protect your AnythingLLM instance with a password. If you forget this there is no recovery method so ensure you save this password.",
+        "Protect your AzaleaGPT instance with a password. If you forget this there is no recovery method so ensure you save this password.",
     },
     instance: {
       title: "Password Protect Instance",
@@ -696,229 +545,11 @@ const TRANSLATIONS = {
   privacy: {
     title: "Privacy & Data-Handling",
     description:
-      "This is your configuration for how connected third party providers and AnythingLLM handle your data.",
+      "This is your configuration for how connected third party providers and AzaleaGPT handle your data.",
     llm: "LLM Selection",
     embedding: "Embedding Preference",
     vector: "Vector Database",
     anonymous: "Anonymous Telemetry Enabled",
-  },
-
-  connectors: {
-    "search-placeholder": "Search data connectors",
-    "no-connectors": "No data connectors found.",
-    github: {
-      name: "GitHub Repo",
-      description:
-        "Import an entire public or private GitHub repository in a single click.",
-      URL: "GitHub Repo URL",
-      URL_explained: "Url of the GitHub repo you wish to collect.",
-      token: "GitHub Access Token",
-      optional: "optional",
-      token_explained: "Access Token to prevent rate limiting.",
-      token_explained_start: "Without a ",
-      token_explained_link1: "Personal Access Token",
-      token_explained_middle:
-        ", the GitHub API may limit the number of files that can be collected due to rate limits. You can ",
-      token_explained_link2: "create a temporary Access Token",
-      token_explained_end: " to avoid this issue.",
-      ignores: "File Ignores",
-      git_ignore:
-        "List in .gitignore format to ignore specific files during collection. Press enter after each entry you want to save.",
-      task_explained:
-        "Once complete, all files will be available for embedding into workspaces in the document picker.",
-      branch: "Branch you wish to collect files from.",
-      branch_loading: "-- loading available branches --",
-      branch_explained: "Branch you wish to collect files from.",
-      token_information:
-        "Without filling out the <b>GitHub Access Token</b> this data connector will only be able to collect the <b>top-level</b> files of the repo due to GitHub's public API rate-limits.",
-      token_personal:
-        "Get a free Personal Access Token with a GitHub account here.",
-    },
-    gitlab: {
-      name: "GitLab Repo",
-      description:
-        "Import an entire public or private GitLab repository in a single click.",
-      URL: "GitLab Repo URL",
-      URL_explained: "URL of the GitLab repo you wish to collect.",
-      token: "GitLab Access Token",
-      optional: "optional",
-      token_explained: "Access Token to prevent rate limiting.",
-      token_description:
-        "Select additional entities to fetch from the GitLab API.",
-      token_explained_start: "Without a ",
-      token_explained_link1: "Personal Access Token",
-      token_explained_middle:
-        ", the GitLab API may limit the number of files that can be collected due to rate limits. You can ",
-      token_explained_link2: "create a temporary Access Token",
-      token_explained_end: " to avoid this issue.",
-      fetch_issues: "Fetch Issues as Documents",
-      ignores: "File Ignores",
-      git_ignore:
-        "List in .gitignore format to ignore specific files during collection. Press enter after each entry you want to save.",
-      task_explained:
-        "Once complete, all files will be available for embedding into workspaces in the document picker.",
-      branch: "Branch you wish to collect files from",
-      branch_loading: "-- loading available branches --",
-      branch_explained: "Branch you wish to collect files from.",
-      token_information:
-        "Without filling out the <b>GitLab Access Token</b> this data connector will only be able to collect the <b>top-level</b> files of the repo due to GitLab's public API rate-limits.",
-      token_personal:
-        "Get a free Personal Access Token with a GitLab account here.",
-    },
-    youtube: {
-      name: "YouTube Transcript",
-      description:
-        "Import the transcription of an entire YouTube video from a link.",
-      URL: "YouTube Video URL",
-      URL_explained_start:
-        "Enter the URL of any YouTube video to fetch its transcript. The video must have ",
-      URL_explained_link: "closed captions",
-      URL_explained_end: " available.",
-      task_explained:
-        "Once complete, the transcript will be available for embedding into workspaces in the document picker.",
-      language: "Transcript Language",
-      language_explained:
-        "Select the language of the transcript you want to collect.",
-      loading_languages: "-- loading available languages --",
-    },
-    "website-depth": {
-      name: "Bulk Link Scraper",
-      description: "Scrape a website and its sub-links up to a certain depth.",
-      URL: "Website URL",
-      URL_explained: "URL of the website you want to scrape.",
-      depth: "Crawl Depth",
-      depth_explained:
-        "This is the number of child-links that the worker should follow from the origin URL.",
-      max_pages: "Maximum Pages",
-      max_pages_explained: "Maximum number of links to scrape.",
-      task_explained:
-        "Once complete, all scraped content will be available for embedding into workspaces in the document picker.",
-    },
-    confluence: {
-      name: "Confluence",
-      description: "Import an entire Confluence page in a single click.",
-      deployment_type: "Confluence deployment type",
-      deployment_type_explained:
-        "Determine if your Confluence instance is hosted on Atlassian cloud or self-hosted.",
-      base_url: "Confluence base URL",
-      base_url_explained: "This is the base URL of your Confluence space.",
-      space_key: "Confluence space key",
-      space_key_explained:
-        "This is the spaces key of your confluence instance that will be used. Usually begins with ~",
-      username: "Confluence Username",
-      username_explained: "Your Confluence username",
-      auth_type: "Confluence Auth Type",
-      auth_type_explained:
-        "Select the authentication type you want to use to access your Confluence pages.",
-      auth_type_username: "Username and Access Token",
-      auth_type_personal: "Personal Access Token",
-      token: "Confluence Access Token",
-      token_explained_start:
-        "You need to provide an access token for authentication. You can generate an access token",
-      token_explained_link: "here",
-      token_desc: "Access token for authentication",
-      pat_token: "Confluence Personal Access Token",
-      pat_token_explained: "Your Confluence personal access token.",
-      task_explained:
-        "Once complete, the page content will be available for embedding into workspaces in the document picker.",
-    },
-
-    manage: {
-      documents: "Documents",
-      "data-connectors": "Data Connectors",
-      "desktop-only":
-        "Editing these settings are only available on a desktop device. Please access this page on your desktop to continue.",
-      dismiss: "Dismiss",
-      editing: "Editing",
-    },
-    directory: {
-      "my-documents": "My Documents",
-      "new-folder": "New Folder",
-      "search-document": "Search for document",
-      "no-documents": "No Documents",
-      "move-workspace": "Move to Workspace",
-      name: "Name",
-      "delete-confirmation":
-        "Are you sure you want to delete these files and folders?\nThis will remove the files from the system and remove them from any existing workspaces automatically.\nThis action is not reversible.",
-      "removing-message":
-        "Removing {{count}} documents and {{folderCount}} folders. Please wait.",
-      "move-success": "Successfully moved {{count}} documents.",
-      date: "Date",
-      type: "Type",
-      no_docs: "No Documents",
-      select_all: "Select All",
-      deselect_all: "Deselect All",
-      remove_selected: "Remove Selected",
-      costs: "*One time cost for embeddings",
-      save_embed: "Save and Embed",
-    },
-    upload: {
-      "processor-offline": "Document Processor Unavailable",
-      "processor-offline-desc":
-        "We can't upload your files right now because the document processor is offline. Please try again later.",
-      "click-upload": "Click to upload or drag and drop",
-      "file-types":
-        "supports text files, csv's, spreadsheets, audio files, and more!",
-      "or-submit-link": "or submit a link",
-      "placeholder-link": "https://example.com",
-      fetching: "Fetching...",
-      "fetch-website": "Fetch website",
-      "privacy-notice":
-        "These files will be uploaded to the document processor running on this AnythingLLM instance. These files are not sent or shared with a third party.",
-    },
-    pinning: {
-      what_pinning: "What is document pinning?",
-      pin_explained_block1:
-        "When you <b>pin</b> a document in AnythingLLM we will inject the entire content of the document into your prompt window for your LLM to fully comprehend.",
-      pin_explained_block2:
-        "This works best with <b>large-context models</b> or small files that are critical to its knowledge-base.",
-      pin_explained_block3:
-        "If you are not getting the answers you desire from AnythingLLM by default then pinning is a great way to get higher quality answers in a click.",
-      accept: "Okay, got it",
-    },
-    watching: {
-      what_watching: "What does watching a document do?",
-      watch_explained_block1:
-        "When you <b>watch</b> a document in AnythingLLM we will <i>automatically</i> sync your document content from it's original source on regular intervals. This will automatically update the content in every workspace where this file is managed.",
-      watch_explained_block2:
-        "This feature currently supports online-based content and will not be available for manually uploaded documents.",
-      watch_explained_block3_start:
-        "You can manage what documents are watched from the ",
-      watch_explained_block3_link: "File manager",
-      watch_explained_block3_end: " admin view.",
-      accept: "Okay, got it",
-    },
-  },
-
-  chat_window: {
-    welcome: "Welcome to your new workspace.",
-    get_started: "To get started either",
-    get_started_default: "To get started",
-    upload: "upload a document",
-    or: "or",
-    send_chat: "send a chat.",
-    send_message: "Send a message",
-    attach_file: "Attach a file to this chat",
-    slash: "View all available slash commands for chatting.",
-    agents: "View all available agents you can use for chatting.",
-    text_size: "Change text size.",
-    microphone: "Speak your prompt.",
-    send: "Send prompt message to workspace",
-  },
-
-  profile_settings: {
-    edit_account: "Edit Account",
-    profile_picture: "Profile Picture",
-    remove_profile_picture: "Remove Profile Picture",
-    username: "Username",
-    username_description:
-      "Username must be only contain lowercase letters, numbers, underscores, and hyphens with no spaces",
-    new_password: "New Password",
-    passwort_description: "Password must be at least 8 characters long",
-    cancel: "Cancel",
-    update_account: "Update Account",
-    theme: "Theme Preference",
-    language: "Preferred language",
   },
 };
 
