@@ -54,11 +54,13 @@ export default function ChatSettings({ workspace }) {
         id="chat-settings-form"
         className="w-1/2 flex flex-col gap-y-6"
       >
+        {user?.role !== "manager" && (
         <WorkspaceLLMSelection
           settings={settings}
           workspace={workspace}
           setHasChanges={setHasChanges}
         />
+        )}
         <ChatModeSelection
           workspace={workspace}
           setHasChanges={setHasChanges}
