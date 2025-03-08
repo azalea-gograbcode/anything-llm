@@ -2,34 +2,35 @@ const { toChunks } = require("../../helpers");
 
 class AzureOpenAiEmbedder {
   constructor() {
-    const { AzureOpenAI } = require("openai");
+    const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
     if (!process.env.AZURE_OPENAI_ENDPOINT)
       throw new Error("No Azure API endpoint was set.");
     if (!process.env.AZURE_OPENAI_KEY)
       throw new Error("No Azure API key was set.");
 
-    this.apiVersion = "2024-12-01-preview";
-    const openai = new AzureOpenAI({
-      apiKey: process.env.AZURE_OPENAI_KEY,
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-      apiVersion: this.apiVersion,
-    });
-
-    // We cannot assume the model fallback since the model is based on the deployment name
-    // and not the model name - so this will throw on embedding if the model is not defined.
-    this.model = process.env.EMBEDDING_MODEL_PREF;
+    const openai = new OpenAIClient(
+      process.env.AZURE_OPENAI_ENDPOINT,
+      new AzureKeyCredential(process.env.AZURE_OPENAI_KEY)
+    );
     this.openai = openai;
 
     // Limit of how many strings we can process in a single pass to stay with resource or network limits
     // https://learn.microsoft.com/en-us/azure/ai-services/openai/faq#i-am-trying-to-use-embeddings-and-received-the-error--invalidrequesterror--too-many-inputs--the-max-number-of-inputs-is-1---how-do-i-fix-this-:~:text=consisting%20of%20up%20to%2016%20inputs%20per%20API%20request
-    this.maxConcurrentChunks = 16;
+    this.maxConcurrentChunks = 12;
 
     // https://learn.microsoft.com/en-us/answers/questions/1188074/text-embedding-ada-002-token-context-length
-    this.embeddingMaxChunkLength = 2048;
-  }
-
-  log(text, ...args) {
-    console.log(`\x1b[36m[AzureOpenAiEmbedder]\x1b[0m ${text}`, ...args);
+    //
+    // AL: 2025-03-08
+    // Digging deeper, it seems that Microsoft now allows a max of 8192 tokens (or 2048 if pushed in an array)
+    // see https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/embeddings?tabs=console
+    // The value below is used as the number of CHARACTERS (not tokens).  Since we are of the opinion that longer content
+    // is better, we increase embeddingMaxChunkLength to 2048 * 2.5
+    // This takes into account the average number of characters per word in English (~4.5) and the fact that there may be multiple
+    // tokens per word.
+    // Rough back of the envelope calculation is (2048 * 2.5) / 4.5 = 1150 words = 1150 * 8/6 = 1550 tokens
+    // Assuming that we might send arrays over this gives us a 25% buffer.
+    // This sets the maximum chunk length, we can configure on the UI to reduce it if needed
+    this.embeddingMaxChunkLength = 5120;
   }
 
   async embedTextInput(textInput) {
@@ -40,9 +41,13 @@ class AzureOpenAiEmbedder {
   }
 
   async embedChunks(textChunks = []) {
-    if (!this.model) throw new Error("No Embedding Model preference defined.");
+    const textEmbeddingModel =
+      process.env.EMBEDDING_MODEL_PREF || "text-embedding-3-large";
+    if (!textEmbeddingModel)
+      throw new Error(
+        "No EMBEDDING_MODEL_PREF ENV defined. This must the name of a deployment on your Azure account for an embedding model."
+      );
 
-    this.log(`Embedding ${textChunks.length} chunks...`);
     // Because there is a limit on how many chunks can be sent at once to Azure OpenAI
     // we concurrently execute each max batch of text chunks possible.
     // Refer to constructor maxConcurrentChunks for more info.
@@ -50,11 +55,8 @@ class AzureOpenAiEmbedder {
     for (const chunk of toChunks(textChunks, this.maxConcurrentChunks)) {
       embeddingRequests.push(
         new Promise((resolve) => {
-          this.openai.embeddings
-            .create({
-              model: this.model,
-              input: chunk,
-            })
+          this.openai
+            .getEmbeddings(textEmbeddingModel, chunk)
             .then((res) => {
               resolve({ data: res.data, error: null });
             })
