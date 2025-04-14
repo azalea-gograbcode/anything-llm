@@ -74,7 +74,20 @@ function ShowWorkspaceChat() {
 
   if (loading) return <FullScreenLoader />;
 
-  const TabContent = TABS[tab];
+  // Determine which tab to show based on user role and current tab
+  let TabContent;
+  if (tab === "members" || tab === "agent-config") {
+    // For admin-only tabs, verify user is admin
+    if (user?.role === "admin") {
+      TabContent = TABS[tab];
+    } else {
+      TabContent = TABS["general-appearance"]; // Fallback to general if not admin
+    }
+  } else {
+    // For other tabs, use the requested tab or fallback to general
+    TabContent = TABS[tab] || TABS["general-appearance"];
+  }
+
   return (
     <div className="w-screen h-screen overflow-hidden bg-theme-bg-container flex">
       {!isMobile && <Sidebar />}

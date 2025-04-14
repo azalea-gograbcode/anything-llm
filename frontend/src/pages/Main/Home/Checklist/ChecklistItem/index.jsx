@@ -33,7 +33,7 @@ export function ChecklistItem({ id, title, action, onAction, icon: Icon }) {
 
   return (
     <div
-      className={`flex items-center gap-x-4 transition-colors cursor-pointer rounded-lg p-3 group hover:bg-theme-checklist-item-bg-hover ${
+      className={`flex items-center gap-x-4 transition-colors cursor-pointer rounded-lg p-3 group ${
         isCompleted
           ? "bg-theme-checklist-item-completed-bg"
           : "bg-theme-checklist-item-bg"
@@ -57,7 +57,7 @@ export function ChecklistItem({ id, title, action, onAction, icon: Icon }) {
           className={`text-sm font-medium transition-colors duration-200 ${
             isCompleted
               ? "text-theme-checklist-item-completed-text line-through"
-              : "text-theme-checklist-item-text"
+              : "text-theme-checklist-item-text group-hover:text-theme-checklist-item-hover light:group-hover:text-theme-checklist-item-text-secondary"
           }`}
         >
           {title}

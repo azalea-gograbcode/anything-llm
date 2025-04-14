@@ -1,8 +1,4 @@
 const chalk = require("chalk");
-<<<<<<< HEAD
-=======
-const { RetryError } = require("../error");
->>>>>>> 48ef74aa (sync-fork-2)
 const { Telemetry } = require("../../../../models/telemetry");
 
 /**
@@ -36,7 +32,6 @@ const httpSocket = {
       name: this.name,
       setup(aibitat) {
         aibitat.onError(async (error) => {
-<<<<<<< HEAD
           let errorMessage =
             error?.message || "An error occurred while running the agent.";
           console.error(chalk.red(`   error: ${errorMessage}`), error);
@@ -47,22 +42,6 @@ const httpSocket = {
             JSON.stringify({ type: "wssFailure", content: errorMessage })
           );
           aibitat.terminate();
-=======
-          if (!!error?.message) {
-            console.error(chalk.red(`   error: ${error.message}`), error);
-            aibitat.introspect(
-              `Error encountered while running: ${error.message}`
-            );
-          }
-
-          if (error instanceof RetryError) {
-            console.error(chalk.red(`   retrying in 60 seconds...`));
-            setTimeout(() => {
-              aibitat.retry();
-            }, 60_000);
-            return;
-          }
->>>>>>> 48ef74aa (sync-fork-2)
         });
 
         aibitat.introspect = (messageText) => {

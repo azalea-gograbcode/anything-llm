@@ -17,11 +17,9 @@ import {
 } from "./constants";
 import ConfettiExplosion from "react-confetti-explosion";
 import { safeJsonParse } from "@/utils/request";
-import { useTranslation } from "react-i18next";
 
 const MemoizedChecklistItem = React.memo(ChecklistItem);
 export default function Checklist() {
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [isHidden, setIsHidden] = useState(false);
   const [completedCount, setCompletedCount] = useState(0);
@@ -72,7 +70,7 @@ export default function Checklist() {
         const checklist = window.localStorage.getItem(CHECKLIST_STORAGE_KEY);
         const existingChecklist = checklist ? safeJsonParse(checklist, {}) : {};
         const isCompleted =
-          Object.keys(existingChecklist).length === CHECKLIST_ITEMS().length;
+          Object.keys(existingChecklist).length === CHECKLIST_ITEMS.length;
         setIsCompleted(isCompleted);
         if (isCompleted) return;
 
@@ -126,7 +124,7 @@ export default function Checklist() {
       const completedItems = safeJsonParse(checklist, {});
       setCompletedCount(Object.keys(completedItems).length);
       setIsCompleted(
-        Object.keys(completedItems).length === CHECKLIST_ITEMS().length
+        Object.keys(completedItems).length === CHECKLIST_ITEMS.length
       );
     } catch (error) {
       console.error(error);
@@ -157,7 +155,7 @@ export default function Checklist() {
           className="bg-[rgba(54,70,61,0.5)] light:bg-[rgba(216,243,234,0.5)] w-full h-full flex items-center justify-center bg-theme-checklist-item-completed-bg/50 rounded-lg"
         >
           <p className="text-theme-checklist-item-completed-text text-lg font-bold">
-            {t("main-page.checklist.completed")}
+            You're on your way to becoming an AnythingLLM expert!
           </p>
         </div>
       </div>
@@ -168,12 +166,11 @@ export default function Checklist() {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-x-3">
             <h1 className="text-theme-home-text uppercase text-sm font-semibold">
-              {t("main-page.checklist.title")}
+              Getting Started
             </h1>
-            {CHECKLIST_ITEMS().length - completedCount > 0 && (
+            {CHECKLIST_ITEMS.length - completedCount > 0 && (
               <p className="text-theme-home-text-secondary text-xs">
-                {CHECKLIST_ITEMS().length - completedCount}{" "}
-                {t("main-page.checklist.tasksLeft")}
+                {CHECKLIST_ITEMS.length - completedCount} tasks left
               </p>
             )}
           </div>
@@ -183,12 +180,12 @@ export default function Checklist() {
               onClick={handleClose}
               className="text-theme-home-text-secondary bg-theme-home-bg-button px-3 py-1 rounded-xl hover:bg-white/10 transition-colors text-xs light:bg-black-100"
             >
-              {t("main-page.checklist.dismiss")}
+              close
             </button>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {CHECKLIST_ITEMS().map((item) => (
+          {CHECKLIST_ITEMS.map((item) => (
             <MemoizedChecklistItem
               key={item.id}
               id={item.id}

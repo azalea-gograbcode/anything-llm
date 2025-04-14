@@ -142,7 +142,7 @@ class MCPCompatibilityLayer extends MCPHypervisor {
         tools,
         error: null,
         process: {
-          pid: mcp.transport?.process?.pid || null,
+          pid: mcp.transport._process.pid,
         },
       });
     }

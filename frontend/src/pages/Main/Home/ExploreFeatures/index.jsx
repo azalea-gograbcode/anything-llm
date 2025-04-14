@@ -1,21 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import paths from "@/utils/paths";
 import Workspace from "@/models/workspace";
-import { useTranslation } from "react-i18next";
 
 export default function ExploreFeatures() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const chatWithAgent = async () => {
     const workspaces = await Workspace.all();
     if (workspaces.length > 0) {
       const firstWorkspace = workspaces[0];
-      navigate(
-        paths.workspace.chat(firstWorkspace.slug, {
-          search: { action: "set-agent-chat" },
-        })
-      );
+      navigate(paths.workspace.chat(firstWorkspace.slug));
+      window.location.hash = "#agent";
     }
   };
 
@@ -24,11 +19,8 @@ export default function ExploreFeatures() {
     const workspaces = await Workspace.all();
     if (workspaces.length > 0) {
       const firstWorkspace = workspaces[0];
-      navigate(
-        paths.workspace.chat(firstWorkspace.slug, {
-          search: { action: "open-new-slash-command-modal" },
-        })
-      );
+      navigate(paths.workspace.chat(firstWorkspace.slug));
+      window.location.hash = "#slash-commands";
     }
   };
 
@@ -40,11 +32,8 @@ export default function ExploreFeatures() {
     const workspaces = await Workspace.all();
     if (workspaces.length > 0) {
       const firstWorkspace = workspaces[0];
-      navigate(
-        paths.workspace.settings.chatSettings(firstWorkspace.slug, {
-          search: { action: "focus-system-prompt" },
-        })
-      );
+      navigate(paths.workspace.settings.chatSettings(firstWorkspace.slug));
+      window.location.hash = "#system-prompts";
     }
   };
 
@@ -55,50 +44,32 @@ export default function ExploreFeatures() {
   return (
     <div>
       <h1 className="text-theme-home-text uppercase text-sm font-semibold mb-4">
-        {t("main-page.exploreMore.title")}
+        Explore more features
       </h1>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <FeatureCard
-          title={t("main-page.exploreMore.features.customAgents.title")}
-          description={t(
-            "main-page.exploreMore.features.customAgents.description"
-          )}
-          primaryAction={t(
-            "main-page.exploreMore.features.customAgents.primaryAction"
-          )}
-          secondaryAction={t(
-            "main-page.exploreMore.features.customAgents.secondaryAction"
-          )}
+          title="Custom AI Agents"
+          description="Build powerful AI Agents and automations with no code."
+          primaryAction="Chat using @agent"
+          secondaryAction="Build an agent flow"
           onPrimaryAction={chatWithAgent}
           onSecondaryAction={buildAgentFlow}
           isNew={true}
         />
         <FeatureCard
-          title={t("main-page.exploreMore.features.slashCommands.title")}
-          description={t(
-            "main-page.exploreMore.features.slashCommands.description"
-          )}
-          primaryAction={t(
-            "main-page.exploreMore.features.slashCommands.primaryAction"
-          )}
-          secondaryAction={t(
-            "main-page.exploreMore.features.slashCommands.secondaryAction"
-          )}
+          title="Slash Commands"
+          description="Save time and inject prompts using custom slash commands."
+          primaryAction="Create a Slash Command"
+          secondaryAction="Explore on Hub"
           onPrimaryAction={setSlashCommand}
           onSecondaryAction={exploreSlashCommands}
           isNew={false}
         />
         <FeatureCard
-          title={t("main-page.exploreMore.features.systemPrompts.title")}
-          description={t(
-            "main-page.exploreMore.features.systemPrompts.description"
-          )}
-          primaryAction={t(
-            "main-page.exploreMore.features.systemPrompts.primaryAction"
-          )}
-          secondaryAction={t(
-            "main-page.exploreMore.features.systemPrompts.secondaryAction"
-          )}
+          title="System Prompts"
+          description="Modify the system prompt to customize the AI replies of a workspace."
+          primaryAction="Modify a System Prompt"
+          secondaryAction="Manage prompt variables"
           onPrimaryAction={setSystemPrompt}
           onSecondaryAction={managePromptVariables}
           isNew={true}
@@ -128,7 +99,7 @@ function FeatureCard({
       <div className="flex flex-col gap-y-[10px]">
         <button
           onClick={onPrimaryAction}
-          className="w-full h-[36px] border border-white/20 light:border-theme-home-button-secondary-border light:hover:border-theme-home-button-secondary-border-hover text-white rounded-lg text-theme-home-button-primary-text text-sm font-medium flex items-center justify-center gap-x-2.5 transition-all duration-200 light:hover:bg-transparent hover:bg-theme-home-button-secondary-hover hover:text-theme-home-button-secondary-hover-text"
+          className="w-full h-[36px] border border-white/20 light:border-black/20 text-white rounded-lg text-theme-home-button-primary-text text-sm font-medium flex items-center justify-center gap-x-2.5 transition-all duration-200 hover:bg-theme-home-button-secondary-hover hover:text-theme-home-button-secondary-hover-text"
         >
           {primaryAction}
         </button>
