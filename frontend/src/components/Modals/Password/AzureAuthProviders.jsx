@@ -78,7 +78,7 @@ export default function AzureAuthProviders({
           <div>
             <button type="button" onClick={handleLogin}><img src={logo} alt="Sign in with microsoft" width="300px" /></button>
           </div>
-          <p className="text-sm text-white/90 text-center my-2">or</p>
+          <p className="text-sm text-theme-text-secondary text-center">or</p>
         </>
       )}
     </>
