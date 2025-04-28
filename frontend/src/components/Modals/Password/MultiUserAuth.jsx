@@ -281,7 +281,6 @@ export default function MultiUserAuth() {
     return <ResetPasswordForm onSubmit={handleResetSubmit} />;
 
   const [showForm, setShowForm] = useState(false);
-
   const toggleForm = () => {
     setShowForm((prev) => !prev);
   };
@@ -323,50 +322,50 @@ export default function MultiUserAuth() {
           </div>
           {showForm && (
           <div>
-            <div className="w-full px-4 md:px-12">
-              <div className="w-full flex flex-col gap-y-4">
-                <div className="w-screen md:w-full md:px-0 px-6">
-                  <input
-                    name="username"
-                    type="text"
-                    placeholder={t("login.multi-user.placeholder-username")}
-                    className="border-none bg-theme-settings-input-bg text-theme-text-primary placeholder:text-theme-settings-input-placeholder focus:outline-primary-button active:outline-primary-button outline-none text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                    required={true}
-                    autoComplete="off"
-                  />
-                </div>
-                <div className="w-screen md:w-full md:px-0 px-6">
-                  <input
-                    name="password"
-                    type="password"
-                    placeholder={t("login.multi-user.placeholder-password")}
-                    className="border-none bg-theme-settings-input-bg text-theme-text-primary placeholder:text-theme-settings-input-placeholder focus:outline-primary-button active:outline-primary-button outline-none text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                    required={true}
-                    autoComplete="off"
-                  />
-                </div>
-                {error && <p className="text-red-400 text-sm">Error: {error}</p>}
+          <div className="w-full px-4 md:px-12">
+            <div className="w-full flex flex-col gap-y-4">
+              <div className="w-screen md:w-full md:px-0 px-6">
+                <input
+                  name="username"
+                  type="text"
+                  placeholder={t("login.multi-user.placeholder-username")}
+                  className="border-none bg-theme-settings-input-bg text-theme-text-primary placeholder:text-theme-settings-input-placeholder focus:outline-primary-button active:outline-primary-button outline-none text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
+                  required={true}
+                  autoComplete="off"
+                />
               </div>
+              <div className="w-screen md:w-full md:px-0 px-6">
+                <input
+                  name="password"
+                  type="password"
+                  placeholder={t("login.multi-user.placeholder-password")}
+                  className="border-none bg-theme-settings-input-bg text-theme-text-primary placeholder:text-theme-settings-input-placeholder focus:outline-primary-button active:outline-primary-button outline-none text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
+                  required={true}
+                  autoComplete="off"
+                />
+              </div>
+              {error && <p className="text-red-400 text-sm">Error: {error}</p>}
             </div>
-            <div className="flex items-center md:p-12 px-10 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
-              <button
-                disabled={loading}
-                type="submit"
-                className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-primary-button md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
-              >
-                {loading
-                  ? t("login.multi-user.validating")
-                  : t("login.multi-user.login")}
-              </button>
-              <button
-                type="button"
-                className="text-white text-sm flex gap-x-1 hover:text-primary-button hover:underline"
-                onClick={handleResetPassword}
-              >
-                {t("login.multi-user.forgot-pass")}?
-                <b>{t("login.multi-user.reset")}</b>
-              </button>
-            </div>
+          </div>
+          <div className="flex items-center md:p-12 px-10 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
+            <button
+              disabled={loading}
+              type="submit"
+              className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-primary-button md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+            >
+              {loading
+                ? t("login.multi-user.validating")
+                : t("login.multi-user.login")}
+            </button>
+            <button
+              type="button"
+              className="text-white text-sm flex gap-x-1 hover:text-primary-button hover:underline"
+              onClick={handleResetPassword}
+            >
+              {t("login.multi-user.forgot-pass")}?
+              <b>{t("login.multi-user.reset")}</b>
+            </button>
+          </div>
           </div>
           )}
         </div>
