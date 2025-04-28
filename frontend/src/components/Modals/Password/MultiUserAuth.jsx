@@ -279,6 +279,12 @@ export default function MultiUserAuth() {
 
   if (showResetPasswordForm)
     return <ResetPasswordForm onSubmit={handleResetSubmit} />;
+
+  const [showForm, setShowForm] = useState(false);
+  const toggleForm = () => {
+    setShowForm((prev) => !prev);
+  };
+
   return (
     <>
       <form onSubmit={handleLogin}>
@@ -305,6 +311,17 @@ export default function MultiUserAuth() {
             setUser={setUser}
             setToken={setToken}
           />
+          <div className="flex items-center py-5 px-10 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
+          <button
+              type="button"
+              onClick={toggleForm}
+              className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-primary-button md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full px-10"
+            >
+              Sign in with Username & Password 
+            </button>
+          </div>
+          {showForm && (
+          <div>
           <div className="w-full px-4 md:px-12">
             <div className="w-full flex flex-col gap-y-4">
               <div className="w-screen md:w-full md:px-0 px-6">
@@ -349,6 +366,8 @@ export default function MultiUserAuth() {
               <b>{t("login.multi-user.reset")}</b>
             </button>
           </div>
+          </div>
+          )}
         </div>
       </form>
 
