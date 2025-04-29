@@ -82,7 +82,7 @@
     "uuid-apikey": "^1.5.3",
     "weaviate-ts-client": "^1.4.0",
     "winston": "^3.13.0",
-    "snowflake-sdk": "^1.14.0"
+    "snowflake-sdk": "^2.0.4"
   },
   "devDependencies": {
     "@inquirer/prompts": "^4.3.1",
