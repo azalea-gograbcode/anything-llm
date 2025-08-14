@@ -51,6 +51,7 @@ export function AvailableAgents({
   const formRef = useRef(null);
   const agentSessionActive = useIsAgentSessionActive();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   /*
    * @checklist-item
@@ -79,7 +80,7 @@ export function AvailableAgents({
 
   const handleAgentClick = () => {
     setShowing(false);
-    sendCommand("@agent ", false);
+    sendCommand({ text: "@agent " });
     promptRef?.current?.focus();
   };
 
@@ -98,7 +99,8 @@ export function AvailableAgents({
             >
               <div className="w-full flex-col text-left flex pointer-events-none">
                 <div className="text-theme-text-primary text-sm">
-                  <b>@agent</b> - the default agent for this workspace.
+                  <b>{t("chat_window.at_agent")}</b>
+                  {t("chat_window.default_agent_description")}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <AbilityTag text="rag-search" />
@@ -118,7 +120,7 @@ export function AvailableAgents({
             >
               <div className="w-full flex-col text-center flex pointer-events-none">
                 <div className="text-theme-text-secondary text-xs italic">
-                  custom agents are coming soon!
+                  {t("chat_window.custom_agents_coming_soon")}
                 </div>
               </div>
             </button>

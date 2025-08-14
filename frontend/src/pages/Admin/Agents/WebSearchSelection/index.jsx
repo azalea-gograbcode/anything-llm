@@ -9,6 +9,7 @@ import SerplySearchIcon from "./icons/serply.png";
 import SearXNGSearchIcon from "./icons/searxng.png";
 import TavilySearchIcon from "./icons/tavily.svg";
 import DuckDuckGoIcon from "./icons/duckduckgo.png";
+import ExaIcon from "./icons/exa.png";
 import {
   CaretUpDown,
   MagnifyingGlass,
@@ -26,6 +27,7 @@ import {
   SearXNGOptions,
   TavilySearchOptions,
   DuckDuckGoOptions,
+  ExaSearchOptions,
 } from "./SearchProviderOptions";
 
 const SEARCH_PROVIDERS = [
@@ -42,8 +44,7 @@ const SEARCH_PROVIDERS = [
     value: "duckduckgo-engine",
     logo: DuckDuckGoIcon,
     options: () => <DuckDuckGoOptions />,
-    description:
-      "Free and privacy-focused web search using DuckDuckGo's HTML interface.",
+    description: "Free and privacy-focused web search using DuckDuckGo.",
   },
   {
     name: "Google Search Engine",
@@ -99,6 +100,13 @@ const SEARCH_PROVIDERS = [
     options: (settings) => <TavilySearchOptions settings={settings} />,
     description:
       "Tavily Search API. Offers a free tier with 1000 queries per month.",
+  },
+  {
+    name: "Exa Search",
+    value: "exa-search",
+    logo: ExaIcon,
+    options: (settings) => <ExaSearchOptions settings={settings} />,
+    description: "AI-powered search engine optimized for LLM use cases.",
   },
 ];
 
@@ -200,9 +208,9 @@ export default function AgentWebSearchSelection({
               />
             )}
             {searchMenuOpen ? (
-              <div className="absolute top-0 left-0 w-full max-w-[640px] max-h-[310px] overflow-auto white-scrollbar min-h-[64px] bg-theme-settings-input-bg rounded-lg flex flex-col justify-between cursor-pointer border-2 border-primary-button z-20">
+              <div className="absolute top-0 left-0 w-full max-w-[640px] max-h-[310px] min-h-[64px] bg-theme-settings-input-bg rounded-lg flex flex-col justify-between cursor-pointer border-2 border-primary-button z-20">
                 <div className="w-full flex flex-col gap-y-1">
-                  <div className="flex items-center sticky top-0 border-b border-[#9CA3AF] mx-4 bg-theme-settings-input-bg">
+                  <div className="flex items-center sticky top-0 z-10 border-b border-[#9CA3AF] mx-4 bg-theme-settings-input-bg">
                     <MagnifyingGlass
                       size={20}
                       weight="bold"
@@ -227,7 +235,7 @@ export default function AgentWebSearchSelection({
                       onClick={handleXButton}
                     />
                   </div>
-                  <div className="flex-1 pl-4 pr-2 flex flex-col gap-y-1 overflow-y-auto white-scrollbar pb-4">
+                  <div className="flex-1 pl-4 pr-2 flex flex-col gap-y-1 overflow-y-auto white-scrollbar pb-4 max-h-[245px]">
                     {filteredResults.map((provider) => {
                       return (
                         <SearchProviderItem
