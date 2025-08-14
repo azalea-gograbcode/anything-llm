@@ -7,6 +7,10 @@ const documentsPath =
   process.env.NODE_ENV === "development"
     ? path.resolve(__dirname, `../../storage/documents`)
     : path.resolve(process.env.STORAGE_DIR, `documents`);
+const directUploadsPath =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(__dirname, `../../storage/direct-uploads`)
+    : path.resolve(process.env.STORAGE_DIR, `direct-uploads`);
 const vectorCachePath =
   process.env.NODE_ENV === "development"
     ? path.resolve(__dirname, `../../storage/vector-cache`)
@@ -361,9 +365,6 @@ async function fileToPickerData({
   const filename = path.basename(pathToFile);
   const fileStats = fs.statSync(pathToFile);
   const cachedStatus = await cachedVectorInformation(cachefilename, true);
-  const canWatchStatus = liveSyncAvailable
-    ? DocumentSyncQueue.canWatch(metadata)
-    : false;
 
   if (fileStats.size < FILE_READ_SIZE_THRESHOLD) {
     const rawData = fs.readFileSync(pathToFile, "utf8");
@@ -381,7 +382,9 @@ async function fileToPickerData({
       type: "file",
       ...metadata,
       cached: cachedStatus,
-      canWatch: canWatchStatus,
+      canWatch: liveSyncAvailable
+        ? DocumentSyncQueue.canWatch(metadata)
+        : false,
       // pinnedWorkspaces: [], // This is the list of workspaceIds that have pinned this document
       // watched: false, // boolean to indicate if this document is watched in ANY workspace
     };
@@ -429,7 +432,7 @@ async function fileToPickerData({
     type: "file",
     ...metadata,
     cached: cachedStatus,
-    canWatch: canWatchStatus,
+    canWatch: liveSyncAvailable ? DocumentSyncQueue.canWatch(metadata) : false,
   };
 }
 
@@ -469,6 +472,7 @@ module.exports = {
   normalizePath,
   isWithin,
   documentsPath,
+  directUploadsPath,
   hasVectorCachedFiles,
   purgeEntireVectorCache,
   getDocumentsByFolder,

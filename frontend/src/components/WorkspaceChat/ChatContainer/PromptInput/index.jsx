@@ -11,6 +11,7 @@ import AvailableAgentsButton, {
   useAvailableAgents,
 } from "./AgentMenu";
 import TextSizeButton from "./TextSizeMenu";
+import LLMSelectorAction from "./LLMSelector/action";
 import SpeechToText from "./SpeechToText";
 import { Tooltip } from "react-tooltip";
 import AttachmentManager from "./Attachments";
@@ -24,6 +25,7 @@ import useTextSize from "@/hooks/useTextSize";
 import { useTranslation } from "react-i18next";
 import Appearance from "@/models/appearance";
 
+export const PROMPT_INPUT_ID = "primary-prompt-input";
 export const PROMPT_INPUT_EVENT = "set_prompt_input";
 const MAX_EDIT_STACK_SIZE = 100;
 
@@ -50,10 +52,12 @@ export default function PromptInput({
    * To prevent too many re-renders we remotely listen for updates from the parent
    * via an event cycle. Otherwise, using message as a prop leads to a re-render every
    * change on the input.
-   * @param {Event} e
+   * @param {{detail: {messageContent: string, writeMode: 'replace' | 'append'}}} e
    */
   function handlePromptUpdate(e) {
-    setPromptInput(e?.detail ?? "");
+    const { messageContent, writeMode = "replace" } = e?.detail ?? {};
+    if (writeMode === "append") setPromptInput((prev) => prev + messageContent);
+    else setPromptInput(messageContent ?? "");
   }
 
   useEffect(() => {
@@ -256,10 +260,11 @@ export default function PromptInput({
         className="flex flex-col gap-y-1 rounded-t-lg md:w-3/4 w-full mx-auto max-w-xl items-center"
       >
         <div className="flex items-center rounded-lg md:mb-4 md:w-full">
-          <div className="w-[95vw] md:w-[635px] bg-theme-bg-chat-input light:bg-white light:border-solid light:border-[1px] light:border-theme-chat-input-border shadow-sm rounded-2xl flex flex-col px-4 overflow-hidden">
+          <div className="w-[95vw] md:w-[635px] bg-theme-bg-chat-input light:bg-white light:border-solid light:border-[1px] light:border-theme-chat-input-border shadow-sm rounded-2xl flex flex-col px-2 overflow-hidden">
             <AttachmentManager attachments={attachments} />
-            <div className="flex items-center w-full border-b-2 border-theme-chat-input-border">
+            <div className="flex items-center border-b border-theme-chat-input-border mx-3">
               <textarea
+                id={PROMPT_INPUT_ID}
                 ref={textareaRef}
                 onChange={handleChange}
                 onKeyDown={captureEnterOrUndo}
@@ -311,7 +316,7 @@ export default function PromptInput({
                 </>
               )}
             </div>
-            <div className="flex justify-between py-3.5">
+            <div className="flex justify-between py-3.5 mx-3 mb-1">
               <div className="flex gap-x-2">
                 <AttachItem />
                 <SlashCommandsButton
@@ -323,6 +328,7 @@ export default function PromptInput({
                   setShowAgents={setShowAgents}
                 />
                 <TextSizeButton />
+                <LLMSelectorAction />
               </div>
               <div className="flex gap-x-2">
                 <SpeechToText sendCommand={sendCommand} />
