@@ -319,8 +319,6 @@ const ObsidianIcon = ({ size = 16, ...props }) => (
   <img src={ObsidianLogo} {...props} width={size} height={size} />
 );
 
-const ObsidianIcon = ({ ...props }) => <img src={ObsidianLogo} {...props} />;
-
 const ICONS = {
   file: FileText,
   link: LinkSimple,
