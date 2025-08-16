@@ -30,13 +30,6 @@ export default function ChatPromptSettings({ workspace, setHasChanges }) {
   } = useModal();
   const [currentPrompt, setCurrentPrompt] = useState(chatPrompt(workspace));
 
-  const handleRestore = (prompt) => {
-    setPrompt(prompt);
-    setShowPromptHistory(false);
-    setHasChanges(true);
-    // TODO: Autosave on restore
-  };
-
   useEffect(() => {
     async function setupVariableHighlighting() {
       const { variables } = await SystemPromptVariable.getAll();
